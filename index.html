@@ -6,7 +6,7 @@
 <title>Sanktuario Planer - Diablo 4 Build & Farming Tracker</title>
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
-<!-- FontAwesome Icons -->
+<!-- FontAwesome Icons (Free 6.5.1) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <!-- Google Fonts: Cinzel & Inter -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -81,47 +81,47 @@ Sanktuario Planer
 </div>
 </div>
 <div class="flex items-center gap-2">
-<button onclick="copyDiscordBuild()" class="px-3 py-1.5 text-xs font-semibold rounded bg-[#1c1924] hover:bg-[#282433] border border-[#3c364c] text-indigo-300 flex items-center gap-1.5 transition" title="Build als formatierten Text für Discord kopieren">
+<button onclick="window.copyDiscordBuild()" class="px-3 py-1.5 text-xs font-semibold rounded bg-[#1c1924] hover:bg-[#282433] border border-[#3c364c] text-indigo-300 flex items-center gap-1.5 transition" title="Build als formatierten Text für Discord kopieren">
 <i class="fa-brands fa-discord"></i>
 <span class="hidden sm:inline">Discord-Export</span>
 </button>
-<button onclick="exportJsonFile()" class="px-3 py-1.5 text-xs font-semibold rounded bg-[#161d19] hover:bg-[#1f2d24] border border-[#2d4734] text-emerald-300 flex items-center gap-1.5 transition" title="Backup als JSON-Datei herunterladen">
+<button onclick="window.exportJsonFile()" class="px-3 py-1.5 text-xs font-semibold rounded bg-[#161d19] hover:bg-[#1f2d24] border border-[#2d4734] text-emerald-300 flex items-center gap-1.5 transition" title="Backup als JSON-Datei herunterladen">
 <i class="fa-solid fa-download"></i>
 <span class="hidden sm:inline">Backup</span>
 </button>
 <label class="px-3 py-1.5 text-xs font-semibold rounded bg-[#191924] hover:bg-[#242436] border border-[#33334d] text-blue-300 flex items-center gap-1.5 cursor-pointer transition" title="JSON-Datei wiederherstellen">
 <i class="fa-solid fa-upload"></i>
 <span class="hidden sm:inline">Import</span>
-<input type="file" id="json-file-input" accept=".json" class="hidden" onchange="importJsonFile(event)">
+<input type="file" id="json-file-input" accept=".json" class="hidden" onchange="window.importJsonFile(event)">
 </label>
-<button onclick="shareBuildLink()" class="px-3 py-1.5 text-xs font-semibold rounded bg-red-950/50 hover:bg-red-900/60 border border-red-700/60 text-amber-300 flex items-center gap-1.5 transition">
+<button onclick="window.shareBuildLink()" class="px-3 py-1.5 text-xs font-semibold rounded bg-red-950/50 hover:bg-red-900/60 border border-red-700/60 text-amber-300 flex items-center gap-1.5 transition">
 <i class="fa-solid fa-share-nodes"></i>
 <span class="hidden sm:inline">Teilen</span>
 </button>
-<button onclick="resetAllData()" title="Alle Daten zurücksetzen" class="p-2 text-xs rounded bg-[#1a171d] hover:bg-red-950/60 border border-[#332a32] text-gray-400 hover:text-red-300 transition">
+<button onclick="window.resetAllData()" title="Alle Daten zurücksetzen" class="p-2 text-xs rounded bg-[#1a171d] hover:bg-red-950/60 border border-[#332a32] text-gray-400 hover:text-red-300 transition">
 <i class="fa-solid fa-trash-can"></i>
 </button>
 </div>
 </div>
 <!-- Desktop Navigation Tabs -->
 <nav class="max-w-7xl mx-auto px-4 flex gap-1 border-t border-[#1c1a21] overflow-x-auto">
-<button onclick="switchTab('planner')" id="tab-btn-planner" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-red-600 text-red-400 flex items-center gap-2 whitespace-nowrap">
+<button onclick="window.switchTab('planner')" id="tab-btn-planner" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-red-600 text-red-400 flex items-center gap-2 whitespace-nowrap">
 <i class="fa-solid fa-shield-halved"></i> Build & Klassenmechanik
 </button>
-<button onclick="switchTab('mercenary')" id="tab-btn-mercenary" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
+<button onclick="window.switchTab('mercenary')" id="tab-btn-mercenary" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
 <i class="fa-solid fa-user-group"></i> Söldner (VoH)
 </button>
-<button onclick="switchTab('breakpoints')" id="tab-btn-breakpoints" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
+<button onclick="window.switchTab('breakpoints')" id="tab-btn-breakpoints" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
 <i class="fa-solid fa-scale-balanced"></i> Stat-Caps & Qual-Rechner
 </button>
-<button onclick="switchTab('tracker')" id="tab-btn-tracker" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
+<button onclick="window.switchTab('tracker')" id="tab-btn-tracker" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
 <i class="fa-solid fa-list-check"></i> To-Do & Inventar-Tracker
 <span id="tracker-counter" class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-red-900/70 text-red-200">0</span>
 </button>
-<button onclick="switchTab('bosses')" id="tab-btn-bosses" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
+<button onclick="window.switchTab('bosses')" id="tab-btn-bosses" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
 <i class="fa-solid fa-dungeon"></i> Boss- & Event-Katalog
 </button>
-<button onclick="switchTab('runes')" id="tab-btn-runes" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
+<button onclick="window.switchTab('runes')" id="tab-btn-runes" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
 <i class="fa-solid fa-gem"></i> Runen & Härtung
 <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-purple-900/60 text-purple-200">45+</span>
 </button>
@@ -138,10 +138,10 @@ Sanktuario Planer
 <span class="text-[11px] text-amber-400/90" id="current-class-indicator">Aktuell: Barbar</span>
 </div>
 <div id="class-selector" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2">
-<!-- Dynamisch durch JS -->
+<!-- Dynamisch -->
 </div>
 </div>
-<!-- Spezifische Klassenmechanik (Buch der Toten, Verzauberungen, Geisterhalle etc.) -->
+<!-- Spezifische Klassenmechanik -->
 <div class="bg-gradient-to-r from-[#17131e] via-[#121217] to-[#1a141a] border border-red-950/60 rounded-xl p-4 shadow-xl">
 <div class="flex items-center justify-between mb-3 border-b border-[#25202e] pb-2">
 <div class="flex items-center gap-2">
@@ -151,7 +151,7 @@ Sanktuario Planer
 <span class="text-[10px] text-gray-400 uppercase tracking-wider font-mono">Exklusive Klassenmechanik</span>
 </div>
 <div id="class-mechanic-container">
-<!-- Dynamisch je nach Klasse -->
+<!-- Dynamisch -->
 </div>
 </div>
 <!-- Fertigkeiten-Leiste (6 Skills + Schlüsselpassiv) -->
@@ -166,7 +166,7 @@ Aktive Fertigkeiten & Schlüssel-Passiv
 </div>
 </div>
 <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5" id="skillbar-container">
-<!-- Dynamische Skill Slots -->
+<!-- Dynamisch -->
 </div>
 </div>
 <!-- Ausrüstungs-Slots Grid -->
@@ -180,13 +180,13 @@ Ausrüstungs-Matrix
 <p class="text-xs text-gray-400">Tippe auf einen Slot zum Konfigurieren (Uniques, GA-Sterne, Härtung, Runen)</p>
 </div>
 <div class="flex items-center gap-2">
-<button onclick="addAllSlotsToTracker()" class="text-xs px-3 py-1.5 rounded bg-red-950/60 hover:bg-red-900 border border-red-700/60 text-red-200 flex items-center gap-1.5 transition">
+<button onclick="window.addAllSlotsToTracker()" class="text-xs px-3 py-1.5 rounded bg-red-950/60 hover:bg-red-900 border border-red-700/60 text-red-200 flex items-center gap-1.5 transition">
 <i class="fa-solid fa-cart-plus"></i> Alle ins To-Do
 </button>
 </div>
 </div>
 <div id="gear-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-<!-- Dynamische Slots -->
+<!-- Dynamisch -->
 </div>
 </div>
 <!-- Paragon-Glyphen Auswahl -->
@@ -199,11 +199,11 @@ Paragon-Glyphen (Top 5 Sockel)
 <p class="text-xs text-gray-400">Wähle die 5 entscheidenden Glyphen für dein Paragon-Board</p>
 </div>
 <div id="paragon-glyphs-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-<!-- Dynamische Glyphen-Slots -->
+<!-- Dynamisch -->
 </div>
 </div>
 </section>
-<!-- ---------------- REITER: SÖLDNER-SYSTEM (VESSEL OF HATRED) ---------------- -->
+<!-- ---------------- REITER: SÖLDNER-SYSTEM ---------------- -->
 <section id="section-mercenary" class="tab-content hidden space-y-6">
 <div class="bg-gradient-to-r from-[#17131f] via-[#121118] to-[#181119] border border-purple-900/50 rounded-xl p-4 shadow-xl">
 <h2 class="text-base font-cinzel font-bold text-purple-300 flex items-center gap-2 mb-1">
@@ -213,7 +213,7 @@ Söldner-System (Nahantu Gefährten)
 <p class="text-xs text-gray-400">Wähle deinen ständigen Hauptbegleiter und deine passive Verstärkung für automatische Hilfe im Kampf.</p>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-<!-- Haupt-Söldner (Hired) -->
+<!-- Haupt-Söldner -->
 <div class="bg-[#121217] border border-[#24212b] rounded-xl p-4 sm:p-5 shadow-xl">
 <div class="flex items-center justify-between mb-4 pb-2 border-b border-[#211e29]">
 <div class="flex items-center gap-2">
@@ -225,23 +225,21 @@ Söldner-System (Nahantu Gefährten)
 <div class="space-y-3">
 <div>
 <label class="block text-xs text-gray-400 mb-1">Söldner auswählen</label>
-<select id="merc-hired-select" onchange="updateMercenaryData()" class="w-full bg-[#0b0b0e] border border-[#2c2838] rounded-lg p-2.5 text-xs text-gray-200">
+<select id="merc-hired-select" onchange="window.updateMercenaryData()" class="w-full bg-[#0b0b0e] border border-[#2c2838] rounded-lg p-2.5 text-xs text-gray-200">
 <option value="Raheir">Raheir der Schildträger (Verteidigung, Spott & Schadensminderung)</option>
 <option value="Varyana">Varyana die Berserkerin (Angriffstempo, Massaker & Blutdurst)</option>
 <option value="Subo">Subo der Fährtenleser (Minikarten-Radar, Ressourcen & Markierungen)</option>
 <option value="Aldkin">Aldkin das verfluchte Kind (Dämonenverwandlung, Massenkontrolle & Flächenschaden)</option>
 </select>
 </div>
-<div id="merc-hired-info" class="p-3 rounded-lg bg-[#0a0a0e] border border-[#211e2b] text-xs text-gray-300 leading-relaxed">
-<!-- Dynamische Info -->
-</div>
+<div id="merc-hired-info" class="p-3 rounded-lg bg-[#0a0a0e] border border-[#211e2b] text-xs text-gray-300 leading-relaxed"></div>
 <div>
 <label class="block text-xs text-gray-400 mb-1">Bevorzugter Skill-Pfad / Fokus</label>
-<input type="text" id="merc-hired-skill" onchange="updateMercenaryData()" placeholder="z. B. Bastion / Schildwall / Ruf der Erde" class="w-full bg-[#0b0b0e] border border-[#2c2838] rounded-lg p-2 text-xs text-amber-300 focus:border-amber-500">
+<input type="text" id="merc-hired-skill" onchange="window.updateMercenaryData()" placeholder="z. B. Bastion / Schildwall / Ruf der Erde" class="w-full bg-[#0b0b0e] border border-[#2c2838] rounded-lg p-2 text-xs text-amber-300 focus:border-amber-500">
 </div>
 </div>
 </div>
-<!-- Verstärkungs-Söldner (Reinforcement) -->
+<!-- Verstärkungs-Söldner -->
 <div class="bg-[#121217] border border-[#24212b] rounded-xl p-4 sm:p-5 shadow-xl">
 <div class="flex items-center justify-between mb-4 pb-2 border-b border-[#211e29]">
 <div class="flex items-center gap-2">
@@ -253,7 +251,7 @@ Söldner-System (Nahantu Gefährten)
 <div class="space-y-3">
 <div>
 <label class="block text-xs text-gray-400 mb-1">Verstärkungs-Söldner</label>
-<select id="merc-reinforce-select" onchange="updateMercenaryData()" class="w-full bg-[#0b0b0e] border border-[#2c2838] rounded-lg p-2.5 text-xs text-gray-200">
+<select id="merc-reinforce-select" onchange="window.updateMercenaryData()" class="w-full bg-[#0b0b0e] border border-[#2c2838] rounded-lg p-2.5 text-xs text-gray-200">
 <option value="Aldkin">Aldkin das verfluchte Kind</option>
 <option value="Raheir">Raheir der Schildträger</option>
 <option value="Varyana">Varyana die Berserkerin</option>
@@ -262,7 +260,7 @@ Söldner-System (Nahantu Gefährten)
 </div>
 <div>
 <label class="block text-xs text-gray-400 mb-1">Auslöser (Wann greift die Verstärkung ein?)</label>
-<select id="merc-trigger-select" onchange="updateMercenaryData()" class="w-full bg-[#0b0b0e] border border-[#2c2838] rounded-lg p-2.5 text-xs text-gray-200">
+<select id="merc-trigger-select" onchange="window.updateMercenaryData()" class="w-full bg-[#0b0b0e] border border-[#2c2838] rounded-lg p-2.5 text-xs text-gray-200">
 <option value="control_loss">Wenn Spieler von Kontrollverlust getroffen wird (Stun, Freeze)</option>
 <option value="injured">Wenn Spieler verletzt wird (unter 35% Leben)</option>
 <option value="core_skill">Beim Wirken einer Kern-Fertigkeit</option>
@@ -272,7 +270,7 @@ Söldner-System (Nahantu Gefährten)
 </div>
 <div>
 <label class="block text-xs text-gray-400 mb-1">Ausgeführte Aktion</label>
-<input type="text" id="merc-trigger-action" onchange="updateMercenaryData()" placeholder="z. B. Wirkt sofort Krater / Schutzschild" class="w-full bg-[#0b0b0e] border border-[#2c2838] rounded-lg p-2 text-xs text-purple-300 focus:border-purple-500">
+<input type="text" id="merc-trigger-action" onchange="window.updateMercenaryData()" placeholder="z. B. Wirkt sofort Krater / Schutzschild" class="w-full bg-[#0b0b0e] border border-[#2c2838] rounded-lg p-2 text-xs text-purple-300 focus:border-purple-500">
 </div>
 </div>
 </div>
@@ -293,7 +291,7 @@ Endgame Breakpoint- & Qual-Rechner (Torment I bis IV)
 <h3 class="text-xs uppercase font-cinzel font-bold text-amber-400 border-b border-[#211e29] pb-2">Deine aktuellen Charakter-Werte</h3>
 <div>
 <label class="block text-xs text-gray-400 mb-1">Ziel-Schwierigkeitsstufe</label>
-<select id="calc-torment" onchange="calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2.5 text-xs text-gray-200">
+<select id="calc-torment" onchange="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2.5 text-xs text-gray-200">
 <option value="0">Normal / Experte / Reumütig (Keine Mali)</option>
 <option value="1">Qual I (-250 Rüstung, -25% Resis)</option>
 <option value="2">Qual II (-500 Rüstung, -50% Resis)</option>
@@ -303,17 +301,17 @@ Endgame Breakpoint- & Qual-Rechner (Torment I bis IV)
 </div>
 <div>
 <label class="block text-xs text-gray-400 mb-1">Gesamtrüstung auf Ausrüstung & Paragon</label>
-<input type="number" id="calc-raw-armor" value="1850" oninput="calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200">
+<input type="number" id="calc-raw-armor" value="1850" oninput="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200">
 <span class="text-[10px] text-gray-500">Wert vor Abzug der Qual-Strafe</span>
 </div>
 <div>
 <label class="block text-xs text-gray-400 mb-1">Durchschnittlicher Elementar-Widerstand (%)</label>
-<input type="number" id="calc-raw-res" value="165" oninput="calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200">
+<input type="number" id="calc-raw-res" value="165" oninput="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200">
 <span class="text-[10px] text-gray-500">Summe aus Items, Diamanten & Paragon</span>
 </div>
 <div>
 <label class="block text-xs text-gray-400 mb-1">Max-Widerstands-Cap (z. B. durch Tyraels Macht)</label>
-<select id="calc-max-res-cap" onchange="calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200">
+<select id="calc-max-res-cap" onchange="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200">
 <option value="70">70% (Standard Cap)</option>
 <option value="75">75% (Leicht erhöht)</option>
 <option value="80">80% (Stark erhöht)</option>
@@ -380,7 +378,6 @@ Endgame Breakpoint- & Qual-Rechner (Torment I bis IV)
 <section id="section-tracker" class="tab-content hidden space-y-6">
 <!-- Endgame Crafting & Boss-Materialien Übersicht -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-<!-- Crafting-Währungen (Obduzit, Funken, Prismen) -->
 <div class="bg-[#121217] border border-[#24212b] rounded-xl p-4 shadow-xl">
 <h3 class="text-xs font-cinzel uppercase font-bold text-amber-300 mb-2 flex items-center gap-1.5">
 <i class="fa-solid fa-coins text-amber-400"></i> Endgame-Ressourcen
@@ -403,7 +400,6 @@ Endgame Breakpoint- & Qual-Rechner (Torment I bis IV)
 </div>
 </div>
 </div>
-<!-- Boss-Material-Kalkulator mit Inventar-Gegenrechnung -->
 <div class="lg:col-span-2 bg-gradient-to-r from-[#171216] via-[#1a1420] to-[#12141a] border border-amber-900/40 rounded-xl p-4 shadow-xl">
 <div class="flex items-center justify-between mb-2">
 <div>
@@ -415,7 +411,7 @@ Boss-Material-Kalkulator & Inventar-Gegenrechnung
 </div>
 </div>
 <div id="materials-summary" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-<!-- Dynamisch generiert -->
+<!-- Dynamisch -->
 </div>
 </div>
 </div>
@@ -427,26 +423,23 @@ Boss-Material-Kalkulator & Inventar-Gegenrechnung
 <p class="text-xs text-gray-400">Markiere Drops, Meisterwerkung (0 bis 12) und lege Prioritäten fest</p>
 </div>
 <div class="flex flex-wrap items-center gap-2">
-<!-- Filterbuttons -->
 <div class="inline-flex rounded-lg bg-[#0e0e12] p-1 border border-[#26242e]">
-<button onclick="filterTracker('all')" id="filter-all" class="px-2.5 py-1 text-xs rounded font-medium bg-red-900/70 text-white">Alle</button>
-<button onclick="filterTracker('open')" id="filter-open" class="px-2.5 py-1 text-xs rounded font-medium text-gray-400 hover:text-gray-200">Offen</button>
-<button onclick="filterTracker('done')" id="filter-done" class="px-2.5 py-1 text-xs rounded font-medium text-gray-400 hover:text-gray-200">Gefunden</button>
+<button onclick="window.filterTracker('all')" id="filter-all" class="px-2.5 py-1 text-xs rounded font-medium bg-red-900/70 text-white">Alle</button>
+<button onclick="window.filterTracker('open')" id="filter-open" class="px-2.5 py-1 text-xs rounded font-medium text-gray-400 hover:text-gray-200">Offen</button>
+<button onclick="window.filterTracker('done')" id="filter-done" class="px-2.5 py-1 text-xs rounded font-medium text-gray-400 hover:text-gray-200">Gefunden</button>
 </div>
-<!-- Item hinzufügen Button -->
-<button onclick="openTrackerQuickAddModal()" class="px-3 py-1.5 text-xs rounded bg-amber-900/40 hover:bg-amber-800/60 border border-amber-600/50 text-amber-300 flex items-center gap-1.5 transition">
+<button onclick="window.openTrackerQuickAddModal()" class="px-3 py-1.5 text-xs rounded bg-amber-900/40 hover:bg-amber-800/60 border border-amber-600/50 text-amber-300 flex items-center gap-1.5 transition">
 <i class="fa-solid fa-plus"></i> Item hinzufügen
 </button>
 </div>
 </div>
 <div id="tracker-list" class="space-y-2">
-<!-- Dynamische Einträge -->
+<!-- Dynamisch -->
 </div>
 </div>
 </section>
 <!-- ---------------- REITER 3: BOSS- & EVENT-KATALOG ---------------- -->
 <section id="section-bosses" class="tab-content hidden space-y-6">
-<!-- Qual-Stufen Erklärung (Torment I bis IV) -->
 <div class="bg-[#121217] border border-[#24212b] rounded-xl p-4 shadow-xl">
 <div class="flex items-center gap-2 mb-2">
 <i class="fa-solid fa-fire-flame-curved text-orange-500"></i>
@@ -475,7 +468,6 @@ Boss-Material-Kalkulator & Inventar-Gegenrechnung
 </div>
 </div>
 </div>
-<!-- Suche & Boss-Liste -->
 <div class="bg-[#121217] border border-[#24212b] rounded-xl p-3 sm:p-5 shadow-xl">
 <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-4">
 <div>
@@ -487,7 +479,7 @@ Endgame-Bosse & Aktivitäten
 </div>
 <div class="relative w-full sm:w-72">
 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
-<input type="text" id="boss-search" oninput="filterBossGuide()" placeholder="Item, Boss oder Ort..." class="w-full bg-[#0a0a0d] border border-[#2d2936] rounded-lg pl-8 pr-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-amber-500">
+<input type="text" id="boss-search" oninput="window.filterBossGuide()" placeholder="Item, Boss oder Ort..." class="w-full bg-[#0a0a0d] border border-[#2d2936] rounded-lg pl-8 pr-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-amber-500">
 </div>
 </div>
 <div id="boss-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -497,7 +489,6 @@ Endgame-Bosse & Aktivitäten
 </section>
 <!-- ---------------- REITER 4: RUNEN & HÄRTUNG ---------------- -->
 <section id="section-runes" class="tab-content hidden space-y-6">
-<!-- Meta-Runenwort Empfehlungen -->
 <div class="bg-gradient-to-r from-[#150f1f] via-[#121118] to-[#170e17] border border-purple-900/50 rounded-xl p-4 shadow-xl">
 <h3 class="text-sm font-cinzel font-bold text-purple-300 mb-2 flex items-center gap-2">
 <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i>
@@ -518,16 +509,15 @@ Beliebteste Meta-Runenwörter (Kombinationen)
 </div>
 </div>
 </div>
-<!-- Filter & Suche -->
 <div class="bg-[#121217] border border-[#24212b] rounded-xl p-4 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-3">
 <div class="flex items-center gap-2">
-<button onclick="setRuneFilter('all')" id="rf-all" class="rune-filter-btn px-3 py-1.5 text-xs rounded-lg font-semibold bg-purple-900/70 border border-purple-600/50 text-white">Alle Runen</button>
-<button onclick="setRuneFilter('Ritual')" id="rf-Ritual" class="rune-filter-btn px-3 py-1.5 text-xs rounded-lg font-semibold bg-[#1a1722] border border-[#2d2838] text-gray-400 hover:text-white">Ritual (Opfergabe)</button>
-<button onclick="setRuneFilter('Anrufung')" id="rf-Anrufung" class="rune-filter-btn px-3 py-1.5 text-xs rounded-lg font-semibold bg-[#1a1722] border border-[#2d2838] text-gray-400 hover:text-white">Anrufung (Effekt)</button>
+<button onclick="window.setRuneFilter('all')" id="rf-all" class="rune-filter-btn px-3 py-1.5 text-xs rounded-lg font-semibold bg-purple-900/70 border border-purple-600/50 text-white">Alle Runen</button>
+<button onclick="window.setRuneFilter('Ritual')" id="rf-Ritual" class="rune-filter-btn px-3 py-1.5 text-xs rounded-lg font-semibold bg-[#1a1722] border border-[#2d2838] text-gray-400 hover:text-white">Ritual (Opfergabe)</button>
+<button onclick="window.setRuneFilter('Anrufung')" id="rf-Anrufung" class="rune-filter-btn px-3 py-1.5 text-xs rounded-lg font-semibold bg-[#1a1722] border border-[#2d2838] text-gray-400 hover:text-white">Anrufung (Effekt)</button>
 </div>
 <div class="relative w-full md:w-72">
 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
-<input type="text" id="rune-search" oninput="renderRunesAndTempering()" placeholder="Rune, Härtung oder Affix..." class="w-full bg-[#0a0a0d] border border-[#2d2936] rounded-lg pl-8 pr-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-purple-500">
+<input type="text" id="rune-search" oninput="window.renderRunesAndTempering()" placeholder="Rune, Härtung oder Affix..." class="w-full bg-[#0a0a0d] border border-[#2d2936] rounded-lg pl-8 pr-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-purple-500">
 </div>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -541,9 +531,7 @@ Vollständige Runen-Matrix
 <span id="runes-count-badge" class="text-[10px] px-2 py-0.5 rounded bg-purple-950/70 border border-purple-800/40 text-purple-300 font-mono">0 Runen</span>
 </div>
 <p class="text-xs text-gray-400 mb-3">Ritual-Rune generiert Opfergabe → Anrufungs-Rune verbraucht sie.</p>
-<div id="runes-list" class="space-y-2 max-h-[600px] overflow-y-auto pr-1">
-<!-- Dynamisch -->
-</div>
+<div id="runes-list" class="space-y-2 max-h-[600px] overflow-y-auto pr-1"></div>
 </div>
 <!-- Härtungs-Katalog -->
 <div class="bg-[#121217] border border-[#24212b] rounded-xl p-4 shadow-xl flex flex-col">
@@ -555,56 +543,53 @@ Vollständiger Härtungs-Katalog
 <span id="tempering-count-badge" class="text-[10px] px-2 py-0.5 rounded bg-amber-950/70 border border-amber-800/40 text-amber-300 font-mono">Rezepte</span>
 </div>
 <p class="text-xs text-gray-400 mb-3">Schmied-Handbücher mit garantierten Affixen zur Ausrüstungsspezialisierung.</p>
-<div id="tempering-list" class="space-y-3 max-h-[600px] overflow-y-auto pr-1">
-<!-- Dynamisch -->
-</div>
+<div id="tempering-list" class="space-y-3 max-h-[600px] overflow-y-auto pr-1"></div>
 </div>
 </div>
 </section>
 </main>
 <!-- ================= MOBILE BOTTOM NAVIGATION ================= -->
 <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0d0d12]/95 backdrop-blur-md border-t border-[#232029] flex justify-around py-2">
-<button onclick="switchTab('planner')" class="mobile-tab flex flex-col items-center text-xs text-red-500" data-tab="planner">
+<button onclick="window.switchTab('planner')" class="mobile-tab flex flex-col items-center text-xs text-red-500" data-tab="planner">
 <i class="fa-solid fa-shield-halved text-base mb-0.5"></i>
 <span class="text-[10px]">Planer</span>
 </button>
-<button onclick="switchTab('mercenary')" class="mobile-tab flex flex-col items-center text-xs text-gray-400" data-tab="mercenary">
+<button onclick="window.switchTab('mercenary')" class="mobile-tab flex flex-col items-center text-xs text-gray-400" data-tab="mercenary">
 <i class="fa-solid fa-user-group text-base mb-0.5"></i>
 <span class="text-[10px]">Söldner</span>
 </button>
-<button onclick="switchTab('breakpoints')" class="mobile-tab flex flex-col items-center text-xs text-gray-400" data-tab="breakpoints">
+<button onclick="window.switchTab('breakpoints')" class="mobile-tab flex flex-col items-center text-xs text-gray-400" data-tab="breakpoints">
 <i class="fa-solid fa-scale-balanced text-base mb-0.5"></i>
 <span class="text-[10px]">Caps</span>
 </button>
-<button onclick="switchTab('tracker')" class="mobile-tab flex flex-col items-center text-xs text-gray-400" data-tab="tracker">
+<button onclick="window.switchTab('tracker')" class="mobile-tab flex flex-col items-center text-xs text-gray-400" data-tab="tracker">
 <i class="fa-solid fa-list-check text-base mb-0.5"></i>
 <span class="text-[10px]">Tracker</span>
 </button>
-<button onclick="switchTab('bosses')" class="mobile-tab flex flex-col items-center text-xs text-gray-400" data-tab="bosses">
+<button onclick="window.switchTab('bosses')" class="mobile-tab flex flex-col items-center text-xs text-gray-400" data-tab="bosses">
 <i class="fa-solid fa-dungeon text-base mb-0.5"></i>
 <span class="text-[10px]">Bosse</span>
 </button>
 </div>
 <!-- ================= ITEM MODAL ================= -->
-<div id="item-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-sm hidden">
-<div class="absolute inset-0" onclick="closeSlotModal()"></div>
+<div id="item-modal" class="fixed inset-0 z-50 items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-sm hidden">
+<div class="absolute inset-0" onclick="window.closeSlotModal()"></div>
 <div class="relative w-full max-w-lg bg-[#14141a] border border-[#3b3647] rounded-2xl shadow-2xl max-h-[92vh] flex flex-col overflow-hidden">
 <div class="px-5 py-3.5 border-b border-[#25222e] flex items-center justify-between bg-[#181820]">
 <div class="flex items-center gap-2">
 <i class="fa-solid fa-pen-to-square text-amber-400"></i>
 <h3 id="modal-title" class="text-sm font-bold font-cinzel text-gray-100">Slot konfigurieren</h3>
 </div>
-<button onclick="closeSlotModal()" class="w-8 h-8 rounded-lg bg-[#201e29] hover:bg-[#2e2b3b] text-gray-400 hover:text-white flex items-center justify-center transition">
+<button onclick="window.closeSlotModal()" class="w-8 h-8 rounded-lg bg-[#201e29] hover:bg-[#2e2b3b] text-gray-400 hover:text-white flex items-center justify-center transition">
 <i class="fa-solid fa-xmark text-sm"></i>
 </button>
 </div>
 <div class="p-5 space-y-4 overflow-y-auto flex-1 text-xs">
-<!-- Preset Auswahl -->
 <div>
 <label class="block font-semibold text-amber-300/90 mb-1">
 <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Aus Datenbank übernehmen (Auto-Fill)
 </label>
-<select id="modal-preset-select" onchange="applyPresetToModal(this.value)" class="w-full bg-[#0d0d12] border border-[#2f2b3b] rounded-lg px-3 py-2 text-gray-200 focus:border-amber-500">
+<select id="modal-preset-select" onchange="window.applyPresetToModal(this.value)" class="w-full bg-[#0d0d12] border border-[#2f2b3b] rounded-lg px-3 py-2 text-gray-200 focus:border-amber-500">
 <option value="">-- Eigenes Item oder leer --</option>
 </select>
 </div>
@@ -625,11 +610,11 @@ Vollständiger Härtungs-Katalog
 <div>
 <label class="block text-gray-400 mb-1">Große Affixe (GA Sterne ★)</label>
 <div class="grid grid-cols-5 gap-1.5">
-<button type="button" onclick="selectGaStars(0)" class="ga-btn py-1.5 rounded border border-[#2f2b3b] bg-[#0d0d12] text-gray-400 text-center" data-stars="0">0★</button>
-<button type="button" onclick="selectGaStars(1)" class="ga-btn py-1.5 rounded border border-[#2f2b3b] bg-[#0d0d12] text-amber-400 text-center font-bold" data-stars="1">1★</button>
-<button type="button" onclick="selectGaStars(2)" class="ga-btn py-1.5 rounded border border-[#2f2b3b] bg-[#0d0d12] text-amber-400 text-center font-bold" data-stars="2">2★</button>
-<button type="button" onclick="selectGaStars(3)" class="ga-btn py-1.5 rounded border border-[#2f2b3b] bg-[#0d0d12] text-amber-400 text-center font-bold" data-stars="3">3★</button>
-<button type="button" onclick="selectGaStars(4)" class="ga-btn py-1.5 rounded border border-[#2f2b3b] bg-[#0d0d12] text-amber-400 text-center font-bold" data-stars="4">4★</button>
+<button type="button" onclick="window.selectGaStars(0)" class="ga-btn py-1.5 rounded border border-[#2f2b3b] bg-[#0d0d12] text-gray-400 text-center" data-stars="0">0★</button>
+<button type="button" onclick="window.selectGaStars(1)" class="ga-btn py-1.5 rounded border border-[#2f2b3b] bg-[#0d0d12] text-amber-400 text-center font-bold" data-stars="1">1★</button>
+<button type="button" onclick="window.selectGaStars(2)" class="ga-btn py-1.5 rounded border border-[#2f2b3b] bg-[#0d0d12] text-amber-400 text-center font-bold" data-stars="2">2★</button>
+<button type="button" onclick="window.selectGaStars(3)" class="ga-btn py-1.5 rounded border border-[#2f2b3b] bg-[#0d0d12] text-amber-400 text-center font-bold" data-stars="3">3★</button>
+<button type="button" onclick="window.selectGaStars(4)" class="ga-btn py-1.5 rounded border border-[#2f2b3b] bg-[#0d0d12] text-amber-400 text-center font-bold" data-stars="4">4★</button>
 </div>
 <input type="hidden" id="modal-ga-value" value="0">
 </div>
@@ -675,14 +660,14 @@ Vollständiger Härtungs-Katalog
 </div>
 </div>
 <div class="p-4 bg-[#181820] border-t border-[#25222e] flex items-center justify-between gap-2">
-<button onclick="addModalItemToTracker()" type="button" class="px-3 py-2 rounded-lg bg-amber-950/60 hover:bg-amber-900 border border-amber-700/60 text-amber-300 font-medium flex items-center gap-1.5 transition">
+<button onclick="window.addModalItemToTracker()" type="button" class="px-3 py-2 rounded-lg bg-amber-950/60 hover:bg-amber-900 border border-amber-700/60 text-amber-300 font-medium flex items-center gap-1.5 transition">
 <i class="fa-solid fa-cart-plus"></i> Ins To-Do
 </button>
 <div class="flex items-center gap-2">
-<button onclick="closeSlotModal()" type="button" class="px-3 py-2 rounded-lg bg-[#22202c] hover:bg-[#2d2a3a] text-gray-300 transition">
+<button onclick="window.closeSlotModal()" type="button" class="px-3 py-2 rounded-lg bg-[#22202c] hover:bg-[#2d2a3a] text-gray-300 transition">
 Abbrechen
 </button>
-<button onclick="saveSlotModal()" type="button" class="px-4 py-2 rounded-lg bg-red-800 hover:bg-red-700 text-white font-semibold transition">
+<button onclick="window.saveSlotModal()" type="button" class="px-4 py-2 rounded-lg bg-red-800 hover:bg-red-700 text-white font-semibold transition">
 Speichern
 </button>
 </div>
@@ -690,17 +675,17 @@ Speichern
 </div>
 </div>
 <!-- ================= TRACKER QUICK ADD MODAL ================= -->
-<div id="quick-add-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-sm hidden">
-<div class="absolute inset-0" onclick="closeTrackerQuickAddModal()"></div>
+<div id="quick-add-modal" class="fixed inset-0 z-50 items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-sm hidden">
+<div class="absolute inset-0" onclick="window.closeTrackerQuickAddModal()"></div>
 <div class="relative w-full max-w-md bg-[#14141a] border border-[#3b3647] rounded-2xl shadow-2xl p-5 overflow-hidden text-xs">
 <div class="flex items-center justify-between mb-3 pb-2 border-b border-[#24212c]">
 <h3 class="text-sm font-bold font-cinzel text-amber-300">Item zur To-Do-Liste hinzufügen</h3>
-<button onclick="closeTrackerQuickAddModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+<button onclick="window.closeTrackerQuickAddModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
 </div>
 <div class="space-y-3">
 <div>
 <label class="block text-gray-400 mb-1">Aus Datenbank wählen</label>
-<select id="quick-db-select" onchange="fillQuickAddFromDb(this.value)" class="w-full bg-[#0c0c10] border border-[#2b2738] rounded-lg p-2 text-gray-200">
+<select id="quick-db-select" onchange="window.fillQuickAddFromDb(this.value)" class="w-full bg-[#0c0c10] border border-[#2b2738] rounded-lg p-2 text-gray-200">
 <option value="">-- Manuelle Eingabe oder Item wählen --</option>
 </select>
 </div>
@@ -731,8 +716,8 @@ Speichern
 <input type="text" id="quick-source" placeholder="z. B. Duriel" class="w-full bg-[#0c0c10] border border-[#2b2738] rounded-lg p-2 text-gray-200">
 </div>
 <div class="pt-2 flex justify-end gap-2">
-<button onclick="closeTrackerQuickAddModal()" class="px-3 py-1.5 rounded bg-[#201e29] text-gray-300">Abbrechen</button>
-<button onclick="submitQuickAddItem()" class="px-4 py-1.5 rounded bg-red-800 hover:bg-red-700 text-white font-semibold">Hinzufügen</button>
+<button onclick="window.closeTrackerQuickAddModal()" class="px-3 py-1.5 rounded bg-[#201e29] text-gray-300">Abbrechen</button>
+<button onclick="window.submitQuickAddItem()" class="px-4 py-1.5 rounded bg-red-800 hover:bg-red-700 text-white font-semibold">Hinzufügen</button>
 </div>
 </div>
 </div>
@@ -741,14 +726,14 @@ Speichern
 <script>
 // ================= KLASSEN & FERTIGKEITEN DEFINITION =================
 const CLASSES = [
-{ id: 'Barbar', name: 'Barbar', icon: 'fa-axe' },
-{ id: 'Zauberer', name: 'Zauberer', icon: 'fa-wand-sparkles' },
+{ id: 'Barbar', name: 'Barbar', icon: 'fa-hand-fist' },
+{ id: 'Zauberer', name: 'Zauberer', icon: 'fa-wand-magic-sparkles' },
 { id: 'Druide', name: 'Druide', icon: 'fa-paw' },
-{ id: 'Jäger', name: 'Jäger', icon: 'fa-bow-arrow' },
+{ id: 'Jäger', name: 'Jäger', icon: 'fa-crosshairs' },
 { id: 'Totenbeschwörer', name: 'Totenbeschwörer', icon: 'fa-skull' },
-{ id: 'Geistgeborener', name: 'Geistgeborener', icon: 'fa-feather' },
-{ id: 'Paladin', name: 'Paladin', icon: 'fa-shield' },
-{ id: 'Hexenmeister', name: 'Hexenmeister', icon: 'fa-eye' }
+{ id: 'Geistgeborener', name: 'Geistgeborener', icon: 'fa-feather-pointed' },
+{ id: 'Paladin', name: 'Paladin', icon: 'fa-shield-halved' },
+{ id: 'Hexenmeister', name: 'Hexenmeister', icon: 'fa-fire-flame-curved' }
 ];
 const CLASS_SKILLS_PRESETS = {
 'Barbar': {
@@ -805,17 +790,17 @@ const GENERAL_SLOTS = [
 const CLASS_WEAPON_SLOTS = {
 'Barbar': [
 { id: 'main_2h_blunt', name: '2H-Wuchtwaffe', icon: 'fa-hammer' },
-{ id: 'main_2h_slash', name: '2H-Hiebwaffe', icon: 'fa-axe' },
-{ id: 'dual_1h_1', name: '1H-Waffe (Arsenal 1)', icon: 'fa-sword' },
-{ id: 'dual_1h_2', name: '1H-Waffe (Arsenal 2)', icon: 'fa-sword' }
+{ id: 'main_2h_slash', name: '2H-Hiebwaffe', icon: 'fa-gavel' },
+{ id: 'dual_1h_1', name: '1H-Waffe (Arsenal 1)', icon: 'fa-shield-halved' },
+{ id: 'dual_1h_2', name: '1H-Waffe (Arsenal 2)', icon: 'fa-shield-halved' }
 ],
 'Jäger': [
-{ id: 'ranged_2h', name: 'Bogen / Armbrust', icon: 'fa-bow-arrow' },
-{ id: 'dual_1h_1', name: 'Dolch / Schwert 1', icon: 'fa-dagger' },
-{ id: 'dual_1h_2', name: 'Dolch / Schwert 2', icon: 'fa-dagger' }
+{ id: 'ranged_2h', name: 'Bogen / Armbrust', icon: 'fa-bullseye' },
+{ id: 'dual_1h_1', name: 'Dolch / Schwert 1', icon: 'fa-shield-halved' },
+{ id: 'dual_1h_2', name: 'Dolch / Schwert 2', icon: 'fa-shield-halved' }
 ],
 'Paladin': [
-{ id: 'main_hand', name: 'Hauptwaffe (Schwert/Flegel)', icon: 'fa-sword' },
+{ id: 'main_hand', name: 'Hauptwaffe (Schwert/Flegel)', icon: 'fa-shield-halved' },
 { id: 'off_hand_shield', name: 'Heiliger Schild', icon: 'fa-shield-halved' }
 ],
 'Hexenmeister': [
@@ -834,9 +819,8 @@ const MERCENARIES_INFO = {
 'Subo': 'Der ausgestoßene Späher deckt alle Gegner und Materialien auf der Minikarte auf. Er markiert Ziele für garantierte kritische Treffer und füllt deine Primärressourcen auf.',
 'Aldkin': 'Ein Junge mit einem uralten Dämonenfluch. Bei Bedrängnis verwandelt er sich in einen Schrecken des Verderbens, der ganze Monstergruppen betäubt und schmilzt.'
 };
-// ================= KOMPLETTE ITEM-DATENBANK (100+ ITEMS) =================
+// ================= KOMPLETTE ITEM-DATENBANK =================
 const ITEMS_DB = [
-// --- MYTHISCHE UNIQUES (Uber Uniques) ---
 { name: 'Harlekinskrone (Shako)', slot: 'helm', rarity: 'Mythisch', source: 'Duriel', aspect: '+4 auf alle Fertigkeiten, 20% Schadensreduktion, Cooldown-Reduktion' },
 { name: 'Tyraels Macht', slot: 'chest', rarity: 'Mythisch', source: 'Andariel', aspect: 'Verschießt göttliche Fluten bei vollem Leben, +Max-Widerstände' },
 { name: 'Der Großvater', slot: 'main_2h_slash', rarity: 'Mythisch', source: 'Duriel', aspect: '+100% Kritischer Trefferschaden, ignoriert Haltbarkeitsverlust' },
@@ -848,7 +832,6 @@ const ITEMS_DB = [
 { name: 'Nesekem, der Herold', slot: 'main_hand', rarity: 'Mythisch', source: 'Andariel', aspect: 'Markiert Feinde für automatische Überwältigen-Treffer' },
 { name: 'Zerbrochener Schwur', slot: 'main_2h_blunt', rarity: 'Mythisch', source: 'Mephisto', aspect: 'Richtet Feinde bei 120% Vergiftungsschaden sofort hin' },
 { name: 'Ahavarion, Speer von Lycander', slot: 'main_hand', rarity: 'Mythisch', source: 'Duriel', aspect: 'Gewährt beim Töten eines Elite zufällige Schrein-Effekte' },
-// --- ALLGEMEINE TOP-UNIQUES ---
 { name: 'Tibaults Wille', slot: 'pants', rarity: 'Unique', source: 'Duriel', aspect: 'Bis zu 50% mehr Schaden bei Unaufhaltsamkeit + 50 Primärressource' },
 { name: 'Fäuste des Schicksals', slot: 'gloves', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Treffer teilen zwischen 1% und 300% regulären Schaden aus' },
 { name: 'Schmerzschlinger-Panzerhandschuhe', slot: 'gloves', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Basis-Fertigkeiten schlagen auf alle markierten Gegner über' },
@@ -861,7 +844,6 @@ const ITEMS_DB = [
 { name: 'X'Fals korrodierter Siegelring', slot: 'ring1', rarity: 'Unique', source: 'Duriel', aspect: 'Schaden-über-Zeit-Effekte lösen verheerende Explosionen aus' },
 { name: 'Godslayer-Krone', slot: 'helm', rarity: 'Unique', source: 'Duriel', aspect: 'Zieht Feinde nach Stun zusammen und erhöht Schaden um 60%' },
 { name: 'Blutbesudelte Beinkleider', slot: 'pants', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Hinterlässt entweihte Lachen bei Entrinnen' },
-// --- GEISTGEBORENER (Spiritborn - VoH) ---
 { name: 'Stab von Kepeleke', slot: 'main_hand', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Basis-Fertigkeiten werden zu Kern-Fertigkeiten und critten immer voll' },
 { name: 'Harmonie von Ebewaka', slot: 'helm', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Verleiht Skills alle Geistertiere-Tags und skaliert Schaden massiv' },
 { name: 'Hyazinthenpanzer', slot: 'chest', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Reduziert Fertigkeiten-Abklingzeiten basierend auf Lebensregeneration' },
@@ -869,7 +851,6 @@ const ITEMS_DB = [
 { name: 'Ring der Mittagsjagd', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Erhöht maximale Wildheit und Angriffsgeschwindigkeit drastisch' },
 { name: 'Treue-Mantel', slot: 'chest', rarity: 'Unique', source: 'Grigoire', aspect: 'Wandelt direkten Schaden in Blutung und Gift um' },
 { name: 'Wunderschleifstein', slot: 'ring1', rarity: 'Unique', source: 'Andariel', aspect: 'Erhöht kritischen Schaden für jeden Stapel Entschlossenheit' },
-// --- BARBAR ---
 { name: 'Zwillingsschläge', slot: 'gloves', rarity: 'Unique', source: 'Grigoire', aspect: 'Doppelschwung wirft wirbelnde Sicheln ab, die nach außen fliegen' },
 { name: 'Ramaladnis Meisterwerk', slot: 'dual_1h_1', rarity: 'Unique', source: 'Grigoire', aspect: 'Erhöht Schaden pro verfügbarem Wutpunkt um bis zu 0.4%' },
 { name: 'Gohrs Verheerende Greifer', slot: 'gloves', rarity: 'Unique', source: 'Varshan', aspect: 'Wirbelwind explodiert am Ende in einer gigantischen Feuerwelle' },
@@ -878,7 +859,6 @@ const ITEMS_DB = [
 { name: 'Höllhammer', slot: 'main_2h_blunt', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Aufwühlen entzündet den Boden für massiven Verbrennungsschaden' },
 { name: 'Scharlachroter Vorstoß', slot: 'boots', rarity: 'Unique', source: 'Andariel', aspect: 'Ansturm hinterlässt Blutspuren und setzt Abklingzeiten zurück' },
 { name: 'Zorn von Harrogath', slot: 'chest', rarity: 'Unique', source: 'Grigoire', aspect: 'Blutungstreffer reduzieren Abklingzeiten nicht-ultimativer Skills' },
-// --- ZAUBERER ---
 { name: 'Zerbrochenes Winterglas', slot: 'amulet', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Frostsphäre beschwört zufällige Konjunktionen bei Explosion' },
 { name: 'Axial-Leitung', slot: 'pants', rarity: 'Unique', source: 'Grigoire', aspect: 'Kettenblitz umkreist dich und entlädt eine tödliche Schocknova' },
 { name: 'Gewand des Unendlichen', slot: 'chest', rarity: 'Unique', source: 'Varshan', aspect: 'Teleportieren zieht alle Feinde heran und betäubt sie für 2.5s' },
@@ -886,37 +866,32 @@ const ITEMS_DB = [
 { name: 'Stab des Endlosen Zorns', slot: 'main_hand', rarity: 'Unique', source: 'Varshan', aspect: 'Jeder dritte Feuerball verschießt 2 zusätzliche Projektile' },
 { name: 'Stab von Lam Esen', slot: 'main_hand', rarity: 'Unique', source: 'Grigoire', aspect: 'Geladene Blitze durchschlagen alle Ziele und fliegen weiter' },
 { name: 'Eispirscher', slot: 'boots', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Frostnova hinterlässt Eiszapfen, die explodieren' },
-// --- DRUIDE ---
 { name: 'Sturmgebrüll (Tempest Roar)', slot: 'helm', rarity: 'Unique', source: 'Duriel', aspect: 'Sturm-Fertigkeiten werden zu Werwolf-Skills und spenden Geisteskraft' },
 { name: 'Erdenbrecher', slot: 'ring1', rarity: 'Unique', source: 'Grigoire', aspect: 'Erdrutsch lässt nach Beben tektonische Stacheln emporschießen' },
 { name: 'Vasily's Gebet', slot: 'helm', rarity: 'Unique', source: 'Varshan', aspect: 'Erd-Fertigkeiten verwandeln dich in einen Bären und stählen dich' },
 { name: 'Dolmenstein', slot: 'amulet', rarity: 'Unique', source: 'Grigoire', aspect: 'Felsbrocken kreisen dauerhaft um deinen Hurrikan herum' },
 { name: 'Mjölnic-Ring', slot: 'ring1', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Katastrophe folgt dir permanent und erhöht Blitzschaden um 100%' },
 { name: 'Entzücken des Wahnsinnigen Wolfes', slot: 'chest', rarity: 'Unique', source: 'Grigoire', aspect: 'Permanente Werwolfgestalt, +3 auf alle Werwolf-Skills' },
-{ name: 'Unbeugsamer Aspekt / Fleischreißer', slot: 'main_hand', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Gebrüll fügt Feinden im Umkreis Giftschaden zu' },
-// --- JÄGER ---
+{ name: 'Fleischreißer', slot: 'main_hand', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Gebrüll fügt Feinden im Umkreis Giftschaden zu' },
 { name: 'Windmacht', slot: 'ranged_2h', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Pfeilsalve stößt Feinde zurück, verdoppelt Schaden und schlägt taumelnd' },
 { name: 'Verdammung (Condemnation)', slot: 'dual_1h_1', rarity: 'Unique', source: 'Varshan', aspect: 'Mit 3 Kombopunkten teilen Kern-Fertigkeiten bis zu 40% mehr Schaden aus' },
 { name: 'Kappe des Gauners', slot: 'helm', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Blendgranaten füllen Ressourcen auf und reduzieren Abklingzeiten' },
 { name: 'Tuch von Khanduras', slot: 'chest', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Entrinnen gewährt Schattenverhüllung und zieht Gegner magisch an' },
 { name: 'Adlerhorn', slot: 'ranged_2h', rarity: 'Unique', source: 'Grigoire', aspect: 'Durchdringender Schuss prallt von Wänden ab und verursacht Crits' },
 { name: 'Aschsträufer', slot: 'boots', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Fallen lösen zusätzliche Elementarexplosionen aus' },
-// --- TOTENBESCHWÖRER ---
 { name: 'Schwarzer Fluss', slot: 'main_hand', rarity: 'Unique', source: 'Duriel', aspect: 'Leichenexplosion verzehrt bis zu 4 zusätzliche Leichen auf einmal' },
 { name: 'Ring der gottlosen Seele', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Aktiviert automatisch nahe Leichen-Skills alle 1 Sekunde' },
 { name: 'Blutloser Schrei', slot: 'main_2h_slash', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Dunkelheit friert Gegner ein und generiert 5 Essenz pro Hit' },
 { name: 'Umarmung des Grausamen', slot: 'gloves', rarity: 'Unique', source: 'Grigoire', aspect: 'Blutwoge löst Mini-Explosionen auf jedem deiner Diener aus' },
 { name: 'Gebrüll aus dem Jenseits', slot: 'gloves', rarity: 'Unique', source: 'Grigoire', aspect: 'Leichenexplosion beschwört rennende Skelette, die detonieren' },
 { name: 'Mendelns Ring', slot: 'ring1', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Diener erhalten alle 6 Angriffe eine physische Explosion' },
-// --- PALADIN & HEXENMEISTER (DLC) ---
 { name: 'Herold von Zakarum', slot: 'off_hand_shield', rarity: 'Unique', source: 'Mephisto', aspect: '+4 Paladin-Auren, 100% garantierter Block bei Heiligem Schild' },
 { name: 'Auge von Baal', slot: 'amulet', rarity: 'Unique', source: 'Mephisto', aspect: 'Flüche brechen Unaufhaltsamkeit und verdoppeln Dämonenschaden' },
 { name: 'Griswolds Meisterwerk', slot: 'main_hand', rarity: 'Unique', source: 'Mephisto', aspect: 'Eifer schlägt viermal hintereinander mit Heiligem Blitz zu' },
 { name: 'Seelengefäß von Kurast', slot: 'off_hand', rarity: 'Unique', source: 'Mephisto', aspect: 'Ermöglicht das Beschwören von 2 zusätzlichen Dämonen-Erscheinungen' }
 ];
-// ================= RUNEN-DATEN (45+ STÜCK) =================
+// ================= RUNEN-DATEN =================
 const RUNES_DATA = [
-// RITUAL
 { name: 'Lith', type: 'Ritual', rarity: 'Legendär', offering: '+50 Opfergabe', desc: 'Stehe 0,3 Sekunden lang still.' },
 { name: 'Feo', type: 'Ritual', rarity: 'Legendär', offering: '+1000 Opfergabe', desc: 'Werde verletzt oder durch Kontrollverlust beeinträchtigt (20s CD).' },
 { name: 'Bac', type: 'Ritual', rarity: 'Selten', offering: '+50 Opfergabe', desc: 'Bewege dich 5 Meter weit fort.' },
@@ -935,7 +910,6 @@ const RUNES_DATA = [
 { name: 'Zan', type: 'Ritual', rarity: 'Magisch', offering: '+150 Opfergabe', desc: 'Wirke eine Ultimative Fertigkeit.' },
 { name: 'Ahu', type: 'Ritual', rarity: 'Magisch', offering: '+10 Opfergabe', desc: 'Glückstreffer gegen einen verletzten Gegner.' },
 { name: 'Pax', type: 'Ritual', rarity: 'Magisch', offering: '+50 Opfergabe', desc: 'Schlage einen Elite-Gegner taumelnd (Stagger).' },
-// ANRUFUNG
 { name: 'Ohm', type: 'Anrufung', rarity: 'Legendär', offering: '500 Opfergabe', desc: 'Wirkt Kriegsschrei: +15% Schaden & +15% Bewegungsgeschwindigkeit (6s).' },
 { name: 'Jah', type: 'Anrufung', rarity: 'Legendär', offering: '400 Opfergabe', desc: 'Wirkt Teleportation: Teleportiert zum Zielort und macht unaufhaltsam.' },
 { name: 'Yom', type: 'Anrufung', rarity: 'Legendär', offering: '500 Opfergabe', desc: 'Wirkt Versteinerung: Betäubt Feinde für 3s und gewährt 100% Crit-Schaden.' },
@@ -961,7 +935,7 @@ const RUNES_DATA = [
 { name: 'Lac', type: 'Anrufung', rarity: 'Magisch', offering: '800 Opfergabe', desc: 'Wirkt Herausforderungsruf: Verspottet und härtet dich.' },
 { name: 'Mot', type: 'Anrufung', rarity: 'Magisch', offering: '150 Opfergabe', desc: 'Erzeugt Schattenwolke, die gegnerische Geschosse absorbiert.' }
 ];
-// ================= HÄRTUNGS-KATALOG (TEMPERING) =================
+// ================= HÄRTUNGS-KATALOG =================
 const TEMPERING_DATA = [
 {
 cat: 'Waffen-Härtung (Offensiv)',
@@ -1099,9 +1073,9 @@ drops: ['Schleier des falschen Todes', 'Zerbrochener Schwur', 'Herold von Zakaru
 name: 'Kurast-Unterstadt (Undercity)',
 type: 'Endgame Aktivität',
 location: 'Kurast (Nahantu)',
-mats: 'Tribute (z. B. Tribut der Titanen, Tribut des Einklangs)',
+mats: 'Tribute (z. B. Tribut der Titanen)',
 matKeys: {},
-drops: ['Gezielte Runen-Drops (Ritual & Anrufung)', 'Garantiertes Großes Affix (1-4 GA)', 'Meisterwerkungs-Caches', 'Mythische Tribute']
+drops: ['Gezielte Runen-Drops (Ritual & Anrufung)', 'Garantiertes Großes Affix (1-4 GA)', 'Meisterwerkungs-Caches']
 },
 {
 name: 'Dunkle Zitadelle (Dark Citadel)',
@@ -1109,17 +1083,27 @@ type: 'Koop-Raid',
 location: 'Nahantu Hochland',
 mats: 'Wöchentlicher Raid-Zugang',
 matKeys: {},
-drops: ['Zitadellen-Münzen für Transmogs', 'Schriftrollen der Wiederherstellung (Tempering Resets)', 'Wöchentliche Kiste mit 800+ Macht-Items']
+drops: ['Zitadellen-Münzen für Transmogs', 'Schriftrollen der Wiederherstellung', 'Wöchentliche Kiste mit 800+ Macht-Items']
 },
 {
 name: 'Die Grube der Artifizienten (The Pit)',
 type: 'Rift Aktivität',
 location: 'Cerrigar Obelisk (Scosglen)',
-mats: 'Runenscherben (aus Alptraum-Dungeons & Höllenflut)',
+mats: 'Runenscherben (aus Alptraum-Dungeons)',
 matKeys: {},
-drops: ['Obduzit (Meisterwerkung Rang 1-12)', 'Massive Glyphen-EP', 'Prächtige Funken (Stygische Belohnungen)']
+drops: ['Obduzit (Meisterwerkung Rang 1-12)', 'Massive Glyphen-EP', 'Prächtige Funken']
 }
 ];
+// ================= SAFE JSON HELPER =================
+function safeJsonParse(val, fallback) {
+if (!val || val === 'undefined' || val === 'null') return fallback;
+try {
+return JSON.parse(val);
+} catch (e) {
+console.warn('Fehler beim Parsen:', e);
+return fallback;
+}
+}
 // ================= ANWENDUNGS-STATE =================
 let currentClass = 'Barbar';
 let currentBuild = {};
@@ -1140,7 +1124,7 @@ let currentFilter = 'all';
 let currentEditingSlotId = null;
 let activeRuneFilter = 'all';
 // ================= INITIALISIERUNG =================
-document.addEventListener('DOMContentLoaded', () => {
+function initApp() {
 initDatalists();
 loadFromStorage();
 renderClassSelector();
@@ -1155,13 +1139,19 @@ renderBossGuide();
 renderRunesAndTempering();
 updateMaterialsCalculator();
 checkUrlHashForBuild();
-});
+}
+if (document.readyState === 'loading') {
+document.addEventListener('DOMContentLoaded', initApp);
+} else {
+initApp();
+}
 function initDatalists() {
-// Runen
 const runeDl = document.getElementById('runes-datalist');
+if (runeDl) {
 runeDl.innerHTML = RUNES_DATA.map(r => ⁠<option value="${r.name} (${r.type}) - ${r.desc}">⁠).join('');
-// Härtungen
+}
 const tempDl = document.getElementById('tempering-datalist');
+if (tempDl) {
 const allTempAffixes = [];
 TEMPERING_DATA.forEach(cat => {
 cat.recipes.forEach(rcp => {
@@ -1169,12 +1159,14 @@ allTempAffixes.push(⁠${rcp.affixes} [${rcp.name}]⁠);
 });
 });
 tempDl.innerHTML = allTempAffixes.map(t => ⁠<option value="${t}">⁠).join('');
-// Quick-DB-Select im Tracker-Modal
+}
 const quickSelect = document.getElementById('quick-db-select');
+if (quickSelect) {
 quickSelect.innerHTML = '<option value="">-- Manuelle Eingabe oder Item wählen --</option>';
 ITEMS_DB.forEach((it, idx) => {
 quickSelect.innerHTML += ⁠<option value="${idx}">${it.name} (${it.rarity}) - [${it.source}]</option>⁠;
 });
+}
 }
 // ================= NAVIGATION =================
 function switchTab(tabId) {
@@ -1199,15 +1191,18 @@ btn.classList.remove('text-red-500');
 btn.classList.add('text-gray-400');
 }
 });
+window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 // ================= KLASSENAUSWAHL & FERTIGKEITEN =================
 function renderClassSelector() {
 const container = document.getElementById('class-selector');
+if (!container) return;
 container.innerHTML = CLASSES.map(c => {
 const isSelected = c.id === currentClass;
-return ⁠<button onclick="selectClass('${c.id}')" class="p-2 rounded-lg border text-center transition flex flex-col items-center justify-center gap-1 ${ isSelected  ? 'bg-red-950/70 border-red-600 text-amber-200 shadow-md shadow-red-950/50 ring-1 ring-red-500/40'  : 'bg-[#0d0d12] border-[#292533] text-gray-400 hover:border-gray-500 hover:text-gray-200' }"> <i class="fa-solid ${c.icon} text-sm ${isSelected ? 'text-red-400' : 'text-gray-500'}"></i> <span class="text-[11px] font-semibold truncate w-full">${c.name}</span> </button>⁠;
+return ⁠<button onclick="window.selectClass('${c.id}')" class="p-2 rounded-lg border text-center transition flex flex-col items-center justify-center gap-1 ${ isSelected  ? 'bg-red-950/70 border-red-600 text-amber-200 shadow-md shadow-red-950/50 ring-1 ring-red-500/40'  : 'bg-[#0d0d12] border-[#292533] text-gray-400 hover:border-gray-500 hover:text-gray-200' }"> <i class="fa-solid ${c.icon} text-sm ${isSelected ? 'text-red-400' : 'text-gray-500'}"></i> <span class="text-[11px] font-semibold truncate w-full">${c.name}</span> </button>⁠;
 }).join('');
-document.getElementById('current-class-indicator').innerText = ⁠Ausgewählt: ${currentClass}⁠;
+const indicator = document.getElementById('current-class-indicator');
+if (indicator) indicator.innerText = ⁠Ausgewählt: ${currentClass}⁠;
 }
 function selectClass(clsId) {
 currentClass = clsId;
@@ -1227,31 +1222,31 @@ saveToStorage();
 function renderClassMechanic() {
 const titleEl = document.getElementById('class-mechanic-title');
 const container = document.getElementById('class-mechanic-container');
+if (!titleEl || !container) return;
 if (currentClass === 'Totenbeschwörer') {
 titleEl.innerText = 'Buch der Toten (Diener & Opfergaben)';
 const m = currentClassMechanic;
-container.innerHTML = ⁠<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs"> <div class="p-2.5 rounded bg-[#0b0b0f] border border-purple-900/40"> <span class="font-bold text-amber-300 block mb-1">Skelettkrieger</span> <select onchange="saveClassMechanic('skel_warrior', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs"> <option value="plänkler" ${m.skel_warrior==='plänkler'?'selected':''}>Plänkler (+Schaden)</option> <option value="verteidiger" ${m.skel_warrior==='verteidiger'?'selected':''}>Verteidiger (Schildblock & Taunt)</option> <option value="schnitter" ${m.skel_warrior==='schnitter'?'selected':''}>Schnitter (Erzeugt Leichen)</option> <option value="opfer_warrior" ${m.skel_warrior==='opfer_warrior'?'selected':''}>GEOPFERT: +5% Krit-Chance</option> </select> </div> <div class="p-2.5 rounded bg-[#0b0b0f] border border-purple-900/40"> <span class="font-bold text-amber-300 block mb-1">Skelettmagier</span> <select onchange="saveClassMechanic('skel_mage', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs"> <option value="schatten" ${m.skel_mage==='schatten'?'selected':''}>Schatten (Zusatz-Schattenschaden)</option> <option value="kälte" ${m.skel_mage==='kälte'?'selected':''}>Kälte (Einfrieren & Verwundbar)</option> <option value="knochen" ${m.skel_mage==='knochen'?'selected':''}>Knochen (Verbrauchen Leben für Schaden)</option> <option value="opfer_mage" ${m.skel_mage==='opfer_mage'?'selected':''}>GEOPFERT: +15% Überwältigung / Verwundbarkeit</option> </select> </div> <div class="p-2.5 rounded bg-[#0b0b0f] border border-purple-900/40"> <span class="font-bold text-amber-300 block mb-1">Golem</span> <select onchange="saveClassMechanic('golem', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs"> <option value="knochengolem" ${m.golem==='knochengolem'?'selected':''}>Knochengolem (Spott & Leichen)</option> <option value="blutgolem" ${m.golem==='blutgolem'?'selected':''}>Blutgolem (Schadensabsorption & Heilung)</option> <option value="eisengolem" ${m.golem==='eisengolem'?'selected':''}>Eisengolem (Bodenschlag & Verwundbar)</option> <option value="opfer_golem" ${m.golem==='opfer_golem'?'selected':''}>GEOPFERT: +10% Max-Leben / +25% Crit-Dmg</option> </select> </div> </div>⁠;
+container.innerHTML = ⁠<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs"> <div class="p-2.5 rounded bg-[#0b0b0f] border border-purple-900/40"> <span class="font-bold text-amber-300 block mb-1">Skelettkrieger</span> <select onchange="window.saveClassMechanic('skel_warrior', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs"> <option value="plänkler" ${m.skel_warrior==='plänkler'?'selected':''}>Plänkler (+Schaden)</option> <option value="verteidiger" ${m.skel_warrior==='verteidiger'?'selected':''}>Verteidiger (Schildblock & Taunt)</option> <option value="schnitter" ${m.skel_warrior==='schnitter'?'selected':''}>Schnitter (Erzeugt Leichen)</option> <option value="opfer_warrior" ${m.skel_warrior==='opfer_warrior'?'selected':''}>GEOPFERT: +5% Krit-Chance</option> </select> </div> <div class="p-2.5 rounded bg-[#0b0b0f] border border-purple-900/40"> <span class="font-bold text-amber-300 block mb-1">Skelettmagier</span> <select onchange="window.saveClassMechanic('skel_mage', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs"> <option value="schatten" ${m.skel_mage==='schatten'?'selected':''}>Schatten (Zusatz-Schattenschaden)</option> <option value="kälte" ${m.skel_mage==='kälte'?'selected':''}>Kälte (Einfrieren & Verwundbar)</option> <option value="knochen" ${m.skel_mage==='knochen'?'selected':''}>Knochen (Verbrauchen Leben für Schaden)</option> <option value="opfer_mage" ${m.skel_mage==='opfer_mage'?'selected':''}>GEOPFERT: +15% Überwältigung / Verwundbarkeit</option> </select> </div> <div class="p-2.5 rounded bg-[#0b0b0f] border border-purple-900/40"> <span class="font-bold text-amber-300 block mb-1">Golem</span> <select onchange="window.saveClassMechanic('golem', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs"> <option value="knochengolem" ${m.golem==='knochengolem'?'selected':''}>Knochengolem (Spott & Leichen)</option> <option value="blutgolem" ${m.golem==='blutgolem'?'selected':''}>Blutgolem (Schadensabsorption & Heilung)</option> <option value="eisengolem" ${m.golem==='eisengolem'?'selected':''}>Eisengolem (Bodenschlag & Verwundbar)</option> <option value="opfer_golem" ${m.golem==='opfer_golem'?'selected':''}>GEOPFERT: +10% Max-Leben / +25% Crit-Dmg</option> </select> </div> </div>⁠;
 } else if (currentClass === 'Zauberer') {
 titleEl.innerText = 'Verzauberungs-Slots (Passive Effekte)';
 const m = currentClassMechanic;
-container.innerHTML = ⁠<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs"> <div class="p-2.5 rounded bg-[#0b0b0f] border border-blue-900/40"> <span class="font-bold text-amber-300 block mb-1">Verzauberungs-Slot 1</span> <input type="text" value="${m.enc_1 || 'Feuerblitz (Direkter Schaden verbrennt Feinde)'}" onchange="saveClassMechanic('enc_1', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs"> </div> <div class="p-2.5 rounded bg-[#0b0b0f] border border-blue-900/40"> <span class="font-bold text-amber-300 block mb-1">Verzauberungs-Slot 2</span> <input type="text" value="${m.enc_2 || 'Teleportation (Entrinnen wird zum Teleport)'}" onchange="saveClassMechanic('enc_2', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs"> </div> </div>⁠;
+container.innerHTML = ⁠<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs"> <div class="p-2.5 rounded bg-[#0b0b0f] border border-blue-900/40"> <span class="font-bold text-amber-300 block mb-1">Verzauberungs-Slot 1</span> <input type="text" value="${m.enc_1 || 'Feuerblitz (Direkter Schaden verbrennt Feinde)'}" onchange="window.saveClassMechanic('enc_1', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs"> </div> <div class="p-2.5 rounded bg-[#0b0b0f] border border-blue-900/40"> <span class="font-bold text-amber-300 block mb-1">Verzauberungs-Slot 2</span> <input type="text" value="${m.enc_2 || 'Teleportation (Entrinnen wird zum Teleport)'}" onchange="window.saveClassMechanic('enc_2', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs"> </div> </div>⁠;
 } else if (currentClass === 'Jäger') {
 titleEl.innerText = 'Jäger-Spezialisierung';
 const m = currentClassMechanic;
-container.innerHTML = ⁠<div class="p-2.5 rounded bg-[#0b0b0f] border border-red-900/40 text-xs"> <label class="block text-gray-400 mb-1">Aktive Spezialisierung</label> <select onchange="saveClassMechanic('spec', this.value)" class="w-full sm:w-80 bg-[#121217] border border-[#2b2638] rounded p-1.5 text-amber-300 text-xs font-bold"> <option value="combo" ${m.spec==='combo'?'selected':''}>Kombopunkte (Basisangriffe verstärken Kern-Skills)</option> <option value="inner" ${m.spec==='inner'?'selected':''}>Innere Sicht (Markierte Gegner füllen Energie unbegrenzt)</option> <option value="prep" ${m.spec==='prep'?'selected':''}>Vorbereitung (Energieverbrauch setzt Ulti-Abklingzeit zurück)</option> </select> </div>⁠;
+container.innerHTML = ⁠<div class="p-2.5 rounded bg-[#0b0b0f] border border-red-900/40 text-xs"> <label class="block text-gray-400 mb-1">Aktive Spezialisierung</label> <select onchange="window.saveClassMechanic('spec', this.value)" class="w-full sm:w-80 bg-[#121217] border border-[#2b2638] rounded p-1.5 text-amber-300 text-xs font-bold"> <option value="combo" ${m.spec==='combo'?'selected':''}>Kombopunkte (Basisangriffe verstärken Kern-Skills)</option> <option value="inner" ${m.spec==='inner'?'selected':''}>Innere Sicht (Markierte Gegner füllen Energie unbegrenzt)</option> <option value="prep" ${m.spec==='prep'?'selected':''}>Vorbereitung (Energieverbrauch setzt Ulti-Abklingzeit zurück)</option> </select> </div>⁠;
 } else if (currentClass === 'Geistgeborener') {
 titleEl.innerText = 'Geisterhalle (Spirit Hall - Tiergeister)';
 const m = currentClassMechanic;
-container.innerHTML = ⁠<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs"> <div class="p-2.5 rounded bg-[#0b0b0f] border border-emerald-900/40"> <span class="font-bold text-amber-300 block mb-1">Primärgeist (Wandelt alle Skills um)</span> <select onchange="saveClassMechanic('spirit_prim', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs"> <option value="jaguar" ${m.spirit_prim==='jaguar'?'selected':''}>Jaguar (Wildheit, Tempo & zusätzliche Schläge)</option> <option value="adler" ${m.spirit_prim==='adler'?'selected':''}>Adler (Sturmfedern, Verwundbarkeit & Mobilität)</option> <option value="gorilla" ${m.spirit_prim==='gorilla'?'selected':''}>Gorilla (Entschlossenheit, Barriere & Dornen)</option> <option value="tausendfuessler" ${m.spirit_prim==='tausendfuessler'?'selected':''}>Tausendfüßler (Giftverfall, Schwächung & Lebensraub)</option> </select> </div> <div class="p-2.5 rounded bg-[#0b0b0f] border border-emerald-900/40"> <span class="font-bold text-amber-300 block mb-1">Sekundärgeist (Passiver Bonus)</span> <select onchange="saveClassMechanic('spirit_sec', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs"> <option value="jaguar_sec" ${m.spirit_sec==='jaguar_sec'?'selected':''}>Jaguar (Tötung erzeugt Wildheits-Stapel)</option> <option value="adler_sec" ${m.spirit_sec==='adler_sec'?'selected':''}>Adler (Entrinnen feuert Sturmfedern ab)</option> <option value="gorilla_sec" ${m.spirit_sec==='gorilla_sec'?'selected':''}>Gorilla (Schaden gewährt Entschlossenheits-Barriere)</option> <option value="tausendfuessler_sec" ${m.spirit_sec==='tausendfuessler_sec'?'selected':''}>Tausendfüßler (Gift verlangsamt und heilt)</option> </select> </div> </div>⁠;
+container.innerHTML = ⁠<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs"> <div class="p-2.5 rounded bg-[#0b0b0f] border border-emerald-900/40"> <span class="font-bold text-amber-300 block mb-1">Primärgeist (Wandelt alle Skills um)</span> <select onchange="window.saveClassMechanic('spirit_prim', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs"> <option value="jaguar" ${m.spirit_prim==='jaguar'?'selected':''}>Jaguar (Wildheit, Tempo & zusätzliche Schläge)</option> <option value="adler" ${m.spirit_prim==='adler'?'selected':''}>Adler (Sturmfedern, Verwundbarkeit & Mobilität)</option> <option value="gorilla" ${m.spirit_prim==='gorilla'?'selected':''}>Gorilla (Entschlossenheit, Barriere & Dornen)</option> <option value="tausendfuessler" ${m.spirit_prim==='tausendfuessler'?'selected':''}>Tausendfüßler (Giftverfall, Schwächung & Lebensraub)</option> </select> </div> <div class="p-2.5 rounded bg-[#0b0b0f] border border-emerald-900/40"> <span class="font-bold text-amber-300 block mb-1">Sekundärgeist (Passiver Bonus)</span> <select onchange="window.saveClassMechanic('spirit_sec', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs"> <option value="jaguar_sec" ${m.spirit_sec==='jaguar_sec'?'selected':''}>Jaguar (Tötung erzeugt Wildheits-Stapel)</option> <option value="adler_sec" ${m.spirit_sec==='adler_sec'?'selected':''}>Adler (Entrinnen feuert Sturmfedern ab)</option> <option value="gorilla_sec" ${m.spirit_sec==='gorilla_sec'?'selected':''}>Gorilla (Schaden gewährt Entschlossenheits-Barriere)</option> <option value="tausendfuessler_sec" ${m.spirit_sec==='tausendfuessler_sec'?'selected':''}>Tausendfüßler (Gift verlangsamt und heilt)</option> </select> </div> </div>⁠;
 } else if (currentClass === 'Druide') {
 titleEl.innerText = 'Geistersegen (Spirit Boons der 4 Tiergeister)';
 const m = currentClassMechanic;
-container.innerHTML = ⁠<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs"> <div class="p-2 rounded bg-[#0b0b0f] border border-amber-900/30"> <span class="font-bold text-amber-300 block">Hirsch</span> <input type="text" value="${m.boon_deer || 'Argwohn (-10% Elite-Schaden)'}" onchange="saveClassMechanic('boon_deer', this.value)" class="w-full bg-transparent border-b border-gray-700 py-1 text-[11px]"> </div> <div class="p-2 rounded bg-[#0b0b0f] border border-amber-900/30"> <span class="font-bold text-amber-300 block">Adler</span> <input type="text" value="${m.boon_eagle || 'Sensenklauen (+5% Crit-Chance)'}" onchange="saveClassMechanic('boon_eagle', this.value)" class="w-full bg-transparent border-b border-gray-700 py-1 text-[11px]"> </div> <div class="p-2 rounded bg-[#0b0b0f] border border-amber-900/30"> <span class="font-bold text-amber-300 block">Wolf</span> <input type="text" value="${m.boon_wolf || 'Katastrophenhilfe (Verlängert Ulti)'}" onchange="saveClassMechanic('boon_wolf', this.value)" class="w-full bg-transparent border-b border-gray-700 py-1 text-[11px]"> </div> <div class="p-2 rounded bg-[#0b0b0f] border border-amber-900/30"> <span class="font-bold text-amber-300 block">Schlange (Gebunden)</span> <input type="text" value="${m.boon_snake || 'Masochismus & Ruhe vor Sturm'}" onchange="saveClassMechanic('boon_snake', this.value)" class="w-full bg-transparent border-b border-gray-700 py-1 text-[11px]"> </div> </div>⁠;
+container.innerHTML = ⁠<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs"> <div class="p-2 rounded bg-[#0b0b0f] border border-amber-900/30"> <span class="font-bold text-amber-300 block">Hirsch</span> <input type="text" value="${m.boon_deer || 'Argwohn (-10% Elite-Schaden)'}" onchange="window.saveClassMechanic('boon_deer', this.value)" class="w-full bg-transparent border-b border-gray-700 py-1 text-[11px]"> </div> <div class="p-2 rounded bg-[#0b0b0f] border border-amber-900/30"> <span class="font-bold text-amber-300 block">Adler</span> <input type="text" value="${m.boon_eagle || 'Sensenklauen (+5% Crit-Chance)'}" onchange="window.saveClassMechanic('boon_eagle', this.value)" class="w-full bg-transparent border-b border-gray-700 py-1 text-[11px]"> </div> <div class="p-2 rounded bg-[#0b0b0f] border border-amber-900/30"> <span class="font-bold text-amber-300 block">Wolf</span> <input type="text" value="${m.boon_wolf || 'Katastrophenhilfe (Verlängert Ulti)'}" onchange="window.saveClassMechanic('boon_wolf', this.value)" class="w-full bg-transparent border-b border-gray-700 py-1 text-[11px]"> </div> <div class="p-2 rounded bg-[#0b0b0f] border border-amber-900/30"> <span class="font-bold text-amber-300 block">Schlange (Gebunden)</span> <input type="text" value="${m.boon_snake || 'Masochismus & Ruhe vor Sturm'}" onchange="window.saveClassMechanic('boon_snake', this.value)" class="w-full bg-transparent border-b border-gray-700 py-1 text-[11px]"> </div> </div>⁠;
 } else {
-// Barbar / Paladin / Hexenmeister
 titleEl.innerText = currentClass === 'Barbar' ? 'Arsenal-Expertise & Technik-Slot' : 'Klassen-Ermächtigung';
 const m = currentClassMechanic;
-container.innerHTML = ⁠<div class="p-2.5 rounded bg-[#0b0b0f] border border-red-900/40 text-xs"> <span class="font-bold text-amber-300 block mb-1">${currentClass === 'Barbar' ? 'Technik-Waffenauswahl' : 'Aktive Aura / Pakt'}</span> <input type="text" value="${m.tech || (currentClass==='Barbar' ? 'Zweihandaxt-Expertise (+15% Schaden gegen Verwundete)' : 'Göttliche Aura des Schutzes / Blutpakt')}" onchange="saveClassMechanic('tech', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1.5 text-xs text-gray-200"> </div>⁠;
+container.innerHTML = ⁠<div class="p-2.5 rounded bg-[#0b0b0f] border border-red-900/40 text-xs"> <span class="font-bold text-amber-300 block mb-1">${currentClass === 'Barbar' ? 'Technik-Waffenauswahl' : 'Aktive Aura / Pakt'}</span> <input type="text" value="${m.tech || (currentClass==='Barbar' ? 'Zweihandaxt-Expertise (+15% Schaden gegen Verwundete)' : 'Göttliche Aura des Schutzes / Blutpakt')}" onchange="window.saveClassMechanic('tech', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1.5 text-xs text-gray-200"> </div>⁠;
 }
 }
 function saveClassMechanic(key, val) {
@@ -1260,15 +1255,16 @@ saveToStorage();
 }
 function renderSkillBar() {
 const container = document.getElementById('skillbar-container');
+if (!container) return;
 const preset = CLASS_SKILLS_PRESETS[currentClass] || CLASS_SKILLS_PRESETS['Barbar'];
 if (!currentSkills || currentSkills.length === 0) currentSkills = [...preset.skills];
 if (!currentKeyPassive) currentKeyPassive = preset.keyPassive;
 let html = '';
 for (let i = 0; i < 6; i++) {
 const skillName = currentSkills[i] || ⁠Skill ${i+1}⁠;
-html += ⁠<div class="p-2.5 rounded-lg bg-[#0e0e13] border border-[#24212c] flex flex-col justify-between"> <span class="text-[9px] uppercase tracking-wider text-gray-500 font-bold">Slot ${i+1}</span> <input type="text" value="${skillName}" onchange="updateSkill(${i}, this.value)" class="bg-transparent border-b border-gray-700 hover:border-red-500 focus:border-red-500 text-xs font-bold text-gray-200 py-1 focus:outline-none truncate" placeholder="Skill wählen..."> </div>⁠;
+html += ⁠<div class="p-2.5 rounded-lg bg-[#0e0e13] border border-[#24212c] flex flex-col justify-between"> <span class="text-[9px] uppercase tracking-wider text-gray-500 font-bold">Slot ${i+1}</span> <input type="text" value="${skillName}" onchange="window.updateSkill(${i}, this.value)" class="bg-transparent border-b border-gray-700 hover:border-red-500 focus:border-red-500 text-xs font-bold text-gray-200 py-1 focus:outline-none truncate" placeholder="Skill wählen..."> </div>⁠;
 }
-html += ⁠<div class="p-2.5 rounded-lg bg-red-950/20 border border-red-800/40 flex flex-col justify-between"> <span class="text-[9px] uppercase tracking-wider text-amber-400 font-bold flex items-center gap-1"> <i class="fa-solid fa-star text-[8px]"></i> Schlüsselpassiv </span> <input type="text" value="${currentKeyPassive}" onchange="updateKeyPassive(this.value)" class="bg-transparent border-b border-red-700/60 hover:border-amber-500 focus:border-amber-500 text-xs font-bold text-amber-200 py-1 focus:outline-none truncate" placeholder="Schlüssel-Passiv..."> </div>⁠;
+html += ⁠<div class="p-2.5 rounded-lg bg-red-950/20 border border-red-800/40 flex flex-col justify-between"> <span class="text-[9px] uppercase tracking-wider text-amber-400 font-bold flex items-center gap-1"> <i class="fa-solid fa-star text-[8px]"></i> Schlüsselpassiv </span> <input type="text" value="${currentKeyPassive}" onchange="window.updateKeyPassive(this.value)" class="bg-transparent border-b border-red-700/60 hover:border-amber-500 focus:border-amber-500 text-xs font-bold text-amber-200 py-1 focus:outline-none truncate" placeholder="Schlüssel-Passiv..."> </div>⁠;
 container.innerHTML = html;
 }
 function updateSkill(index, val) {
@@ -1282,9 +1278,10 @@ saveToStorage();
 // ================= PARAGON-GLYPHEN =================
 function renderParagonGlyphs() {
 const container = document.getElementById('paragon-glyphs-grid');
+if (!container) return;
 const preset = CLASS_SKILLS_PRESETS[currentClass] || CLASS_SKILLS_PRESETS['Barbar'];
 if (!currentGlyphs || currentGlyphs.length === 0) currentGlyphs = [...preset.glyphs];
-container.innerHTML = currentGlyphs.map((glyph, idx) => ⁠<div class="p-2.5 rounded-lg bg-[#0d0d12] border border-purple-950/60 hover:border-purple-600/50 transition"> <div class="flex items-center justify-between text-[9px] text-purple-400 uppercase font-bold mb-1"> <span>Glyphe #${idx+1}</span> <i class="fa-solid fa-gem text-[10px]"></i> </div> <input type="text" value="${glyph}" onchange="updateGlyph(${idx}, this.value)" class="w-full bg-transparent border-b border-[#2d273a] focus:border-purple-400 text-xs font-semibold text-gray-200 py-0.5 focus:outline-none truncate"> <span class="text-[9px] text-gray-500 block mt-1">Radius: Stufe 15+</span> </div>⁠).join('');
+container.innerHTML = currentGlyphs.map((glyph, idx) => ⁠<div class="p-2.5 rounded-lg bg-[#0d0d12] border border-purple-950/60 hover:border-purple-600/50 transition"> <div class="flex items-center justify-between text-[9px] text-purple-400 uppercase font-bold mb-1"> <span>Glyphe #${idx+1}</span> <i class="fa-solid fa-gem text-[10px]"></i> </div> <input type="text" value="${glyph}" onchange="window.updateGlyph(${idx}, this.value)" class="w-full bg-transparent border-b border-[#2d273a] focus:border-purple-400 text-xs font-semibold text-gray-200 py-0.5 focus:outline-none truncate"> <span class="text-[9px] text-gray-500 block mt-1">Radius: Stufe 15+</span> </div>⁠).join('');
 }
 function updateGlyph(idx, val) {
 currentGlyphs[idx] = val;
@@ -1292,12 +1289,18 @@ saveToStorage();
 }
 // ================= SÖLDNER LOGIK =================
 function renderMercenaryUI() {
-document.getElementById('merc-hired-select').value = mercenaryData.hired || 'Raheir';
-document.getElementById('merc-hired-skill').value = mercenaryData.hiredSkill || '';
-document.getElementById('merc-reinforce-select').value = mercenaryData.reinforce || 'Aldkin';
-document.getElementById('merc-trigger-select').value = mercenaryData.trigger || 'control_loss';
-document.getElementById('merc-trigger-action').value = mercenaryData.triggerAction || '';
-document.getElementById('merc-hired-info').innerText = MERCENARIES_INFO[mercenaryData.hired] || '';
+const hiredSel = document.getElementById('merc-hired-select');
+const hiredSkill = document.getElementById('merc-hired-skill');
+const reinforceSel = document.getElementById('merc-reinforce-select');
+const triggerSel = document.getElementById('merc-trigger-select');
+const triggerAction = document.getElementById('merc-trigger-action');
+const hiredInfo = document.getElementById('merc-hired-info');
+if (hiredSel) hiredSel.value = mercenaryData.hired || 'Raheir';
+if (hiredSkill) hiredSkill.value = mercenaryData.hiredSkill || '';
+if (reinforceSel) reinforceSel.value = mercenaryData.reinforce || 'Aldkin';
+if (triggerSel) triggerSel.value = mercenaryData.trigger || 'control_loss';
+if (triggerAction) triggerAction.value = mercenaryData.triggerAction || '';
+if (hiredInfo) hiredInfo.innerText = MERCENARIES_INFO[mercenaryData.hired] || '';
 }
 function updateMercenaryData() {
 mercenaryData.hired = document.getElementById('merc-hired-select').value;
@@ -1305,12 +1308,15 @@ mercenaryData.hiredSkill = document.getElementById('merc-hired-skill').value;
 mercenaryData.reinforce = document.getElementById('merc-reinforce-select').value;
 mercenaryData.trigger = document.getElementById('merc-trigger-select').value;
 mercenaryData.triggerAction = document.getElementById('merc-trigger-action').value;
-document.getElementById('merc-hired-info').innerText = MERCENARIES_INFO[mercenaryData.hired] || '';
+const hiredInfo = document.getElementById('merc-hired-info');
+if (hiredInfo) hiredInfo.innerText = MERCENARIES_INFO[mercenaryData.hired] || '';
 saveToStorage();
 }
 // ================= STAT-CAPS & QUAL-RECHNER =================
 function calculateBreakpoints() {
-const torment = parseInt(document.getElementById('calc-torment').value) || 0;
+const tormentEl = document.getElementById('calc-torment');
+if (!tormentEl) return;
+const torment = parseInt(tormentEl.value) || 0;
 const rawArmor = parseInt(document.getElementById('calc-raw-armor').value) || 0;
 const rawRes = parseInt(document.getElementById('calc-raw-res').value) || 0;
 const maxResCap = parseInt(document.getElementById('calc-max-res-cap').value) || 70;
@@ -1327,7 +1333,6 @@ document.getElementById('res-raw-res').innerText = rawRes + '%';
 document.getElementById('res-res-penalty').innerText = ⁠-${curResPen}%⁠;
 document.getElementById('res-effective-res').innerText = effRes + '%';
 document.getElementById('target-cap-display').innerText = maxResCap;
-// Armor Feedback
 const armorBadge = document.getElementById('armor-status-badge');
 const armorProgress = document.getElementById('armor-progress-bar');
 const armorFeedback = document.getElementById('armor-feedback-text');
@@ -1346,7 +1351,6 @@ armorBadge.innerText = ⁠Zu wenig Rüstung (-${missing})⁠;
 armorProgress.className = 'h-full transition-all duration-300 bg-red-500';
 armorFeedback.innerText = ⁠Achtung: Dir fehlen noch ${missing} Rüstung auf dieser Qual-Stufe, um den maximalen 85% physischen Schutz zu erhalten.⁠;
 }
-// Resis Feedback
 const resBadge = document.getElementById('res-status-badge');
 const resProgress = document.getElementById('res-progress-bar');
 const resFeedback = document.getElementById('res-feedback-text');
@@ -1372,6 +1376,7 @@ return [...GENERAL_SLOTS, ...weaponSlots];
 }
 function renderGearSlots() {
 const grid = document.getElementById('gear-grid');
+if (!grid) return;
 const slots = getActiveSlotsForClass();
 grid.innerHTML = slots.map(slot => {
 const item = currentBuild[slot.id] || null;
@@ -1394,7 +1399,7 @@ starsBadge = ⁠<span class="text-amber-400 font-bold text-xs">${'★'.repeat(it
 }
 }
 return `
-<div onclick="openSlotModal('${slot.id}')" class="cursor-pointer rounded-xl border ${borderClass} bg-[#111116] hover:bg-[#16161d] p-3 transition flex flex-col justify-between group min-h-[110px]">
+<div onclick="window.openSlotModal('${slot.id}')" class="cursor-pointer rounded-xl border ${borderClass} bg-[#111116] hover:bg-[#16161d] p-3 transition flex flex-col justify-between group min-h-[110px]">
 <div>
 <div class="flex items-center justify-between gap-1 mb-1">
 <span class="text-[10px] uppercase font-bold tracking-wider text-gray-400 flex items-center gap-1.5">
@@ -1448,11 +1453,13 @@ document.getElementById('modal-source').value = currentItem.source || 'Duriel';
 selectGaStars(currentItem.ga || 0);
 const modal = document.getElementById('item-modal');
 modal.classList.remove('hidden');
+modal.classList.add('flex');
 document.body.classList.add('overflow-hidden');
 }
 function closeSlotModal() {
 const modal = document.getElementById('item-modal');
 modal.classList.add('hidden');
+modal.classList.remove('flex');
 document.body.classList.remove('overflow-hidden');
 currentEditingSlotId = null;
 }
@@ -1595,6 +1602,7 @@ function filterTracker(filterType) {
 currentFilter = filterType;
 ['all', 'open', 'done'].forEach(f => {
 const btn = document.getElementById('filter-' + f);
+if (btn) {
 if (f === filterType) {
 btn.classList.add('bg-red-900/70', 'text-white');
 btn.classList.remove('text-gray-400');
@@ -1602,14 +1610,16 @@ btn.classList.remove('text-gray-400');
 btn.classList.remove('bg-red-900/70', 'text-white');
 btn.classList.add('text-gray-400');
 }
+}
 });
 renderTrackerList();
 }
 function renderTrackerList() {
 const listEl = document.getElementById('tracker-list');
 const counterEl = document.getElementById('tracker-counter');
+if (!listEl) return;
 const openItemsCount = trackerItems.filter(i => !i.found).length;
-counterEl.innerText = openItemsCount;
+if (counterEl) counterEl.innerText = openItemsCount;
 let filtered = trackerItems;
 if (currentFilter === 'open') filtered = trackerItems.filter(i => !i.found);
 if (currentFilter === 'done') filtered = trackerItems.filter(i => i.found);
@@ -1627,7 +1637,7 @@ if (item.priority === 'Mittel') prioBadge = 'bg-amber-950 text-amber-300 border-
 return `
 <div class="flex items-center justify-between p-3 rounded-lg bg-[#0e0e13] border ${item.found ? 'border-green-950/40 opacity-60' : 'border-[#24212b]'} transition">
 <div class="flex items-center gap-3 min-w-0">
-<button onclick="toggleTrackerFound('${item.id}')" class="w-6 h-6 rounded border flex items-center justify-center transition ${item.found ? 'bg-green-700 border-green-500 text-white' : 'border-gray-600 hover:border-red-500 bg-[#14141a]'}" title="Gefunden umschalten">
+<button onclick="window.toggleTrackerFound('${item.id}')" class="w-6 h-6 rounded border flex items-center justify-center transition ${item.found ? 'bg-green-700 border-green-500 text-white' : 'border-gray-600 hover:border-red-500 bg-[#14141a]'}" title="Gefunden umschalten">
 ${item.found ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
 </button>
 <div class="truncate">
@@ -1636,7 +1646,7 @@ ${item.found ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
 ${item.name}
 </h4>
 ${item.ga > 0 ? ⁠<span class="text-amber-400 text-xs font-bold">${'★'.repeat(item.ga)}</span>⁠ : ''}
-<button onclick="cyclePriority('${item.id}')" class="px-1.5 py-0.2 rounded text-[9px] font-bold border ${prioBadge}" title="Klicken um Priorität zu wechseln">
+<button onclick="window.cyclePriority('${item.id}')" class="px-1.5 py-0.2 rounded text-[9px] font-bold border ${prioBadge}" title="Klicken um Priorität zu wechseln">
 ￼
 ￼
 ￼
@@ -1648,7 +1658,7 @@ ${item.ga > 0 ? ⁠<span class="text-amber-400 text-xs font-bold">${'★'.repeat
 </div>
 </div>
 <div class="flex items-center gap-2 shrink-0">
-<button onclick="cycleMasterworking('${item.id}')" class="px-2 py-1 rounded text-[10px] font-bold border transition ${
+<button onclick="window.cycleMasterworking('${item.id}')" class="px-2 py-1 rounded text-[10px] font-bold border transition ${
 item.masterworking === 12 ? 'bg-amber-950 border-amber-500 text-amber-300' :
 item.masterworking === 8 ? 'bg-blue-950 border-blue-500 text-blue-300' :
 item.masterworking === 4 ? 'bg-zinc-800 border-zinc-600 text-zinc-300' :
@@ -1656,7 +1666,7 @@ item.masterworking === 4 ? 'bg-zinc-800 border-zinc-600 text-zinc-300' :
 }" title="Klicken: Meisterwerkung erhöhen (0, 4, 8, 12)">
 ${item.masterworking}/12 MW
 </button>
-<button onclick="removeTrackerItem('${item.id}')" class="text-gray-500 hover:text-red-400 p-1.5 transition">
+<button onclick="window.removeTrackerItem('${item.id}')" class="text-gray-500 hover:text-red-400 p-1.5 transition">
 <i class="fa-solid fa-trash-can text-xs"></i>
 </button>
 </div>
@@ -1667,6 +1677,7 @@ ${item.masterworking}/12 MW
 // ================= MATERIAL-KALKULATOR MIT INVENTAR =================
 function updateMaterialsCalculator() {
 const summaryContainer = document.getElementById('materials-summary');
+if (!summaryContainer) return;
 const neededMats = {};
 trackerItems.filter(it => !it.found).forEach(it => {
 const matchedBoss = BOSS_DATA.find(b =>
@@ -1706,7 +1717,7 @@ ${isSatisfied ? '<i class="fa-solid fa-circle-check text-green-400 text-xs"></i>
 </div>
 <div class="mt-1 pt-1.5 border-t border-[#1e1c25] flex items-center justify-between gap-1">
 <span class="text-[9px] text-gray-400">Im Beutel:</span>
-<input type="number" min="0" value="${inv}" onchange="updateInventoryMat('${mat}', this.value)" class="w-16 bg-[#181820] border border-[#2b2738] rounded px-1 py-0.5 text-right text-xs font-mono text-gray-200">
+<input type="number" min="0" value="${inv}" onchange="window.updateInventoryMat('${mat}', this.value)" class="w-16 bg-[#181820] border border-[#2b2738] rounded px-1 py-0.5 text-right text-xs font-mono text-gray-200">
 </div>
 </div>
 `;
@@ -1718,15 +1729,28 @@ saveToStorage();
 updateMaterialsCalculator();
 }
 // ================= BOSS- & AKTIVITÄTEN-GUIDE =================
+function addBossDropByIndex(bossIdx, dropIdx) {
+const boss = BOSS_DATA[bossIdx];
+if (!boss || !boss.drops || !boss.drops[dropIdx]) return;
+const itemName = boss.drops[dropIdx];
+addItemToTracker({
+name: itemName,
+rarity: 'Unique',
+source: boss.name.split(',')[0],
+slotName: 'Boss Loot',
+priority: 'Hoch'
+});
+}
 function renderBossGuide(filterQuery = '') {
 const container = document.getElementById('boss-list');
+if (!container) return;
 const q = filterQuery.toLowerCase();
-const filteredBosse = BOSS_DATA.filter(boss => {
+const filteredBosse = BOSS_DATA.map((boss, origIdx) => ({ boss, origIdx })).filter(({ boss }) => {
 return boss.name.toLowerCase().includes(q) ||
 (boss.drops && boss.drops.some(d => d.toLowerCase().includes(q))) ||
 boss.location.toLowerCase().includes(q);
 });
-container.innerHTML = filteredBosse.map(boss => `
+container.innerHTML = filteredBosse.map(({ boss, origIdx }) => `
 <div class="p-4 rounded-xl bg-[#0f0f14] border border-[#262330] flex flex-col justify-between">
 <div>
 <div class="flex items-start justify-between gap-2 mb-2">
@@ -1747,7 +1771,7 @@ ${boss.type || 'Boss'}
 <div class="mt-3">
 <span class="text-[10px] uppercase tracking-wider text-gray-400 font-bold block mb-1.5">Beute / Belohnungen:</span>
 <div class="flex flex-wrap gap-1.5">
-${boss.drops ? boss.drops.map(item => ⁠<button onclick="addItemToTracker({ name: '${item}', rarity: 'Unique', source: '${boss.name.split(',')[0]}', slotName: 'Boss Loot', priority: 'Hoch' })" class="px-2 py-1 rounded bg-[#16151c] hover:bg-amber-950/60 border border-[#2b2738] hover:border-amber-600/50 text-[11px] text-gray-200 hover:text-amber-300 flex items-center gap-1 transition"> <span>${item}</span> <i class="fa-solid fa-plus text-[9px] text-gray-500"></i> </button>⁠).join('') : '<span class="text-xs text-gray-500">Siehe Eventbeschreibung</span>'}
+${boss.drops ? boss.drops.map((item, dIdx) => ⁠<button onclick="window.addBossDropByIndex(${origIdx}, ${dIdx})" class="px-2 py-1 rounded bg-[#16151c] hover:bg-amber-950/60 border border-[#2b2738] hover:border-amber-600/50 text-[11px] text-gray-200 hover:text-amber-300 flex items-center gap-1 transition"> <span>${item}</span> <i class="fa-solid fa-plus text-[9px] text-gray-500"></i> </button>⁠).join('') : '<span class="text-xs text-gray-500">Siehe Eventbeschreibung</span>'}
 </div>
 </div>
 </div>
@@ -1755,8 +1779,8 @@ ${boss.drops ? boss.drops.map(item => ⁠<button onclick="addItemToTracker({ nam
 `).join('');
 }
 function filterBossGuide() {
-const val = document.getElementById('boss-search').value;
-renderBossGuide(val);
+const input = document.getElementById('boss-search');
+renderBossGuide(input ? input.value : '');
 }
 // ================= RUNEN & HÄRTUNG =================
 function setRuneFilter(type) {
@@ -1775,6 +1799,7 @@ renderRunesAndTempering();
 function renderRunesAndTempering() {
 const q = (document.getElementById('rune-search') ? document.getElementById('rune-search').value.toLowerCase() : '');
 const runesContainer = document.getElementById('runes-list');
+if (!runesContainer) return;
 const filteredRunes = RUNES_DATA.filter(r => {
 const matchesType = (activeRuneFilter === 'all' || r.type === activeRuneFilter);
 const matchesQuery = (
@@ -1785,7 +1810,8 @@ r.offering.toLowerCase().includes(q)
 );
 return matchesType && matchesQuery;
 });
-document.getElementById('runes-count-badge').innerText = ⁠${filteredRunes.length} Runen⁠;
+const countBadge = document.getElementById('runes-count-badge');
+if (countBadge) countBadge.innerText = ⁠${filteredRunes.length} Runen⁠;
 runesContainer.innerHTML = filteredRunes.map(r => {
 let rarityBadgeClass = 'bg-blue-950/60 border-blue-800/40 text-blue-300';
 if (r.rarity === 'Legendär') rarityBadgeClass = 'bg-amber-950/60 border-amber-800/40 text-amber-300 font-bold';
@@ -1794,6 +1820,7 @@ const isRitual = r.type === 'Ritual';
 return ⁠<div class="p-3 rounded-lg bg-[#0e0e13] border border-[#25222e] flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:border-purple-800/50 transition"> <div> <div class="flex items-center gap-2 mb-1"> <h4 class="text-xs font-bold text-purple-200 font-mono tracking-wide">${r.name}</h4> <span class="text-[9px] px-1.5 py-0.2 rounded border ${rarityBadgeClass}">${r.rarity}</span> <span class="text-[9px] px-1.5 py-0.2 rounded border ${isRitual ? 'bg-red-950/60 border-red-800/40 text-red-300' : 'bg-emerald-950/60 border-emerald-800/40 text-emerald-300'}"> ${isRitual ? 'Ritual' : 'Anrufung'} </span> </div> <p class="text-[11px] text-gray-300 leading-relaxed">${r.desc}</p> </div> <div class="text-right shrink-0 mt-1 sm:mt-0"> <span class="text-[10px] font-mono font-semibold ${isRitual ? 'text-green-400' : 'text-amber-400'}"> ${r.offering} </span> </div> </div>⁠;
 }).join('');
 const temperingContainer = document.getElementById('tempering-list');
+if (!temperingContainer) return;
 const filteredCategories = TEMPERING_DATA.map(cat => {
 const matchingRecipes = cat.recipes.filter(rcp => {
 return rcp.name.toLowerCase().includes(q) ||
@@ -1811,11 +1838,15 @@ temperingContainer.innerHTML = filteredCategories.map(cat => ⁠<div class="p-3.
 }
 // ================= QUICK ADD MODAL (TRACKER) =================
 function openTrackerQuickAddModal() {
-document.getElementById('quick-add-modal').classList.remove('hidden');
+const modal = document.getElementById('quick-add-modal');
+modal.classList.remove('hidden');
+modal.classList.add('flex');
 document.body.classList.add('overflow-hidden');
 }
 function closeTrackerQuickAddModal() {
-document.getElementById('quick-add-modal').classList.add('hidden');
+const modal = document.getElementById('quick-add-modal');
+modal.classList.add('hidden');
+modal.classList.remove('flex');
 document.body.classList.remove('overflow-hidden');
 }
 function fillQuickAddFromDb(idx) {
@@ -1873,7 +1904,7 @@ g: currentGlyphs,
 m: currentClassMechanic,
 merc: mercenaryData
 };
-const hash = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+const hash = btoa(encodeURIComponent(JSON.stringify(payload)));
 const shareUrl = window.location.origin + window.location.pathname + '#build=' + hash;
 navigator.clipboard.writeText(shareUrl).then(() => {
 alert('Build-Link wurde in die Zwischenablage kopiert!');
@@ -1939,7 +1970,7 @@ function checkUrlHashForBuild() {
 if (window.location.hash && window.location.hash.includes('#build=')) {
 try {
 const hashData = window.location.hash.replace('#build=', '');
-const decoded = JSON.parse(decodeURIComponent(escape(atob(hashData))));
+const decoded = JSON.parse(decodeURIComponent(atob(hashData)));
 if (decoded.c) currentClass = decoded.c;
 if (decoded.b) currentBuild = decoded.b;
 if (decoded.s) currentSkills = decoded.s;
@@ -1960,6 +1991,7 @@ console.error('Ungültiger Build-Hash.');
 }
 // ================= SPEICHERVERWALTUNG =================
 function saveToStorage() {
+try {
 localStorage.setItem('sanktuario_class', currentClass);
 localStorage.setItem('sanktuario_build', JSON.stringify(currentBuild));
 localStorage.setItem('sanktuario_skills', JSON.stringify(currentSkills));
@@ -1969,41 +2001,30 @@ localStorage.setItem('sanktuario_mechanic', JSON.stringify(currentClassMechanic)
 localStorage.setItem('sanktuario_mercenary', JSON.stringify(mercenaryData));
 localStorage.setItem('sanktuario_tracker', JSON.stringify(trackerItems));
 localStorage.setItem('sanktuario_inventory', JSON.stringify(inventoryMats));
+} catch (e) {
+console.warn('localStorage nicht verfügbar:', e);
+}
 }
 function loadFromStorage() {
+try {
 const savedClass = localStorage.getItem('sanktuario_class');
 if (savedClass) currentClass = savedClass;
 const preset = CLASS_SKILLS_PRESETS[currentClass] || CLASS_SKILLS_PRESETS['Barbar'];
-const savedSkills = localStorage.getItem('sanktuario_skills');
-currentSkills = savedSkills ? JSON.parse(savedSkills) : [...preset.skills];
-const savedKey = localStorage.getItem('sanktuario_keypassive');
-currentKeyPassive = savedKey || preset.keyPassive;
-const savedGlyphs = localStorage.getItem('sanktuario_glyphs');
-currentGlyphs = savedGlyphs ? JSON.parse(savedGlyphs) : [...preset.glyphs];
-const savedMechanic = localStorage.getItem('sanktuario_mechanic');
-if (savedMechanic) {
-try { currentClassMechanic = JSON.parse(savedMechanic); } catch(e) { currentClassMechanic = {}; }
-}
-const savedMerc = localStorage.getItem('sanktuario_mercenary');
-if (savedMerc) {
-try { mercenaryData = JSON.parse(savedMerc); } catch(e) {}
-}
-const savedInv = localStorage.getItem('sanktuario_inventory');
-if (savedInv) {
-try { inventoryMats = JSON.parse(savedInv); } catch(e) { inventoryMats = {}; }
-}
-const savedBuild = localStorage.getItem('sanktuario_build');
-if (savedBuild) {
-try { currentBuild = JSON.parse(savedBuild); } catch(e) { currentBuild = {}; }
-}
-const savedTracker = localStorage.getItem('sanktuario_tracker');
-if (savedTracker) {
-try { trackerItems = JSON.parse(savedTracker); } catch(e) { trackerItems = []; }
+currentSkills = safeJsonParse(localStorage.getItem('sanktuario_skills'), [...preset.skills]);
+currentKeyPassive = localStorage.getItem('sanktuario_keypassive') || preset.keyPassive;
+currentGlyphs = safeJsonParse(localStorage.getItem('sanktuario_glyphs'), [...preset.glyphs]);
+currentClassMechanic = safeJsonParse(localStorage.getItem('sanktuario_mechanic'), {});
+mercenaryData = safeJsonParse(localStorage.getItem('sanktuario_mercenary'), mercenaryData);
+inventoryMats = safeJsonParse(localStorage.getItem('sanktuario_inventory'), {});
+currentBuild = safeJsonParse(localStorage.getItem('sanktuario_build'), {});
+trackerItems = safeJsonParse(localStorage.getItem('sanktuario_tracker'), []);
+} catch (e) {
+console.warn('Fehler beim Laden aus localStorage:', e);
 }
 }
 function resetAllData() {
 if (confirm('Möchtest du wirklich alle eingetragenen Daten und Builds zurücksetzen?')) {
-localStorage.clear();
+try { localStorage.clear(); } catch(e) {}
 currentBuild = {};
 trackerItems = [];
 inventoryMats = {};
@@ -2023,6 +2044,43 @@ calculateBreakpoints();
 alert('Alle Daten wurden auf Werkseinstellungen zurückgesetzt.');
 }
 }
+// ================= GLOBALE BINDUNGEN =================
+window.switchTab = switchTab;
+window.selectClass = selectClass;
+window.saveClassMechanic = saveClassMechanic;
+window.updateSkill = updateSkill;
+window.updateKeyPassive = updateKeyPassive;
+window.updateGlyph = updateGlyph;
+window.updateMercenaryData = updateMercenaryData;
+window.calculateBreakpoints = calculateBreakpoints;
+window.openSlotModal = openSlotModal;
+window.closeSlotModal = closeSlotModal;
+window.selectGaStars = selectGaStars;
+window.applyPresetToModal = applyPresetToModal;
+window.saveSlotModal = saveSlotModal;
+window.addModalItemToTracker = addModalItemToTracker;
+window.addAllSlotsToTracker = addAllSlotsToTracker;
+window.addItemToTracker = addItemToTracker;
+window.toggleTrackerFound = toggleTrackerFound;
+window.cycleMasterworking = cycleMasterworking;
+window.cyclePriority = cyclePriority;
+window.removeTrackerItem = removeTrackerItem;
+window.filterTracker = filterTracker;
+window.updateInventoryMat = updateInventoryMat;
+window.addBossDropByIndex = addBossDropByIndex;
+window.renderBossGuide = renderBossGuide;
+window.filterBossGuide = filterBossGuide;
+window.setRuneFilter = setRuneFilter;
+window.renderRunesAndTempering = renderRunesAndTempering;
+window.openTrackerQuickAddModal = openTrackerQuickAddModal;
+window.closeTrackerQuickAddModal = closeTrackerQuickAddModal;
+window.fillQuickAddFromDb = fillQuickAddFromDb;
+window.submitQuickAddItem = submitQuickAddItem;
+window.copyDiscordBuild = copyDiscordBuild;
+window.shareBuildLink = shareBuildLink;
+window.exportJsonFile = exportJsonFile;
+window.importJsonFile = importJsonFile;
+window.resetAllData = resetAllData;
 </script>
 </body>
 </html>
