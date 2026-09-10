@@ -39,9 +39,9 @@ tailwind.config = {
 body {
   background-color: #070709;
   background-image:
-    radial-gradient(at 50% 0%, rgba(153, 27, 27, 0.22) 0px, transparent 60%),
-    radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.08) 0px, transparent 50%),
-    radial-gradient(at 0% 50%, rgba(212, 175, 55, 0.05) 0px, transparent 50%);
+    radial-gradient(at 50% 0%, rgba(153, 27, 27, 0.25) 0px, transparent 65%),
+    radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.1) 0px, transparent 55%),
+    radial-gradient(at 0% 50%, rgba(212, 175, 55, 0.06) 0px, transparent 50%);
   background-attachment: fixed;
   color: #e2e8f0;
   -webkit-tap-highlight-color: transparent;
@@ -63,9 +63,16 @@ input, select, textarea {
 ::-webkit-scrollbar-thumb:hover {
   background: #991b1b;
 }
+@keyframes toastSlideIn {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.toast-anim {
+  animation: toastSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 </style>
 </head>
-<body class="min-h-screen flex flex-col font-sans pb-24 md:pb-10">
+<body class="min-h-screen flex flex-col font-sans pb-28 md:pb-12">
 
 <!-- ================= TOP HEADER ================= -->
 <header class="sticky top-0 z-40 bg-[#0c0c10]/95 backdrop-blur-md border-b border-[#242129]">
@@ -78,13 +85,13 @@ input, select, textarea {
         <h1 class="text-lg md:text-xl font-bold font-cinzel tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-amber-200">
           Sanktuario Planer
         </h1>
-        <p class="text-[11px] text-gray-400">Diablo 4 Allrounder Build-, Loot-, Söldner- & Breakpoint-Kompendium</p>
+        <p class="text-[11px] text-gray-400">Diablo 4: Vessel of Hatred & Patch 2.0+ Vollständiges Kompendium</p>
       </div>
     </div>
     <div class="flex items-center gap-2">
       <button onclick="window.copyDiscordBuild()" class="px-3 py-1.5 text-xs font-semibold rounded bg-[#1c1924] hover:bg-[#282433] border border-[#3c364c] text-indigo-300 flex items-center gap-1.5 transition" title="Build als formatierten Text für Discord kopieren">
         <i class="fa-brands fa-discord"></i>
-        <span class="hidden sm:inline">Discord-Export</span>
+        <span class="hidden sm:inline">Discord</span>
       </button>
       <button onclick="window.exportJsonFile()" class="px-3 py-1.5 text-xs font-semibold rounded bg-[#161d19] hover:bg-[#1f2d24] border border-[#2d4734] text-emerald-300 flex items-center gap-1.5 transition" title="Backup als JSON-Datei herunterladen">
         <i class="fa-solid fa-download"></i>
@@ -95,11 +102,11 @@ input, select, textarea {
         <span class="hidden sm:inline">Import</span>
         <input type="file" id="json-file-input" accept=".json" class="hidden" onchange="window.importJsonFile(event)">
       </label>
-      <button onclick="window.shareBuildLink()" class="px-3 py-1.5 text-xs font-semibold rounded bg-red-950/50 hover:bg-red-900/60 border border-red-700/60 text-amber-300 flex items-center gap-1.5 transition">
+      <button onclick="window.shareBuildLink()" class="px-3 py-1.5 text-xs font-semibold rounded bg-red-950/50 hover:bg-red-900/60 border border-red-700/60 text-amber-300 flex items-center gap-1.5 transition" title="Link zum Build kopieren">
         <i class="fa-solid fa-share-nodes"></i>
         <span class="hidden sm:inline">Teilen</span>
       </button>
-      <button onclick="window.resetAllData()" title="Alle Daten zurücksetzen" class="p-2 text-xs rounded bg-[#1a171d] hover:bg-red-950/60 border border-[#332a32] text-gray-400 hover:text-red-300 transition">
+      <button onclick="window.requestResetAllData()" title="Alle Daten auf Werkseinstellungen zurücksetzen" class="p-2 text-xs rounded bg-[#1a171d] hover:bg-red-950/60 border border-[#332a32] text-gray-400 hover:text-red-300 transition">
         <i class="fa-solid fa-trash-can"></i>
       </button>
     </div>
@@ -108,24 +115,27 @@ input, select, textarea {
   <!-- Desktop Navigation Tabs -->
   <nav class="max-w-7xl mx-auto px-4 flex gap-1 border-t border-[#1c1a21] overflow-x-auto">
     <button onclick="window.switchTab('planner')" id="tab-btn-planner" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-red-600 text-red-400 flex items-center gap-2 whitespace-nowrap">
-      <i class="fa-solid fa-shield-halved"></i> Build & Klassenmechanik
+      <i class="fa-solid fa-shield-halved"></i> Build & Arsenal
+    </button>
+    <button onclick="window.switchTab('masterwork')" id="tab-btn-masterwork" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
+      <i class="fa-solid fa-hammer text-amber-400"></i> Meisterwerkung (Labor)
     </button>
     <button onclick="window.switchTab('mercenary')" id="tab-btn-mercenary" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
       <i class="fa-solid fa-user-group"></i> Söldner (VoH)
     </button>
     <button onclick="window.switchTab('breakpoints')" id="tab-btn-breakpoints" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
-      <i class="fa-solid fa-scale-balanced"></i> Stat-Caps & Qual-Rechner
+      <i class="fa-solid fa-scale-balanced"></i> Qual- & EHP-Caps
     </button>
     <button onclick="window.switchTab('tracker')" id="tab-btn-tracker" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
-      <i class="fa-solid fa-list-check"></i> To-Do & Inventar-Tracker
+      <i class="fa-solid fa-list-check"></i> To-Do & Mat-Rechner
       <span id="tracker-counter" class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-red-900/70 text-red-200">0</span>
     </button>
     <button onclick="window.switchTab('bosses')" id="tab-btn-bosses" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
-      <i class="fa-solid fa-dungeon"></i> Boss- & Event-Katalog
+      <i class="fa-solid fa-dungeon"></i> Bosse & Runs
     </button>
     <button onclick="window.switchTab('runes')" id="tab-btn-runes" class="tab-btn px-4 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
-      <i class="fa-solid fa-gem"></i> Runen & Härtung
-      <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-purple-900/60 text-purple-200">45+</span>
+      <i class="fa-solid fa-gem"></i> Runen (45) & Härtung
+      <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-purple-900/70 text-purple-200">VoH</span>
     </button>
   </nav>
 </header>
@@ -135,13 +145,13 @@ input, select, textarea {
 
   <!-- ---------------- REITER 1: BUILD-PLANER & KLASSENMECHANIK ---------------- -->
   <section id="section-planner" class="tab-content block space-y-6">
-    <!-- Klassenauswahl -->
+    <!-- Klassenauswahl (Die 6 offiziellen D4-Klassen) -->
     <div class="bg-[#121217] border border-[#24212b] rounded-xl p-3 sm:p-4 shadow-xl">
       <div class="flex items-center justify-between mb-2">
         <label class="block text-xs uppercase font-cinzel text-gray-400 font-bold">Klasse wählen</label>
-        <span class="text-[11px] text-amber-400/90" id="current-class-indicator">Aktuell: Barbar</span>
+        <span class="text-[11px] text-amber-400/90 font-semibold" id="current-class-indicator">Aktuell: Barbar</span>
       </div>
-      <div id="class-selector" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2"></div>
+      <div id="class-selector" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2"></div>
     </div>
 
     <!-- Spezifische Klassenmechanik -->
@@ -164,7 +174,7 @@ input, select, textarea {
             <i class="fa-solid fa-fire text-red-500"></i>
             Aktive Fertigkeiten & Schlüssel-Passiv
           </h2>
-          <p class="text-xs text-gray-400">Konfiguriere deine 6 Aktionsleisten-Fähigkeiten und das Schlüsselpassiv</p>
+          <p class="text-xs text-gray-400">Passe deine Aktionsleiste und das Haupt-Schlüsselpassiv deines Builds an</p>
         </div>
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5" id="skillbar-container"></div>
@@ -178,11 +188,11 @@ input, select, textarea {
             <i class="fa-solid fa-shield-halved text-red-500"></i>
             Ausrüstungs-Matrix
           </h2>
-          <p class="text-xs text-gray-400">Tippe auf einen Slot zum Konfigurieren (Uniques, GA-Sterne, Härtung, Runen)</p>
+          <p class="text-xs text-gray-400">Tippe auf einen Slot: Uniques, GA-Sterne (★), Härtung und Runensockel konfigurieren</p>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="window.addAllSlotsToTracker()" class="text-xs px-3 py-1.5 rounded bg-red-950/60 hover:bg-red-900 border border-red-700/60 text-red-200 flex items-center gap-1.5 transition">
-            <i class="fa-solid fa-cart-plus"></i> Alle ins To-Do
+            <i class="fa-solid fa-cart-plus"></i> Alle ins Farming-To-Do
           </button>
         </div>
       </div>
@@ -194,11 +204,115 @@ input, select, textarea {
       <div class="mb-3">
         <h2 class="text-base font-cinzel font-bold text-purple-300 flex items-center gap-2">
           <i class="fa-solid fa-certificate text-purple-400"></i>
-          Paragon-Glyphen (Top 5 Sockel)
+          Paragon-Glyphen (Maximal 5 Sockel-Boards in Patch 2.0+)
         </h2>
-        <p class="text-xs text-gray-400">Wähle die 5 entscheidenden Glyphen für dein Paragon-Board</p>
+        <p class="text-xs text-gray-400">Wähle die 5 entscheidenden Glyphen für deine Boards (Stufe 46+ für legendären Radius)</p>
       </div>
       <div id="paragon-glyphs-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3"></div>
+    </div>
+  </section>
+
+  <!-- ---------------- REITER: MEISTERWERKUNGS-LABOR ---------------- -->
+  <section id="section-masterwork" class="tab-content hidden space-y-6">
+    <div class="bg-gradient-to-r from-[#1c1510] via-[#15121a] to-[#121217] border border-amber-600/40 rounded-xl p-4 sm:p-5 shadow-xl">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 class="text-base sm:text-lg font-cinzel font-bold text-amber-300 flex items-center gap-2">
+            <i class="fa-solid fa-hammer text-amber-500"></i>
+            Meisterwerkungs-Schmiede & Crit-Simulator (Vollendung 1–12)
+          </h2>
+          <p class="text-xs text-gray-300 mt-1">
+            Jeder Rang erhöht alle Affixe um <strong class="text-amber-400">+5%</strong>. Auf Rang <strong>4, 8 und 12</strong> erhält ein zufälliges Affix einen mächtigen <strong>+25%-Krit-Treffer</strong> (Goldener Hit). Teste dein Glück oder kalkuliere deine Obduzit-Kosten für den perfekten Triple-Crit!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Item-Setup Panel -->
+      <div class="bg-[#121217] border border-[#24212b] rounded-xl p-4 sm:p-5 shadow-xl space-y-4">
+        <h3 class="text-xs uppercase font-cinzel font-bold text-amber-400 border-b border-[#211e29] pb-2">
+          Gegenstand zum Schmieden wählen
+        </h3>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Gegenstands-Slot aus Build laden</label>
+          <select id="mw-slot-select" onchange="window.loadSlotIntoMasterwork(this.value)" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2.5 text-xs text-gray-200">
+            <!-- Dynamisch -->
+          </select>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-xs text-gray-400 font-semibold">Affixe des Gegenstands:</label>
+          <div>
+            <span class="text-[10px] text-gray-500 block mb-0.5">Affix 1</span>
+            <input type="text" id="mw-affix-0" value="+% Kritischer Trefferschaden" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded p-2 text-xs text-gray-200">
+          </div>
+          <div>
+            <span class="text-[10px] text-gray-500 block mb-0.5">Affix 2</span>
+            <input type="text" id="mw-affix-1" value="+ Maximales Leben" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded p-2 text-xs text-gray-200">
+          </div>
+          <div>
+            <span class="text-[10px] text-gray-500 block mb-0.5">Affix 3</span>
+            <input type="text" id="mw-affix-2" value="+ Ränge auf Kern-Fertigkeiten" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded p-2 text-xs text-gray-200">
+          </div>
+          <div>
+            <span class="text-[10px] text-gray-500 block mb-0.5">Härtungs-Affix 4</span>
+            <input type="text" id="mw-affix-3" value="Chance auf doppelten Schaden" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded p-2 text-xs text-gray-200">
+          </div>
+        </div>
+
+        <div class="pt-2 flex flex-col gap-2">
+          <button onclick="window.resetMasterworkProgress()" class="w-full py-2 text-xs font-semibold rounded bg-red-950/40 hover:bg-red-900/60 border border-red-800/50 text-red-300 transition flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-rotate-left"></i> Vollendung zurücksetzen (5.000.000 Gold)
+          </button>
+        </div>
+      </div>
+
+      <!-- Schmiede- & Interaktions-Panel -->
+      <div class="lg:col-span-2 space-y-4">
+        <div class="bg-[#121217] border border-[#24212b] rounded-xl p-4 sm:p-5 shadow-xl">
+          <div class="flex items-center justify-between mb-4 pb-2 border-b border-[#211e29]">
+            <div>
+              <span class="text-[10px] uppercase font-cinzel text-gray-400">Aktuelle Stufe</span>
+              <h3 class="text-xl font-bold font-cinzel text-amber-300">
+                Rang <span id="mw-current-rank">0</span> / 12
+              </h3>
+            </div>
+            <div class="text-right">
+              <span class="text-[10px] uppercase text-gray-400 block">Obduzit investiert</span>
+              <span class="text-sm font-mono font-bold text-amber-400" id="mw-total-obducite">0 Obduzit</span>
+            </div>
+          </div>
+
+          <!-- Stufen-Balken 1 bis 12 -->
+          <div class="grid grid-cols-12 gap-1.5 mb-5" id="mw-rank-dots"></div>
+
+          <!-- Affix-Status-Karten -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5" id="mw-affix-cards"></div>
+
+          <!-- Aktions-Knöpfe -->
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button onclick="window.advanceMasterwork(1)" id="mw-btn-step" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-600 hover:to-amber-500 font-cinzel font-bold text-xs sm:text-sm text-black shadow-lg shadow-amber-950/50 transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-anvil"></i>
+              <span>Schmieden (+1 Rang)</span>
+            </button>
+            <button onclick="window.advanceMasterwork(4)" class="py-3 px-4 rounded-xl bg-[#1b1924] hover:bg-[#262333] border border-[#39344a] text-xs font-semibold text-amber-200 transition">
+              +4 Ränge (Bis zum nächsten Krit)
+            </button>
+            <button onclick="window.advanceMasterwork(12)" class="py-3 px-4 rounded-xl bg-purple-950/50 hover:bg-purple-900/60 border border-purple-700/50 text-xs font-semibold text-purple-200 transition">
+              Voll auf 12/12 hämmern
+            </button>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[#0e0e13] border border-[#211f2c] text-xs text-gray-400 flex items-center gap-3">
+          <i class="fa-solid fa-circle-info text-amber-400 text-lg"></i>
+          <div>
+            <strong class="text-gray-200 block">Masterworking-Tipp für Torment IV:</strong>
+            Ziele auf Ränge 4, 8 und 12 mindestens zwei- oder dreimal auf dein wichtigstes Kern-Affix (z. B. Angriffsgeschwindigkeit oder Ränge auf Hauptfertigkeiten). Wenn der Krit falsch landet, setze einfach zurück!
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -207,7 +321,7 @@ input, select, textarea {
     <div class="bg-gradient-to-r from-[#17131f] via-[#121118] to-[#181119] border border-purple-900/50 rounded-xl p-4 shadow-xl">
       <h2 class="text-base font-cinzel font-bold text-purple-300 flex items-center gap-2 mb-1">
         <i class="fa-solid fa-user-group text-purple-400"></i>
-        Söldner-System (Nahantu Gefährten)
+        Söldner-System (Nahantu Gefährten - Vessel of Hatred)
       </h2>
       <p class="text-xs text-gray-400">Wähle deinen ständigen Hauptbegleiter und deine passive Verstärkung für automatische Hilfe im Kampf.</p>
     </div>
@@ -283,19 +397,21 @@ input, select, textarea {
     <div class="bg-gradient-to-r from-[#171115] via-[#14101a] to-[#121217] border border-amber-900/40 rounded-xl p-4 shadow-xl">
       <h2 class="text-base font-cinzel font-bold text-amber-300 flex items-center gap-2 mb-1">
         <i class="fa-solid fa-scale-balanced text-amber-400"></i>
-        Endgame Breakpoint- & Qual-Rechner (Torment I bis IV)
+        Endgame Breakpoint-, Rüstungs- & EHP-Rechner (Torment I bis IV)
       </h2>
-      <p class="text-xs text-gray-400">Überprüfe, ob dein Charakter das Rüstungs-Cap (exakt 1.000) und die Widerstandsobergrenze (70% bzw. 85%) trotz Qual-Strafen erreicht.</p>
+      <p class="text-xs text-gray-400">
+        Prüfe, ob du das Rüstungs-Cap (exakt 1.000 effektive Rüstung = 85% phys. Schadensreduktion) und das Widerstands-Cap (70% bis 85%) trotz Strafen erreichst.
+      </p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Eingabe-Panel -->
       <div class="bg-[#121217] border border-[#24212b] rounded-xl p-4 sm:p-5 shadow-xl space-y-4">
-        <h3 class="text-xs uppercase font-cinzel font-bold text-amber-400 border-b border-[#211e29] pb-2">Deine aktuellen Charakter-Werte</h3>
+        <h3 class="text-xs uppercase font-cinzel font-bold text-amber-400 border-b border-[#211e29] pb-2">Deine Charakter-Werte</h3>
         <div>
           <label class="block text-xs text-gray-400 mb-1">Ziel-Schwierigkeitsstufe</label>
           <select id="calc-torment" onchange="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2.5 text-xs text-gray-200">
-            <option value="0">Normal / Experte / Reumütig (Keine Mali)</option>
+            <option value="0">Normal bis Reumütig (0 Abzug)</option>
             <option value="1">Qual I (-250 Rüstung, -25% Resis)</option>
             <option value="2">Qual II (-500 Rüstung, -50% Resis)</option>
             <option value="3">Qual III (-750 Rüstung, -75% Resis)</option>
@@ -303,23 +419,32 @@ input, select, textarea {
           </select>
         </div>
         <div>
-          <label class="block text-xs text-gray-400 mb-1">Gesamtrüstung auf Ausrüstung & Paragon</label>
-          <input type="number" id="calc-raw-armor" value="1850" oninput="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200">
-          <span class="text-[10px] text-gray-500">Wert vor Abzug der Qual-Strafe</span>
+          <label class="block text-xs text-gray-400 mb-1">Gesamtrüstung (Item + Paragon Summe)</label>
+          <input type="number" id="calc-raw-armor" value="2000" oninput="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200">
+          <span class="text-[10px] text-gray-500">Für Qual IV werden genau 2.000 benötigt</span>
         </div>
         <div>
-          <label class="block text-xs text-gray-400 mb-1">Durchschnittlicher Elementar-Widerstand (%)</label>
-          <input type="number" id="calc-raw-res" value="165" oninput="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200">
-          <span class="text-[10px] text-gray-500">Summe aus Items, Diamanten & Paragon</span>
+          <label class="block text-xs text-gray-400 mb-1">Roh-Elementar-Widerstand (%)</label>
+          <input type="number" id="calc-raw-res" value="170" oninput="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200">
+          <span class="text-[10px] text-gray-500">Für Qual IV werden 170% (bzw. 185%) benötigt</span>
         </div>
         <div>
-          <label class="block text-xs text-gray-400 mb-1">Max-Widerstands-Cap (z. B. durch Tyraels Macht)</label>
+          <label class="block text-xs text-gray-400 mb-1">Max-Widerstands-Cap (z. B. Tyraels Macht)</label>
           <select id="calc-max-res-cap" onchange="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200">
-            <option value="70">70% (Standard Cap)</option>
+            <option value="70">70% (Standard-Maximum)</option>
             <option value="75">75% (Leicht erhöht)</option>
             <option value="80">80% (Stark erhöht)</option>
             <option value="85">85% (Absolutes Maximum)</option>
           </select>
+        </div>
+        <div class="border-t border-[#211e29] pt-3">
+          <label class="block text-xs text-gray-400 mb-1">Maximales Leben (für EHP-Berechnung)</label>
+          <input type="number" id="calc-raw-life" value="45000" oninput="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-amber-300">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Sonstige Schadensminderung (DR %)</label>
+          <input type="number" id="calc-flat-dr" value="20" placeholder="z. B. 20 durch Shako" oninput="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-purple-300">
+          <span class="text-[10px] text-gray-500">Harlekinskrone (20%), Stählung (15%) etc.</span>
         </div>
       </div>
 
@@ -341,8 +466,8 @@ input, select, textarea {
               <span class="text-sm font-bold text-red-400" id="res-armor-penalty">-0</span>
             </div>
             <div class="p-2 rounded bg-[#0a0a0d] border border-[#201e28]">
-              <span class="text-[10px] text-gray-500 block">Effektive Rüstung</span>
-              <span class="text-sm font-bold" id="res-effective-armor">0</span>
+              <span class="text-[10px] text-gray-500 block">Effektiv (Phys DR)</span>
+              <span class="text-sm font-bold text-amber-300" id="res-effective-armor">0</span>
             </div>
           </div>
           <div class="w-full bg-[#181820] h-2.5 rounded-full overflow-hidden">
@@ -367,14 +492,34 @@ input, select, textarea {
               <span class="text-sm font-bold text-red-400" id="res-res-penalty">-0%</span>
             </div>
             <div class="p-2 rounded bg-[#0a0a0d] border border-[#201e28]">
-              <span class="text-[10px] text-gray-500 block">Effektiver Widerstand</span>
-              <span class="text-sm font-bold" id="res-effective-res">0%</span>
+              <span class="text-[10px] text-gray-500 block">Effektiver Schutz</span>
+              <span class="text-sm font-bold text-blue-300" id="res-effective-res">0%</span>
             </div>
           </div>
           <div class="w-full bg-[#181820] h-2.5 rounded-full overflow-hidden">
             <div id="res-progress-bar" class="h-full transition-all duration-300 bg-blue-600" style="width: 50%;"></div>
           </div>
           <p class="text-[11px] text-gray-400 mt-2" id="res-feedback-text"></p>
+        </div>
+
+        <!-- EHP (Effektive Trefferpunkte) Auswertung -->
+        <div class="bg-gradient-to-r from-[#17131e] via-[#121217] to-[#1a131b] border border-purple-900/40 rounded-xl p-4 shadow-xl">
+          <h4 class="text-xs uppercase font-cinzel font-bold text-purple-300 mb-2 flex items-center gap-1.5">
+            <i class="fa-solid fa-heart-pulse text-purple-400"></i>
+            Effektive Zähigkeit (EHP = Effective Hit Points)
+          </h4>
+          <div class="grid grid-cols-2 gap-3 text-center">
+            <div class="p-2.5 rounded bg-[#0b0a10] border border-purple-950/60">
+              <span class="text-[10px] text-gray-400 block">Physischer EHP-Pool</span>
+              <span class="text-lg font-bold font-mono text-amber-300" id="ehp-phys">0</span>
+              <span class="text-[9px] text-gray-500 block">Schaden bis zum Tod durch Schläge</span>
+            </div>
+            <div class="p-2.5 rounded bg-[#0b0a10] border border-purple-950/60">
+              <span class="text-[10px] text-gray-400 block">Elementarer EHP-Pool</span>
+              <span class="text-lg font-bold font-mono text-cyan-300" id="ehp-elem">0</span>
+              <span class="text-[9px] text-gray-500 block">Schaden bis zum Tod durch Magie</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -385,16 +530,16 @@ input, select, textarea {
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
       <div class="bg-[#121217] border border-[#24212b] rounded-xl p-4 shadow-xl">
         <h3 class="text-xs font-cinzel uppercase font-bold text-amber-300 mb-2 flex items-center gap-1.5">
-          <i class="fa-solid fa-coins text-amber-400"></i> Endgame-Ressourcen
+          <i class="fa-solid fa-coins text-amber-400"></i> Mythic & Meisterwerk-Status
         </h3>
         <div class="grid grid-cols-3 gap-2 text-center">
           <div class="p-2 rounded bg-[#0b0b0e] border border-[#221f2a]">
             <span class="text-[10px] text-gray-400 block">Prächtige Funken</span>
-            <span class="text-sm font-bold text-purple-300" id="res-sparks">4x nötig</span>
-            <span class="text-[9px] text-gray-500 block">Mythic Craft</span>
+            <span class="text-sm font-bold text-purple-300">2x Craft</span>
+            <span class="text-[9px] text-gray-500 block">Alchemist + Runen</span>
           </div>
           <div class="p-2 rounded bg-[#0b0b0e] border border-[#221f2a]">
-            <span class="text-[10px] text-gray-400 block">Obduzit</span>
+            <span class="text-[10px] text-gray-400 block">Obduzit-Fokus</span>
             <span class="text-sm font-bold text-amber-300">Die Grube</span>
             <span class="text-[9px] text-gray-500 block">Meisterwerkung</span>
           </div>
@@ -405,14 +550,15 @@ input, select, textarea {
           </div>
         </div>
       </div>
+
       <div class="lg:col-span-2 bg-gradient-to-r from-[#171216] via-[#1a1420] to-[#12141a] border border-amber-900/40 rounded-xl p-4 shadow-xl">
         <div class="flex items-center justify-between mb-2">
           <div>
             <h3 class="text-xs sm:text-sm font-cinzel font-bold text-amber-300 flex items-center gap-2">
               <i class="fa-solid fa-calculator text-amber-500"></i>
-              Boss-Material-Kalkulator & Inventar-Gegenrechnung
+              Boss-Materialien & Vorratsrechner
             </h3>
-            <p class="text-[10px] text-gray-400">Trage deinen Inventarbestand ein – der Planer berechnet, was noch fehlt</p>
+            <p class="text-[10px] text-gray-400">Trage deinen Beutelbestand ein – der Planer berechnet fehlende Mats für deine Wunsch-Items</p>
           </div>
         </div>
         <div id="materials-summary" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2"></div>
@@ -424,7 +570,7 @@ input, select, textarea {
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-[#211f26]">
         <div>
           <h3 class="text-base font-cinzel font-bold text-gray-200">Deine Farming-To-Do-Liste</h3>
-          <p class="text-xs text-gray-400">Markiere Drops, Meisterwerkung (0 bis 12) und lege Prioritäten fest</p>
+          <p class="text-xs text-gray-400">Behalte Beute-Ziele, Meisterwerkungs-Stufen und Prioritäten im Blick</p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <div class="inline-flex rounded-lg bg-[#0e0e12] p-1 border border-[#26242e]">
@@ -443,33 +589,18 @@ input, select, textarea {
 
   <!-- ---------------- REITER 3: BOSS- & EVENT-KATALOG ---------------- -->
   <section id="section-bosses" class="tab-content hidden space-y-6">
-    <div class="bg-[#121217] border border-[#24212b] rounded-xl p-4 shadow-xl">
-      <div class="flex items-center gap-2 mb-2">
-        <i class="fa-solid fa-fire-flame-curved text-orange-500"></i>
-        <h3 class="text-sm font-cinzel font-bold text-amber-300">Endgame Qual-Stufen (Torment I bis IV)</h3>
-      </div>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-        <div class="p-2.5 rounded bg-[#0a0a0e] border border-[#201d29]">
-          <span class="font-bold text-orange-400 block">Qual I (Torment 1)</span>
-          <span class="text-[11px] text-gray-400">-250 Rüstung, -25% Resis</span>
-          <span class="text-[10px] text-green-400 block mt-1">Boss-Uniques schalten frei</span>
-        </div>
-        <div class="p-2.5 rounded bg-[#0a0a0e] border border-[#201d29]">
-          <span class="font-bold text-orange-400 block">Qual II (Torment 2)</span>
-          <span class="text-[11px] text-gray-400">-500 Rüstung, -50% Resis</span>
-          <span class="text-[10px] text-amber-400 block mt-1">+Gesteigerte GA-Chance</span>
-        </div>
-        <div class="p-2.5 rounded bg-[#0a0a0e] border border-[#201d29]">
-          <span class="font-bold text-red-400 block">Qual III (Torment 3)</span>
-          <span class="text-[11px] text-gray-400">-750 Rüstung, -75% Resis</span>
-          <span class="text-[10px] text-purple-400 block mt-1">Häufigere Mythische Drops</span>
-        </div>
-        <div class="p-2.5 rounded bg-[#0a0a0e] border border-[#201d29]">
-          <span class="font-bold text-purple-400 block">Qual IV (Torment 4)</span>
-          <span class="text-[11px] text-gray-400">-1000 Rüstung, -100% Resis</span>
-          <span class="text-[10px] text-purple-300 font-bold block mt-1">Höchste Beute-Multiplikatoren</span>
+    <!-- Boss Run Kapazitäts-Karten -->
+    <div class="bg-gradient-to-r from-[#171216] via-[#121118] to-[#1a1420] border border-amber-800/40 rounded-xl p-4 shadow-xl">
+      <div class="flex items-center justify-between mb-3">
+        <div>
+          <h3 class="text-sm font-cinzel font-bold text-amber-300 flex items-center gap-2">
+            <i class="fa-solid fa-hourglass-start text-amber-400"></i>
+            Mögliche Boss-Runs mit aktuellem Beutel-Bestand
+          </h3>
+          <p class="text-xs text-gray-400">Berechnet direkt, wie viele Beschwörungen du sofort durchführen kannst</p>
         </div>
       </div>
+      <div id="boss-runs-capacity" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2"></div>
     </div>
 
     <div class="bg-[#121217] border border-[#24212b] rounded-xl p-3 sm:p-5 shadow-xl">
@@ -477,13 +608,13 @@ input, select, textarea {
         <div>
           <h2 class="text-base font-cinzel font-bold text-amber-300 flex items-center gap-2">
             <i class="fa-solid fa-skull-crossbones text-red-500"></i>
-            Endgame-Bosse & Aktivitäten
+            Endgame-Bosse & Loot-Zuweisung
           </h2>
-          <p class="text-xs text-gray-400">Finde heraus, welcher Boss dein Wunsch-Item garantiert droppt</p>
+          <p class="text-xs text-gray-400">Finde heraus, welcher Boss dein Wunsch-Item droppt und füge Drops mit einem Klick dem Tracker hinzu</p>
         </div>
         <div class="relative w-full sm:w-72">
           <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
-          <input type="text" id="boss-search" oninput="window.filterBossGuide()" placeholder="Item, Boss oder Ort..." class="w-full bg-[#0a0a0d] border border-[#2d2936] rounded-lg pl-8 pr-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-amber-500">
+          <input type="text" id="boss-search" oninput="window.filterBossGuide()" placeholder="Item, Boss oder Ort suchen..." class="w-full bg-[#0a0a0d] border border-[#2d2936] rounded-lg pl-8 pr-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-amber-500">
         </div>
       </div>
       <div id="boss-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
@@ -495,27 +626,27 @@ input, select, textarea {
     <div class="bg-gradient-to-r from-[#150f1f] via-[#121118] to-[#170e17] border border-purple-900/50 rounded-xl p-4 shadow-xl">
       <h3 class="text-sm font-cinzel font-bold text-purple-300 mb-2 flex items-center gap-2">
         <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i>
-        Beliebteste Meta-Runenwörter (Kombinationen)
+        Beliebteste Meta-Runenwörter (Ritual + Anrufung)
       </h3>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
         <div class="p-2.5 rounded bg-[#0b0a10] border border-purple-950/70">
-          <span class="font-bold text-amber-300">Bac + Ohm (Kriegsschrei)</span>
-          <p class="text-[11px] text-gray-300 mt-1">Laufe 5 Meter → Wirkt Kriegsschrei (+15% Schaden & Tempo).</p>
+          <span class="font-bold text-amber-300">Yul + Vex (+3 auf alle Skills)</span>
+          <p class="text-[11px] text-gray-300 mt-1">Wirke Skill mit Abklingzeit → Erhalte +3 auf alle Fertigkeiten für 5 Sekunden.</p>
         </div>
         <div class="p-2.5 rounded bg-[#0b0a10] border border-purple-950/70">
-          <span class="font-bold text-amber-300">Lith + Eom (Massiver Cooldown)</span>
-          <p class="text-[11px] text-gray-300 mt-1">Stehe kurz still → Reduziert alle Abklingzeiten drastisch.</p>
+          <span class="font-bold text-amber-300">Lith + Eom (Extremer Cooldown-Reset)</span>
+          <p class="text-[11px] text-gray-300 mt-1">Stehe kurz still (0,3s) → Verringert aktive Abklingzeiten aller Fertigkeiten sofort.</p>
         </div>
         <div class="p-2.5 rounded bg-[#0b0a10] border border-purple-950/70">
-          <span class="font-bold text-amber-300">Tam + Jah (Freier Teleport)</span>
-          <p class="text-[11px] text-gray-300 mt-1">Wirke Kern-Skill → Teleportiert dich & macht unaufhaltsam.</p>
+          <span class="font-bold text-amber-300">Tam + Jah (Freier Teleport & Schutz)</span>
+          <p class="text-[11px] text-gray-300 mt-1">Wirke Kern-Fertigkeit → Zauberer-Teleportation, gewährt Unaufhaltsamkeit.</p>
         </div>
       </div>
     </div>
 
     <div class="bg-[#121217] border border-[#24212b] rounded-xl p-4 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-3">
       <div class="flex items-center gap-2">
-        <button onclick="window.setRuneFilter('all')" id="rf-all" class="rune-filter-btn px-3 py-1.5 text-xs rounded-lg font-semibold bg-purple-900/70 border border-purple-600/50 text-white">Alle Runen</button>
+        <button onclick="window.setRuneFilter('all')" id="rf-all" class="rune-filter-btn px-3 py-1.5 text-xs rounded-lg font-semibold bg-purple-900/70 border border-purple-600/50 text-white">Alle Runen (45)</button>
         <button onclick="window.setRuneFilter('Ritual')" id="rf-Ritual" class="rune-filter-btn px-3 py-1.5 text-xs rounded-lg font-semibold bg-[#1a1722] border border-[#2d2838] text-gray-400 hover:text-white">Ritual (Opfergabe)</button>
         <button onclick="window.setRuneFilter('Anrufung')" id="rf-Anrufung" class="rune-filter-btn px-3 py-1.5 text-xs rounded-lg font-semibold bg-[#1a1722] border border-[#2d2838] text-gray-400 hover:text-white">Anrufung (Effekt)</button>
       </div>
@@ -531,11 +662,11 @@ input, select, textarea {
         <div class="flex items-center justify-between mb-2">
           <h2 class="text-base font-cinzel font-bold text-purple-300 flex items-center gap-2">
             <i class="fa-solid fa-gem text-purple-400"></i>
-            Vollständige Runen-Matrix
+            Vollständige Runen-Matrix (VoH)
           </h2>
-          <span id="runes-count-badge" class="text-[10px] px-2 py-0.5 rounded bg-purple-950/70 border border-purple-800/40 text-purple-300 font-mono">0 Runen</span>
+          <span id="runes-count-badge" class="text-[10px] px-2 py-0.5 rounded bg-purple-950/70 border border-purple-800/40 text-purple-300 font-mono">45 Runen</span>
         </div>
-        <p class="text-xs text-gray-400 mb-3">Ritual-Rune generiert Opfergabe → Anrufungs-Rune verbraucht sie.</p>
+        <p class="text-xs text-gray-400 mb-3">Kombiniere zwei Runen in einem gesockelten Helm, Brustschutz, Beinschutz oder Zweihandwaffe zu einem Runenwort.</p>
         <div id="runes-list" class="space-y-2 max-h-[600px] overflow-y-auto pr-1"></div>
       </div>
 
@@ -548,7 +679,7 @@ input, select, textarea {
           </h2>
           <span id="tempering-count-badge" class="text-[10px] px-2 py-0.5 rounded bg-amber-950/70 border border-amber-800/40 text-amber-300 font-mono">Rezepte</span>
         </div>
-        <p class="text-xs text-gray-400 mb-3">Schmied-Handbücher mit garantierten Affixen zur Ausrüstungsspezialisierung.</p>
+        <p class="text-xs text-gray-400 mb-3">Schmiede-Handbücher mit garantierten Affixen zur Ausrüstungsspezialisierung für alle Klassen.</p>
         <div id="tempering-list" class="space-y-3 max-h-[600px] overflow-y-auto pr-1"></div>
       </div>
     </div>
@@ -556,10 +687,14 @@ input, select, textarea {
 </main>
 
 <!-- ================= MOBILE BOTTOM NAVIGATION ================= -->
-<div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0d0d12]/95 backdrop-blur-md border-t border-[#232029] grid grid-cols-6 py-2 px-1 text-center">
+<div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0d0d12]/95 backdrop-blur-md border-t border-[#232029] grid grid-cols-7 py-2 px-1 text-center">
   <button onclick="window.switchTab('planner')" class="mobile-tab flex flex-col items-center text-xs text-red-500" data-tab="planner">
     <i class="fa-solid fa-shield-halved text-sm mb-0.5"></i>
-    <span class="text-[9px] truncate w-full">Planer</span>
+    <span class="text-[9px] truncate w-full">Build</span>
+  </button>
+  <button onclick="window.switchTab('masterwork')" class="mobile-tab flex flex-col items-center text-xs text-gray-400" data-tab="masterwork">
+    <i class="fa-solid fa-hammer text-sm mb-0.5"></i>
+    <span class="text-[9px] truncate w-full">Forge</span>
   </button>
   <button onclick="window.switchTab('mercenary')" class="mobile-tab flex flex-col items-center text-xs text-gray-400" data-tab="mercenary">
     <i class="fa-solid fa-user-group text-sm mb-0.5"></i>
@@ -571,7 +706,7 @@ input, select, textarea {
   </button>
   <button onclick="window.switchTab('tracker')" class="mobile-tab flex flex-col items-center text-xs text-gray-400" data-tab="tracker">
     <i class="fa-solid fa-list-check text-sm mb-0.5"></i>
-    <span class="text-[9px] truncate w-full">Tracker</span>
+    <span class="text-[9px] truncate w-full">To-Do</span>
   </button>
   <button onclick="window.switchTab('bosses')" class="mobile-tab flex flex-col items-center text-xs text-gray-400" data-tab="bosses">
     <i class="fa-solid fa-dungeon text-sm mb-0.5"></i>
@@ -583,7 +718,7 @@ input, select, textarea {
   </button>
 </div>
 
-<!-- ================= ITEM MODAL ================= -->
+<!-- ================= ITEM KONFIGURATIONS-MODAL ================= -->
 <div id="item-modal" class="fixed inset-0 z-50 items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-sm hidden">
   <div class="absolute inset-0" onclick="window.closeSlotModal()"></div>
   <div class="relative w-full max-w-lg bg-[#14141a] border border-[#3b3647] rounded-2xl shadow-2xl max-h-[92vh] flex flex-col overflow-hidden">
@@ -665,13 +800,12 @@ input, select, textarea {
         <label class="block text-gray-400 mb-1">Target-Farming Dropquelle</label>
         <select id="modal-source" class="w-full bg-[#0d0d12] border border-[#2f2b3b] rounded-lg px-3 py-2 text-gray-200 focus:border-red-500">
           <option value="Allgemeiner Loot">Allgemeiner Loot / Dungeons / Höllenflut</option>
-          <option value="Duriel">Boss: Duriel</option>
-          <option value="Andariel">Boss: Andariel</option>
-          <option value="Fürst Zir">Boss: Fürst Zir</option>
-          <option value="Grigoire">Boss: Grigoire</option>
+          <option value="Duriel">Boss: Duriel, Herr der Schmerzen</option>
+          <option value="Andariel">Boss: Andariel, Herrin der Qual</option>
+          <option value="Fürst Zir">Boss: Fürst Zir (Dunkler Meister)</option>
+          <option value="Grigoire">Boss: Grigoire, der Galvanische Heilige</option>
           <option value="Biest im Eis">Boss: Biest im Eis</option>
-          <option value="Varshan">Boss: Varshan</option>
-          <option value="Mephisto">Boss: Mephisto</option>
+          <option value="Varshan">Boss: Echo von Varshan</option>
           <option value="Kurast-Unterstadt">Kurast-Unterstadt (Tribute)</option>
           <option value="Dunkle Zitadelle">Dunkle Zitadelle (Raid)</option>
           <option value="Die Grube">Die Grube (Pit)</option>
@@ -695,7 +829,7 @@ input, select, textarea {
   </div>
 </div>
 
-<!-- ================= TRACKER QUICK ADD MODAL ================= -->
+<!-- ================= QUICK ADD MODAL (TRACKER) ================= -->
 <div id="quick-add-modal" class="fixed inset-0 z-50 items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-sm hidden">
   <div class="absolute inset-0" onclick="window.closeTrackerQuickAddModal()"></div>
   <div class="relative w-full max-w-md bg-[#14141a] border border-[#3b3647] rounded-2xl shadow-2xl p-5 overflow-hidden text-xs">
@@ -744,18 +878,38 @@ input, select, textarea {
   </div>
 </div>
 
+<!-- ================= CONFIRMATION DIALOG ================= -->
+<div id="confirm-modal" class="fixed inset-0 z-50 items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-sm hidden">
+  <div class="relative w-full max-w-sm bg-[#15141c] border border-red-900/60 rounded-2xl shadow-2xl p-5 text-xs text-center space-y-3">
+    <div class="w-12 h-12 rounded-full bg-red-950/60 border border-red-700/60 flex items-center justify-center mx-auto text-red-400 text-xl">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+    </div>
+    <h3 id="confirm-title" class="text-sm font-bold font-cinzel text-amber-200">Aktion bestätigen</h3>
+    <p id="confirm-message" class="text-gray-400 text-[11px] leading-relaxed">Möchtest du fortfahren?</p>
+    <div class="flex items-center justify-center gap-2 pt-2">
+      <button onclick="window.closeConfirmModal(false)" class="px-4 py-1.5 rounded-lg bg-[#22202c] hover:bg-[#2d2a3a] text-gray-300 transition">
+        Abbrechen
+      </button>
+      <button onclick="window.closeConfirmModal(true)" class="px-4 py-1.5 rounded-lg bg-red-800 hover:bg-red-700 text-white font-semibold transition">
+        Bestätigen
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
+<div id="toast-container" class="fixed bottom-20 md:bottom-5 right-4 z-50 flex flex-col gap-2 pointer-events-none max-w-sm"></div>
+
 <!-- ================= JAVASCRIPT LOGIC ================= -->
 <script>
-// ================= KLASSEN & FERTIGKEITEN DEFINITION =================
+// ================= DIE 6 OFFIZIELLEN D4-KLASSEN =================
 const CLASSES = [
   { id: 'Barbar', name: 'Barbar', icon: 'fa-hand-fist' },
   { id: 'Zauberer', name: 'Zauberer', icon: 'fa-wand-magic-sparkles' },
   { id: 'Druide', name: 'Druide', icon: 'fa-paw' },
   { id: 'Jäger', name: 'Jäger', icon: 'fa-crosshairs' },
   { id: 'Totenbeschwörer', name: 'Totenbeschwörer', icon: 'fa-skull' },
-  { id: 'Geistgeborener', name: 'Geistgeborener', icon: 'fa-feather-pointed' },
-  { id: 'Paladin', name: 'Paladin', icon: 'fa-shield-halved' },
-  { id: 'Hexenmeister', name: 'Hexenmeister', icon: 'fa-fire-flame-curved' }
+  { id: 'Geistgeborener', name: 'Geistgeborener', icon: 'fa-feather-pointed' }
 ];
 
 const CLASS_SKILLS_PRESETS = {
@@ -788,16 +942,6 @@ const CLASS_SKILLS_PRESETS = {
     skills: ['Felsspalter', 'Stachelsalve', 'Wirbelwind', 'Rüstung der Erde', 'Giftrausch', 'Der Verschlinger'],
     keyPassive: 'Vitalität des Kolosses',
     glyphs: ['Jagd', 'Raubtier', 'Gleichgewicht', 'Geisterbande', 'Uralter']
-  },
-  'Paladin': {
-    skills: ['Heiliger Schlag', 'Gesegneter Hammer', 'Schildstoß', 'Heiliges Schild', 'Fanatismus-Aura', 'Himmelsfaust'],
-    keyPassive: 'Göttliche Rechtschaffenheit',
-    glyphs: ['Gerechtigkeit', 'Eifer', 'Kreuzzug', 'Segen', 'Bollwerk']
-  },
-  'Hexenmeister': {
-    skills: ['Dämonenbrand', 'Höllenfeuer', 'Seelenfessel', 'Blutpakt', 'Schattenpforte', 'Erzklaue des Schreckens'],
-    keyPassive: 'Großes Verderben',
-    glyphs: ['Dämonologe', 'Seelenfraß', 'Höllenbrand', 'Qual', 'Pakt']
   }
 };
 
@@ -824,14 +968,6 @@ const CLASS_WEAPON_SLOTS = {
     { id: 'dual_1h_1', name: 'Dolch / Schwert 1', icon: 'fa-shield-halved' },
     { id: 'dual_1h_2', name: 'Dolch / Schwert 2', icon: 'fa-shield-halved' }
   ],
-  'Paladin': [
-    { id: 'main_hand', name: 'Hauptwaffe (Schwert/Flegel)', icon: 'fa-shield-halved' },
-    { id: 'off_hand_shield', name: 'Heiliger Schild', icon: 'fa-shield-halved' }
-  ],
-  'Hexenmeister': [
-    { id: 'main_hand', name: 'Dämonenklinge / Stab', icon: 'fa-wand-magic-sparkles' },
-    { id: 'off_hand', name: 'Seelengefäß / Fokus', icon: 'fa-fire-flame-curved' }
-  ],
   'default': [
     { id: 'main_hand', name: 'Hauptwaffe', icon: 'fa-wand-magic' },
     { id: 'off_hand', name: 'Nebenhand / Fokus / Schild', icon: 'fa-shield' }
@@ -846,125 +982,153 @@ const MERCENARIES_INFO = {
   'Aldkin': 'Ein Junge mit einem uralten Dämonenfluch. Bei Bedrängnis verwandelt er sich in einen Schrecken des Verderbens, der ganze Monstergruppen betäubt und schmilzt.'
 };
 
-// ================= KOMPLETTE ITEM-DATENBANK =================
+// ================= VOLLSTÄNDIGE ITEM-DATENBANK (MYTHISCH & UNIQUES) =================
 const ITEMS_DB = [
-  { name: 'Harlekinskrone (Shako)', slot: 'helm', rarity: 'Mythisch', source: 'Duriel', aspect: '+4 auf alle Fertigkeiten, 20% Schadensreduktion, Cooldown-Reduktion' },
-  { name: 'Tyraels Macht', slot: 'chest', rarity: 'Mythisch', source: 'Andariel', aspect: 'Verschießt göttliche Fluten bei vollem Leben, +Max-Widerstände' },
-  { name: 'Der Großvater', slot: 'main_2h_slash', rarity: 'Mythisch', source: 'Duriel', aspect: '+100% Kritischer Trefferschaden, ignoriert Haltbarkeitsverlust' },
-  { name: 'Verdammnis (Doombringer)', slot: 'dual_1h_1', rarity: 'Mythisch', source: 'Duriel', aspect: 'Schattennova senkt gegnerischen Schaden um 20% und heilt' },
-  { name: 'Geschmolzenes Herz von Selig', slot: 'amulet', rarity: 'Mythisch', source: 'Duriel', aspect: 'Schaden entzieht Ressource statt Leben, +60 Max-Ressource' },
-  { name: 'Ring der Sternenlosen Himmel', slot: 'ring1', rarity: 'Mythisch', source: 'Duriel', aspect: 'Senkt Ressourcenkosten um bis zu 50% und erhöht Schaden um 50%' },
-  { name: 'Schleier des falschen Todes', slot: 'chest', rarity: 'Mythisch', source: 'Mephisto', aspect: '+1 auf alle Passiven aller Klassen, gewährt permanente Tarnung' },
-  { name: 'Erbe der Verdammnis', slot: 'helm', rarity: 'Mythisch', source: 'Duriel', aspect: 'Erhöht Schaden massiv basierend auf nahen Elite-Monstern' },
-  { name: 'Nesekem, der Herold', slot: 'main_hand', rarity: 'Mythisch', source: 'Andariel', aspect: 'Markiert Feinde für automatische Überwältigen-Treffer' },
-  { name: 'Zerbrochener Schwur', slot: 'main_2h_blunt', rarity: 'Mythisch', source: 'Mephisto', aspect: 'Richtet Feinde bei 120% Vergiftungsschaden sofort hin' },
-  { name: 'Ahavarion, Speer von Lycander', slot: 'main_hand', rarity: 'Mythisch', source: 'Duriel', aspect: 'Gewährt beim Töten eines Elite zufällige Schrein-Effekte' },
+  // --- ALLE 12 MYTHISCHEN UNIQUES (UBER UNIQUES) ---
+  { name: 'Harlekinskrone (Shako)', slot: 'helm', rarity: 'Mythisch', source: 'Duriel', aspect: '+4 auf alle Fertigkeiten, 20% Schadensreduktion, Abklingzeitreduktion, Max-Leben' },
+  { name: 'Tyraels Macht', slot: 'chest', rarity: 'Mythisch', source: 'Andariel', aspect: 'Verschießt göttliche Fluten bei vollem Leben, +Maximalwiderstände gegen alle Schadensarten' },
+  { name: 'Schleier des falschen Todes', slot: 'chest', rarity: 'Mythisch', source: 'Duriel', aspect: '+1 auf alle Passiven aller Klassen, gewährt permanente Tarnung und massiven Schadensbonus' },
+  { name: 'Der Großvater', slot: 'main_2h_slash', rarity: 'Mythisch', source: 'Duriel', aspect: '+100% Kritischer Trefferschaden, ignoriert Haltbarkeitsverlust, massives Leben' },
+  { name: 'Verdammnis (Doombringer)', slot: 'dual_1h_1', rarity: 'Mythisch', source: 'Duriel', aspect: 'Schattennova senkt gegnerischen Schaden um 20% und heilt bei Treffern' },
+  { name: 'Ring der Sternenlosen Himmel', slot: 'ring1', rarity: 'Mythisch', source: 'Duriel', aspect: 'Senkt Ressourcenkosten um bis zu 50% und erhöht Schaden um bis zu 50%' },
+  { name: 'Geschmolzenes Herz von Selig', slot: 'amulet', rarity: 'Mythisch', source: 'Duriel', aspect: 'Schaden entzieht Ressource statt Leben, +60 Maximale Primärressource' },
+  { name: 'Andariels Antlitz', slot: 'helm', rarity: 'Mythisch', source: 'Andariel', aspect: 'Glückstreffer: Chance auf Giftnova, die gigantischen Schaden anrichtet; Leben pro Treffer' },
+  { name: 'Erbe der Verdammnis', slot: 'helm', rarity: 'Mythisch', source: 'Duriel', aspect: 'Erhöht Schaden massiv basierend auf nahen Elite-Monstern und Bossen' },
+  { name: 'Nesekem, der Herold', slot: 'main_hand', rarity: 'Mythisch', source: 'Andariel', aspect: 'Markiert Feinde automatisch für garantierte Überwältigen-Treffer mit Flächenspaltung' },
+  { name: 'Zerbrochener Schwur', slot: 'main_2h_blunt', rarity: 'Mythisch', source: 'Andariel', aspect: 'Richtet Feinde mit mehr Schaden-über-Zeit als Restleben sofort gnadenlos hin' },
+  { name: 'Ahavarion, Speer von Lycander', slot: 'main_hand', rarity: 'Mythisch', source: 'Duriel', aspect: 'Gewährt beim Töten eines Elite-Gegners zufällige Schrein-Effekte für 20 Sekunden' },
+
+  // --- KLASSENÜBERGREIFENDE & ENDGAME UNIQUES ---
   { name: 'Tibaults Wille', slot: 'pants', rarity: 'Unique', source: 'Duriel', aspect: 'Bis zu 50% mehr Schaden bei Unaufhaltsamkeit + 50 Primärressource' },
-  { name: 'Fäuste des Schicksals', slot: 'gloves', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Treffer teilen zwischen 1% und 300% regulären Schaden aus' },
+  { name: 'Fäuste des Schicksals', slot: 'gloves', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Treffer teilen zwischen 1% und 300% regulären Schaden aus, gigantischer Glückstreffer' },
   { name: 'Schmerzschlinger-Panzerhandschuhe', slot: 'gloves', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Basis-Fertigkeiten schlagen auf alle markierten Gegner über' },
   { name: 'Krone von Lucion', slot: 'helm', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Erhöht Schaden um bis zu 125% durch wiederholte Ressourcennutzung' },
   { name: 'Splitter von Verathiel', slot: 'dual_1h_1', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Basis-Skills kosten 25 Ressource, teilen aber 200% Schaden aus' },
-  { name: 'Flackernder Schritt', slot: 'boots', rarity: 'Unique', source: 'Grigoire', aspect: 'Ausweichen durch Gegner senkt Ultimate-Abklingzeit um 10s' },
+  { name: 'Flackernder Schritt', slot: 'boots', rarity: 'Unique', source: 'Grigoire', aspect: 'Ausweichen durch Gegner senkt Ultimate-Abklingzeit um bis zu 10s' },
   { name: 'Bestiensturz-Stiefel', slot: 'boots', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Ultimate verbraucht alle Energie für garantierten Crit-Schaden' },
-  { name: 'Yens Beistand', slot: 'boots', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Wirkt alle 8s eine freie Fertigkeit aus deinen Cooldowns' },
+  { name: 'Yens Beistand', slot: 'boots', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Wirkt alle 8s eine freie Fertigkeit aus deinen aktiven Cooldowns' },
   { name: 'Seelenbrand', slot: 'chest', rarity: 'Unique', source: 'Varshan', aspect: 'Heilung erzeugt stattdessen eine Barriere bis zu 100% des Lebens' },
-  { name: "X'Fals korrodierter Siegelring", slot: 'ring1', rarity: 'Unique', source: 'Duriel', aspect: 'Schaden-über-Zeit-Effekte lösen verheerende Explosionen aus' },
+  { name: 'XFals korrodierter Siegelring', slot: 'ring1', rarity: 'Unique', source: 'Duriel', aspect: 'Schaden-über-Zeit-Effekte lösen verheerende Explosionen aus' },
   { name: 'Godslayer-Krone', slot: 'helm', rarity: 'Unique', source: 'Duriel', aspect: 'Zieht Feinde nach Stun zusammen und erhöht Schaden um 60%' },
   { name: 'Blutbesudelte Beinkleider', slot: 'pants', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Hinterlässt entweihte Lachen bei Entrinnen' },
+  { name: 'Rasiermessertritt (Razorplate)', slot: 'chest', rarity: 'Unique', source: 'Grigoire', aspect: 'Gewährt extrem hohe Dornenwerte, Dornen können kritisch treffen' },
+  { name: 'Versehrtes Fleisch (Locrans Talisman)', slot: 'amulet', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Erhöht Krit-Chance und Krit-Schaden basierend auf der aktuellen Ressource' },
+
+  // --- GEISTGEBORENER (VESSEL OF HATRED) ---
   { name: 'Stab von Kepeleke', slot: 'main_hand', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Basis-Fertigkeiten werden zu Kern-Fertigkeiten und critten immer voll' },
   { name: 'Harmonie von Ebewaka', slot: 'helm', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Verleiht Skills alle Geistertiere-Tags und skaliert Schaden massiv' },
-  { name: 'Hyazinthenpanzer', slot: 'chest', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Reduziert Fertigkeiten-Abklingzeiten basierend auf Lebensregeneration' },
+  { name: 'Hyazinthenpanzer (Jacinth Shell)', slot: 'chest', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Reduziert Fertigkeiten-Abklingzeiten basierend auf Lebensregeneration' },
   { name: 'Sepazontec', slot: 'main_hand', rarity: 'Unique', source: 'Duriel', aspect: 'Jeder dritte Treffer einer Basisfertigkeit löst dreifachen Schaden aus' },
   { name: 'Ring der Mittagsjagd', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Erhöht maximale Wildheit und Angriffsgeschwindigkeit drastisch' },
-  { name: 'Treue-Mantel', slot: 'chest', rarity: 'Unique', source: 'Grigoire', aspect: 'Wandelt direkten Schaden in Blutung und Gift um' },
+  { name: 'Treue-Mantel (Loyaltys Mantle)', slot: 'helm', rarity: 'Unique', source: 'Grigoire', aspect: 'Verdoppelt den Bonus des aktiven Geistes in der Geisterhalle' },
   { name: 'Wunderschleifstein', slot: 'ring1', rarity: 'Unique', source: 'Andariel', aspect: 'Erhöht kritischen Schaden für jeden Stapel Entschlossenheit' },
+
+  // --- BARBAR ---
   { name: 'Zwillingsschläge', slot: 'gloves', rarity: 'Unique', source: 'Grigoire', aspect: 'Doppelschwung wirft wirbelnde Sicheln ab, die nach außen fliegen' },
   { name: 'Ramaladnis Meisterwerk', slot: 'dual_1h_1', rarity: 'Unique', source: 'Grigoire', aspect: 'Erhöht Schaden pro verfügbarem Wutpunkt um bis zu 0.4%' },
   { name: 'Gohrs Verheerende Greifer', slot: 'gloves', rarity: 'Unique', source: 'Varshan', aspect: 'Wirbelwind explodiert am Ende in einer gigantischen Feuerwelle' },
-  { name: 'Zorn des Berggipfels', slot: 'chest', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Uralte verstärken Sprung und Aufstampfen mit Erdbeben' },
+  { name: 'Zorn des Berggipfels (Arreats Bearing)', slot: 'pants', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Uralte verstärken Sprung und Aufstampfen mit Erdbeben' },
   { name: 'Kampftrance', slot: 'amulet', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Raserei stapelt sich 2-mal öfter und erhöht Angriffsgeschwindigkeit' },
   { name: 'Höllhammer', slot: 'main_2h_blunt', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Aufwühlen entzündet den Boden für massiven Verbrennungsschaden' },
   { name: 'Scharlachroter Vorstoß', slot: 'boots', rarity: 'Unique', source: 'Andariel', aspect: 'Ansturm hinterlässt Blutspuren und setzt Abklingzeiten zurück' },
   { name: 'Zorn von Harrogath', slot: 'chest', rarity: 'Unique', source: 'Grigoire', aspect: 'Blutungstreffer reduzieren Abklingzeiten nicht-ultimativer Skills' },
+  { name: 'Hässlicher Bastard-Helm', slot: 'helm', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Zorn des Berserkers explodiert und wandelt Waffenschaden in Feuerschaden um' },
+  { name: 'Ungebrochene Kette', slot: 'amulet', rarity: 'Unique', source: 'Grigoire', aspect: 'Stahlgriff reduziert Cooldowns und ruft Mini-Erdbeben hervor' },
+
+  // --- ZAUBERER ---
   { name: 'Zerbrochenes Winterglas', slot: 'amulet', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Frostsphäre beschwört zufällige Konjunktionen bei Explosion' },
   { name: 'Axial-Leitung', slot: 'pants', rarity: 'Unique', source: 'Grigoire', aspect: 'Kettenblitz umkreist dich und entlädt eine tödliche Schocknova' },
   { name: 'Gewand des Unendlichen', slot: 'chest', rarity: 'Unique', source: 'Varshan', aspect: 'Teleportieren zieht alle Feinde heran und betäubt sie für 2.5s' },
-  { name: 'Tal Rashas schillernder Reif', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Bis zu 60% Bonusschaden für 4 verschiedene Elementarschadensarten' },
+  { name: 'Tal Rashas schillernder Reif', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Bis zu 60% Bonusschaden für verschiedene Elementarschadensarten' },
   { name: 'Stab des Endlosen Zorns', slot: 'main_hand', rarity: 'Unique', source: 'Varshan', aspect: 'Jeder dritte Feuerball verschießt 2 zusätzliche Projektile' },
   { name: 'Stab von Lam Esen', slot: 'main_hand', rarity: 'Unique', source: 'Grigoire', aspect: 'Geladene Blitze durchschlagen alle Ziele und fliegen weiter' },
-  { name: 'Eispirscher', slot: 'boots', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Frostnova hinterlässt Eiszapfen, die explodieren' },
+  { name: 'Eispirscher (Esus Heirloom)', slot: 'boots', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Bewegungsgeschwindigkeit erhöht deine Kritische Trefferchance massiv' },
+  { name: 'Sternschnuppe (Starfall Coronet)', slot: 'helm', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Meteor erhält Ladungen und lässt zusätzliche Splitter niederregnen' },
+
+  // --- DRUIDE ---
   { name: 'Sturmgebrüll (Tempest Roar)', slot: 'helm', rarity: 'Unique', source: 'Duriel', aspect: 'Sturm-Fertigkeiten werden zu Werwolf-Skills und spenden Geisteskraft' },
   { name: 'Erdenbrecher', slot: 'ring1', rarity: 'Unique', source: 'Grigoire', aspect: 'Erdrutsch lässt nach Beben tektonische Stacheln emporschießen' },
-  { name: "Vasily's Gebet", slot: 'helm', rarity: 'Unique', source: 'Varshan', aspect: 'Erd-Fertigkeiten verwandeln dich in einen Bären und stählen dich' },
+  { name: 'Vasily\'s Gebet', slot: 'helm', rarity: 'Unique', source: 'Varshan', aspect: 'Erd-Fertigkeiten verwandeln dich in einen Bären und stählen dich' },
   { name: 'Dolmenstein', slot: 'amulet', rarity: 'Unique', source: 'Grigoire', aspect: 'Felsbrocken kreisen dauerhaft um deinen Hurrikan herum' },
   { name: 'Mjölnic-Ring', slot: 'ring1', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Katastrophe folgt dir permanent und erhöht Blitzschaden um 100%' },
   { name: 'Entzücken des Wahnsinnigen Wolfes', slot: 'chest', rarity: 'Unique', source: 'Grigoire', aspect: 'Permanente Werwolfgestalt, +3 auf alle Werwolf-Skills' },
   { name: 'Fleischreißer', slot: 'main_hand', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Gebrüll fügt Feinden im Umkreis Giftschaden zu' },
+  { name: 'Großstab der Alten (Greatstaff of Crone)', slot: 'main_hand', rarity: 'Unique', source: 'Varshan', aspect: 'Klauenangriff wirkt zusätzlich Sturmschlag mit doppeltem Schaden' },
+
+  // --- JÄGER ---
   { name: 'Windmacht', slot: 'ranged_2h', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Pfeilsalve stößt Feinde zurück, verdoppelt Schaden und schlägt taumelnd' },
   { name: 'Verdammung (Condemnation)', slot: 'dual_1h_1', rarity: 'Unique', source: 'Varshan', aspect: 'Mit 3 Kombopunkten teilen Kern-Fertigkeiten bis zu 40% mehr Schaden aus' },
   { name: 'Kappe des Gauners', slot: 'helm', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Blendgranaten füllen Ressourcen auf und reduzieren Abklingzeiten' },
   { name: 'Tuch von Khanduras', slot: 'chest', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Entrinnen gewährt Schattenverhüllung und zieht Gegner magisch an' },
   { name: 'Adlerhorn', slot: 'ranged_2h', rarity: 'Unique', source: 'Grigoire', aspect: 'Durchdringender Schuss prallt von Wänden ab und verursacht Crits' },
-  { name: 'Aschsträufer', slot: 'boots', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Fallen lösen zusätzliche Elementarexplosionen aus' },
+  { name: 'Aschsträufer (Ashearas Khanjar)', slot: 'dual_1h_1', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Treffer erhöhen die Angriffsgeschwindigkeit um bis zu 30%' },
+  { name: 'Kuss des Gauners', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Schnellfeuer verschießt explodierende Pfeile, die AoE-Schaden machen' },
+
+  // --- TOTENBESCHWÖRER ---
   { name: 'Schwarzer Fluss', slot: 'main_hand', rarity: 'Unique', source: 'Duriel', aspect: 'Leichenexplosion verzehrt bis zu 4 zusätzliche Leichen auf einmal' },
   { name: 'Ring der gottlosen Seele', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Aktiviert automatisch nahe Leichen-Skills alle 1 Sekunde' },
   { name: 'Blutloser Schrei', slot: 'main_2h_slash', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Dunkelheit friert Gegner ein und generiert 5 Essenz pro Hit' },
   { name: 'Umarmung des Grausamen', slot: 'gloves', rarity: 'Unique', source: 'Grigoire', aspect: 'Blutwoge löst Mini-Explosionen auf jedem deiner Diener aus' },
   { name: 'Gebrüll aus dem Jenseits', slot: 'gloves', rarity: 'Unique', source: 'Grigoire', aspect: 'Leichenexplosion beschwört rennende Skelette, die detonieren' },
   { name: 'Mendelns Ring', slot: 'ring1', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Diener erhalten alle 6 Angriffe eine physische Explosion' },
-  { name: 'Herold von Zakarum', slot: 'off_hand_shield', rarity: 'Unique', source: 'Mephisto', aspect: '+4 Paladin-Auren, 100% garantierter Block bei Heiligem Schild' },
-  { name: 'Auge von Baal', slot: 'amulet', rarity: 'Unique', source: 'Mephisto', aspect: 'Flüche brechen Unaufhaltsamkeit und verdoppeln Dämonenschaden' },
-  { name: 'Griswolds Meisterwerk', slot: 'main_hand', rarity: 'Unique', source: 'Mephisto', aspect: 'Eifer schlägt viermal hintereinander mit Heiligem Blitz zu' },
-  { name: 'Seelengefäß von Kurast', slot: 'off_hand', rarity: 'Unique', source: 'Mephisto', aspect: 'Ermöglicht das Beschwören von 2 zusätzlichen Dämonen-Erscheinungen' }
+  { name: 'Todloses Antlitz', slot: 'helm', rarity: 'Unique', source: 'Varshan', aspect: 'Knochenspeer hinterlässt explodierende Knochenechos' }
 ];
 
-// ================= RUNEN-DATEN =================
+// ================= VOLLSTÄNDIGE RUNEN-DATEN (ALLE 45 OFFZIELLEN RUNEN) =================
 const RUNES_DATA = [
-  { name: 'Lith', type: 'Ritual', rarity: 'Legendär', offering: '+50 Opfergabe', desc: 'Stehe 0,3 Sekunden lang still.' },
-  { name: 'Feo', type: 'Ritual', rarity: 'Legendär', offering: '+1000 Opfergabe', desc: 'Werde verletzt oder durch Kontrollverlust beeinträchtigt (20s CD).' },
-  { name: 'Bac', type: 'Ritual', rarity: 'Selten', offering: '+50 Opfergabe', desc: 'Bewege dich 5 Meter weit fort.' },
-  { name: 'Yul', type: 'Ritual', rarity: 'Selten', offering: '+50 Opfergabe', desc: 'Wirke eine Fertigkeit mit einer Abklingzeit.' },
-  { name: 'Tam', type: 'Ritual', rarity: 'Selten', offering: '+25 Opfergabe', desc: 'Wirke eine nicht-gechannelte Kern-Fertigkeit.' },
-  { name: 'Neo', type: 'Ritual', rarity: 'Selten', offering: '+300 Opfergabe', desc: 'Verursache Schaden, nachdem du 5s keinen Schaden erlitten hast.' },
-  { name: 'Xal', type: 'Ritual', rarity: 'Selten', offering: '+200 Opfergabe', desc: 'Erhalte 20% deines maximalen Lebens als Heilung oder Barriere.' },
-  { name: 'Kaa', type: 'Ritual', rarity: 'Selten', offering: '+2 Opfergabe', desc: 'Verliere 1% deines maximalen Lebens (skaliert stetig).' },
-  { name: 'Cem', type: 'Ritual', rarity: 'Magisch', offering: '+50 Opfergabe', desc: 'Wirke Entrinnen / Ausweichen.' },
-  { name: 'Poc', type: 'Ritual', rarity: 'Magisch', offering: '+10 Opfergabe', desc: 'Verbrauche 5% deiner maximalen Primärressource.' },
-  { name: 'Moni', type: 'Ritual', rarity: 'Magisch', offering: '+10 Opfergabe', desc: 'Bewege dich direkt nach dem Wirken einer Fertigkeit (0,2s CD).' },
+  // --- 17 RITUAL-RUNEN (OPFERGABE-GENERATOREN) ---
+  { name: 'Ahu', type: 'Ritual', rarity: 'Legendär', offering: '+15 Opfergabe', desc: 'Glückstreffer: Bis zu 100% Chance gegen nicht-gesunde oder verletzte Gegner.' },
+  { name: 'Bac', type: 'Ritual', rarity: 'Legendär', offering: '+50 Opfergabe', desc: 'Bewege dich 5 Meter weit fort.' },
+  { name: 'Cem', type: 'Ritual', rarity: 'Magisch', offering: '+75 Opfergabe', desc: 'Wirke Entrinnen / Ausweichen.' },
   { name: 'Cir', type: 'Ritual', rarity: 'Magisch', offering: '+25 Opfergabe', desc: 'Wirke dieselbe Fertigkeit dreimal hintereinander.' },
-  { name: 'Yax', type: 'Ritual', rarity: 'Magisch', offering: '+100 Opfergabe', desc: 'Trinke einen Heiltrank.' },
-  { name: 'Noc', type: 'Ritual', rarity: 'Magisch', offering: '+5 Opfergabe', desc: 'Füge einem Gegner Kontrollverlust zu (Verlangsamen, Stun etc.).' },
-  { name: 'Ur', type: 'Ritual', rarity: 'Magisch', offering: '+10 Opfergabe', desc: 'Diener oder Gefährte tötet Feind oder schlägt Boss.' },
-  { name: 'Zan', type: 'Ritual', rarity: 'Magisch', offering: '+150 Opfergabe', desc: 'Wirke eine Ultimative Fertigkeit.' },
-  { name: 'Ahu', type: 'Ritual', rarity: 'Magisch', offering: '+10 Opfergabe', desc: 'Glückstreffer gegen einen verletzten Gegner.' },
-  { name: 'Pax', type: 'Ritual', rarity: 'Magisch', offering: '+50 Opfergabe', desc: 'Schlage einen Elite-Gegner taumelnd (Stagger).' },
-  { name: 'Ohm', type: 'Anrufung', rarity: 'Legendär', offering: '500 Opfergabe', desc: 'Wirkt Kriegsschrei: +15% Schaden & +15% Bewegungsgeschwindigkeit (6s).' },
-  { name: 'Jah', type: 'Anrufung', rarity: 'Legendär', offering: '400 Opfergabe', desc: 'Wirkt Teleportation: Teleportiert zum Zielort und macht unaufhaltsam.' },
-  { name: 'Yom', type: 'Anrufung', rarity: 'Legendär', offering: '500 Opfergabe', desc: 'Wirkt Versteinerung: Betäubt Feinde für 3s und gewährt 100% Crit-Schaden.' },
-  { name: 'Eom', type: 'Anrufung', rarity: 'Legendär', offering: '100 Opfergabe', desc: 'Reduziert aktive Abklingzeiten um 0,25s (Überlauf senkt bis zu 4s).' },
-  { name: 'Qax', type: 'Anrufung', rarity: 'Legendär', offering: '400 Opfergabe', desc: 'Nächster Skill verbraucht alle Ressource für bis zu 100% Bonusschaden.' },
-  { name: 'Que', type: 'Anrufung', rarity: 'Selten', offering: '800 Opfergabe', desc: 'Wirkt Irdene Rüstung: Barriere in Höhe von 60% Leben für 5 Sekunden.' },
-  { name: 'Wat', type: 'Anrufung', rarity: 'Selten', offering: '100 Opfergabe', desc: 'Wirkt Altern: Verlangsamt Feinde um 50% und schwächt sie um 20%.' },
-  { name: 'Gar', type: 'Anrufung', rarity: 'Selten', offering: '25 Opfergabe', desc: 'Gewährt +2,5% Kritische Trefferchance (stapelbar bis 25%).' },
-  { name: 'Tzic', type: 'Anrufung', rarity: 'Selten', offering: '250 Opfergabe', desc: 'Wirkt Erschütternden Schlag: Schlägt zu und betäubt alle nahen Feinde.' },
-  { name: 'Ner', type: 'Anrufung', rarity: 'Selten', offering: '700 Opfergabe', desc: 'Wirkt Verhüllung: Gewährt Schatten und massive Schadensreduktion.' },
-  { name: 'Xol', type: 'Anrufung', rarity: 'Selten', offering: '150 Opfergabe', desc: 'Beschwört die Macht einer zufälligen fremden Klassenfertigkeit.' },
-  { name: 'Xan', type: 'Anrufung', rarity: 'Selten', offering: '700 Opfergabe', desc: 'Nächster Angriff trifft garantiert kritisch und überwältigt.' },
-  { name: 'Lum', type: 'Anrufung', rarity: 'Magisch', offering: '5 Opfergabe', desc: 'Stellt 1 Punkt Primärressource wieder her (bis zu 20 bei Überlauf).' },
-  { name: 'Tec', type: 'Anrufung', rarity: 'Magisch', offering: '100 Opfergabe', desc: 'Erzeugt ein Erdbeben, das kontinuierlich Schaden austeilt.' },
-  { name: 'Ton', type: 'Anrufung', rarity: 'Magisch', offering: '20 Opfergabe', desc: 'Lässt einen sengenden Meteoriten auf Gegner niederregnen.' },
-  { name: 'Tun', type: 'Anrufung', rarity: 'Magisch', offering: '100 Opfergabe', desc: 'Wirft Blendgranaten, die betäuben und Schaden anrichten.' },
-  { name: 'Zec', type: 'Anrufung', rarity: 'Magisch', offering: '20 Opfergabe', desc: 'Reduziert die Abklingzeit deiner Ultimativen Fertigkeit um 4s.' },
-  { name: 'Kry', type: 'Anrufung', rarity: 'Magisch', offering: '500 Opfergabe', desc: 'Wirkt Wirbelstrudel: Saugt Feinde im Umkreis an deine Position.' },
-  { name: 'Ceh', type: 'Anrufung', rarity: 'Magisch', offering: '100 Opfergabe', desc: 'Beschwört einen Geistwolf, der 8s an deiner Seite kämpft.' },
-  { name: 'Qua', type: 'Anrufung', rarity: 'Magisch', offering: '400 Opfergabe', desc: 'Stellt eine Entrinnen-Ladung wieder her und gibt +7% Tempo.' },
-  { name: 'Tal', type: 'Anrufung', rarity: 'Magisch', offering: '100 Opfergabe', desc: 'Entfesselt einen giftigen Stachelschwarm auf Ziele.' },
-  { name: 'Met', type: 'Anrufung', rarity: 'Magisch', offering: '100 Opfergabe', desc: 'Hinterlässt entweihten Boden mit kontinuierlichem Schattenschaden.' },
-  { name: 'Lac', type: 'Anrufung', rarity: 'Magisch', offering: '800 Opfergabe', desc: 'Wirkt Herausforderungsruf: Verspottet und härtet dich.' },
-  { name: 'Mot', type: 'Anrufung', rarity: 'Magisch', offering: '150 Opfergabe', desc: 'Erzeugt Schattenwolke, die gegnerische Geschosse absorbiert.' }
+  { name: 'Feo', type: 'Ritual', rarity: 'Selten', offering: '+1000 Opfergabe', desc: 'Werde verletzt oder durch Kontrollverlust beeinträchtigt (10s Abklingzeit).' },
+  { name: 'Igni', type: 'Ritual', rarity: 'Legendär', offering: '+25 Opfergabe', desc: 'Sammelt alle 0,3s Opfergabe. Wirke Nicht-Basis-Skill zum Abholen (bis 500).' },
+  { name: 'Kaa', type: 'Ritual', rarity: 'Selten', offering: '+50 Opfergabe', desc: 'Verliere 25% deines maximalen Lebens (1s Abklingzeit).' },
+  { name: 'Lith', type: 'Ritual', rarity: 'Legendär', offering: '+25 Opfergabe', desc: 'Stehe im Kampf für 0,3 Sekunden still.' },
+  { name: 'Moni', type: 'Ritual', rarity: 'Magisch', offering: '+10 Opfergabe', desc: 'Wirke eine Mobilitäts- oder Makaber/Agilitäts-Fertigkeit.' },
+  { name: 'Nagu', type: 'Ritual', rarity: 'Selten', offering: '+100 Opfergabe', desc: 'Halte mindestens 1 aktiven Diener/Gefährten für 5s aufrecht (bis 5 Diener).' },
+  { name: 'Neo', type: 'Ritual', rarity: 'Selten', offering: '+200 Opfergabe', desc: 'Füge Schaden zu, nachdem du 2s lang keinen Schaden erlitten hast.' },
+  { name: 'Noc', type: 'Ritual', rarity: 'Selten', offering: '+5 Opfergabe', desc: 'Füge Gegner Kontrollverlust zu (Doppelt bei Stun/Freeze, nicht Slow).' },
+  { name: 'Poc', type: 'Ritual', rarity: 'Selten', offering: '+5 Opfergabe', desc: 'Verbrauche 5% deiner maximalen Primärressource.' },
+  { name: 'Tam', type: 'Ritual', rarity: 'Legendär', offering: '+25 Opfergabe', desc: 'Wirke eine nicht-kanalisierte Kern-Fertigkeit.' },
+  { name: 'Ur', type: 'Ritual', rarity: 'Magisch', offering: '+10 Opfergabe', desc: 'Dein Diener oder Gefährte tötet einen Feind oder stirbt (1s CD).' },
+  { name: 'Xol', type: 'Ritual', rarity: 'Legendär', offering: '+150 Opfergabe', desc: 'Wirke eine Fertigkeit einer anderen Klasse (z. B. durch Runenwort).' },
+  { name: 'Yax', type: 'Ritual', rarity: 'Magisch', offering: '+200 Opfergabe', desc: 'Trinke einen Heiltrank.' },
+  { name: 'Yul', type: 'Ritual', rarity: 'Legendär', offering: '+50 Opfergabe', desc: 'Wirke eine Fertigkeit mit einer Abklingzeit.' },
+  { name: 'Zan', type: 'Ritual', rarity: 'Selten', offering: '+200 Opfergabe', desc: 'Wirke eine Ultimative Fertigkeit.' },
+
+  // --- 28 ANRUFUNGS-RUNEN (EFFEKT-VERBRAUCHER) ---
+  { name: 'Ceh', type: 'Anrufung', rarity: 'Magisch', offering: '100 Opfergabe', desc: 'Beschwört einen Geistwolf, der 8s an deiner Seite kämpft. (Überlauf: Mehrere Wölfe)' },
+  { name: 'Eom', type: 'Anrufung', rarity: 'Legendär', offering: '100 Opfergabe', desc: 'Reduziert aktive Abklingzeiten um 0,25s. (Überlauf: Zusätzliche Cooldown-Reduktion)' },
+  { name: 'Gar', type: 'Anrufung', rarity: 'Magisch', offering: '25 Opfergabe', desc: 'Gewährt +2,5% Kritische Trefferchance für 5s, bis zu 25%. (Überlauf: Stapel)' },
+  { name: 'Jah', type: 'Anrufung', rarity: 'Legendär', offering: '400 Opfergabe', desc: 'Nächstes Entrinnen wird zum Zauberer-Teleport mit Unaufhaltsamkeit. (CD: 2s)' },
+  { name: 'Kry', type: 'Anrufung', rarity: 'Selten', offering: '300 Opfergabe', desc: 'Wirkt Wirbelstrudel des Geistgeborenen: Saugt Gegner im Umkreis zusammen. (CD: 3s)' },
+  { name: 'Lac', type: 'Anrufung', rarity: 'Selten', offering: '400 Opfergabe', desc: 'Wirkt Herausforderungsruf: Verspottet und reduziert erlittenen Schaden um 40%. (CD: 1s)' },
+  { name: 'Lum', type: 'Anrufung', rarity: 'Magisch', offering: '5 Opfergabe', desc: 'Stellt 3,5 Punkte Primärressource wieder her. (Überlauf: Mehr Ressource)' },
+  { name: 'Met', type: 'Anrufung', rarity: 'Magisch', offering: '100 Opfergabe', desc: 'Hinterlässt entweihten Boden des Totenbeschwörers für Schattenschaden. (CD: 1s)' },
+  { name: 'Mot', type: 'Anrufung', rarity: 'Selten', offering: '150 Opfergabe', desc: 'Erzeugt Schatten des Dunklen Schleiers für Schadensreduktion pro Schatten. (CD: 1s)' },
+  { name: 'Ner', type: 'Anrufung', rarity: 'Selten', offering: '600 Opfergabe', desc: 'Wirkt Verhüllung: Gewährt Tarnung, Unaufhaltsamkeit und Tempo für 5s. (CD: 6s)' },
+  { name: 'Ohm', type: 'Anrufung', rarity: 'Legendär', offering: '500 Opfergabe', desc: 'Wirkt Kriegsschrei: +15% Schaden & +15% Bewegungsgeschwindigkeit für 6s. (CD: 2s)' },
+  { name: 'Ono', type: 'Anrufung', rarity: 'Magisch', offering: '25 Opfergabe', desc: 'Wirkt Tanzende Blitze des Druiden auf nahe Ziele. (Überlauf: Mehr Blitze)' },
+  { name: 'Qax', type: 'Anrufung', rarity: 'Selten', offering: '400 Opfergabe', desc: 'Nächste Nicht-Basisfertigkeit verbraucht alle Primärressource für bis zu 100% Bonusschaden.' },
+  { name: 'Qua', type: 'Anrufung', rarity: 'Selten', offering: '50 Opfergabe', desc: 'Stellt 1 Entrinnen-Ladung wieder her und gibt bis zu 30% Bewegungsgeschwindigkeit. (CD: 1s)' },
+  { name: 'Que', type: 'Anrufung', rarity: 'Selten', offering: '300 Opfergabe', desc: 'Wirkt Irdene Rüstung des Druiden: Barriere in Höhe von 60% Leben für 5s. (CD: 1s)' },
+  { name: 'Tal', type: 'Anrufung', rarity: 'Magisch', offering: '100 Opfergabe', desc: 'Entfesselt einen giftigen Stachelschwarm des Geistgeborenen auf Ziele. (CD: 1s)' },
+  { name: 'Teb', type: 'Anrufung', rarity: 'Magisch', offering: '100 Opfergabe', desc: 'Wirkt Eiserne Jungfrau des Totenbeschwörers: Verflucht Feinde und heilt bei Tod. (CD: 1s)' },
+  { name: 'Tec', type: 'Anrufung', rarity: 'Magisch', offering: '100 Opfergabe', desc: 'Erzeugt ein mächtiges Erdbeben des Barbaren für physischen Dauerschaden. (CD: 1s)' },
+  { name: 'Thul', type: 'Anrufung', rarity: 'Selten', offering: '250 Opfergabe', desc: 'Wirkt Frostnova der Zauberin: Friert Feinde ein und macht sie verwundbar. (CD: 2s)' },
+  { name: 'Ton', type: 'Anrufung', rarity: 'Magisch', offering: '20 Opfergabe', desc: 'Lässt sengende Meteoriten auf Feinde niederregnen. (Überlauf: Mehr Meteoriten)' },
+  { name: 'Tun', type: 'Anrufung', rarity: 'Magisch', offering: '100 Opfergabe', desc: 'Wirft Blendgranaten der Jägerin, die betäuben und Schaden verursachen. (CD: 1s)' },
+  { name: 'Tzic', type: 'Anrufung', rarity: 'Selten', offering: '200 Opfergabe', desc: 'Wirkt Erschütternden Schlag des Geistgeborenen: Wirft Gegner zu Boden. (CD: 1s)' },
+  { name: 'Vex', type: 'Anrufung', rarity: 'Legendär', offering: '400 Opfergabe', desc: 'Gewährt +3 auf alle Fertigkeiten für 5 Sekunden. (CD: 1s, zweites Shako!)' },
+  { name: 'Wat', type: 'Anrufung', rarity: 'Selten', offering: '100 Opfergabe', desc: 'Wirkt Altern des Totenbeschwörers: Verlangsamt Feinde um 50% und schwächt sie. (CD: 1s)' },
+  { name: 'Xal', type: 'Anrufung', rarity: 'Selten', offering: '200 Opfergabe', desc: 'Gewährt +20% Maximales Leben für 4 Sekunden. (Überlauf: Verlängerte Dauer)' },
+  { name: 'Xan', type: 'Anrufung', rarity: 'Legendär', offering: '700 Opfergabe', desc: 'Nächster Angriff trifft garantiert kritisch und überwältigt zusätzlich. (CD: 1s)' },
+  { name: 'Yom', type: 'Anrufung', rarity: 'Legendär', offering: '500 Opfergabe', desc: 'Wirkt Versteinerung des Druiden: Betäubt Feinde für 3s und stellt 100 Ressource her. (CD: 5s)' },
+  { name: 'Zec', type: 'Anrufung', rarity: 'Selten', offering: '20 Opfergabe', desc: 'Reduziert die verbleibende Abklingzeit deiner Ultimativen Fertigkeit um 2 Sekunden. (CD: 2s)' }
 ];
 
-// ================= HÄRTUNGS-KATALOG =================
+// ================= HÄRTUNGS-KATALOG (TEMPERING REZEPTE) =================
 const TEMPERING_DATA = [
   {
     cat: 'Waffen-Härtung (Offensiv)',
@@ -1049,7 +1213,7 @@ const BOSS_DATA = [
     location: 'Klaffender Schlund (Kehjistan)',
     mats: '2x Scherbe der Qual, 2x Schleimgeschwärztes Ei',
     matKeys: { 'Scherben der Qual': 2, 'Schleimgeschwärzte Eier': 2 },
-    drops: ['Harlekinskrone (Shako)', 'Der Großvater', 'Verdammnis (Doombringer)', 'Ring der Sternenlosen Himmel', 'Geschmolzenes Herz von Selig', 'Tibaults Wille', 'Schwarzer Fluss', 'Sturmgebrüll (Tempest Roar)', 'Sepazontec', 'Godslayer-Krone', "X'Fals korrodierter Siegelring"]
+    drops: ['Harlekinskrone (Shako)', 'Der Großvater', 'Verdammnis (Doombringer)', 'Ring der Sternenlosen Himmel', 'Geschmolzenes Herz von Selig', 'Schleier des falschen Todes', 'Erbe der Verdammnis', 'Tibaults Wille', 'Schwarzer Fluss', 'Sturmgebrüll (Tempest Roar)', 'Sepazontec', 'Godslayer-Krone', 'XFals korrodierter Siegelring']
   },
   {
     name: 'Andariel, Herrin der Qual',
@@ -1057,7 +1221,7 @@ const BOSS_DATA = [
     location: 'Halle der Gepeinigten (Kehjistan)',
     mats: '2x Sandverschlungene Fessel, 2x Zitternder Zeh',
     matKeys: { 'Sandverschlungene Fesseln': 2, 'Zitternde Zehen': 2 },
-    drops: ['Tyraels Macht', 'Harlekinskrone (Shako)', 'Ahavarion, Speer von Lycander', 'Nesekem, der Herold', 'Wunderschleifstein', 'Scharlachroter Vorstoß']
+    drops: ['Tyraels Macht', 'Harlekinskrone (Shako)', 'Andariels Antlitz', 'Ahavarion, Speer von Lycander', 'Nesekem, der Herold', 'Zerbrochener Schwur', 'Wunderschleifstein', 'Scharlachroter Vorstoß']
   },
   {
     name: 'Fürst Zir (Dunkler Meister)',
@@ -1065,7 +1229,7 @@ const BOSS_DATA = [
     location: 'Der Dunkle Sitz (Zersplitterte Gipfel)',
     mats: '12x Exquisites Blut',
     matKeys: { 'Exquisites Blut': 12 },
-    drops: ['Zerbrochenes Winterglas', 'Krone von Lucion', 'Splitter von Verathiel', 'Yens Beistand', 'Hyazinthenpanzer', 'Kampftrance', 'Mjölnic-Ring', 'Kappe des Gauners', 'Aschsträufer']
+    drops: ['Zerbrochenes Winterglas', 'Krone von Lucion', 'Splitter von Verathiel', 'Yens Beistand', 'Hyazinthenpanzer (Jacinth Shell)', 'Kampftrance', 'Mjölnic-Ring', 'Kappe des Gauners', 'Aschsträufer (Ashearas Khanjar)', 'Hässlicher Bastard-Helm', 'Versehrtes Fleisch (Locrans Talisman)']
   },
   {
     name: 'Biest im Eis',
@@ -1073,7 +1237,7 @@ const BOSS_DATA = [
     location: 'Gletscherspalte (Zersplitterte Gipfel)',
     mats: '12x Destillierte Furcht',
     matKeys: { 'Destillierte Furcht': 12 },
-    drops: ['Fäuste des Schicksals', 'Schmerzschlinger-Panzerhandschuhe', 'Bestiensturz-Stiefel', 'Stab von Kepeleke', 'Harmonie von Ebewaka', 'Tuch von Khanduras', 'Windmacht', 'Blutloser Schrei', 'Höllhammer', 'Mendelns Ring']
+    drops: ['Fäuste des Schicksals', 'Schmerzschlinger-Panzerhandschuhe', 'Bestiensturz-Stiefel', 'Stab von Kepeleke', 'Harmonie von Ebewaka', 'Tuch von Khanduras', 'Windmacht', 'Blutloser Schrei', 'Höllhammer', 'Mendelns Ring', 'Sternschnuppe (Starfall Coronet)', 'Eispirscher (Esus Heirloom)', 'Zorn des Berggipfels (Arreats Bearing)']
   },
   {
     name: 'Grigoire, der Galvanische Heilige',
@@ -1081,7 +1245,7 @@ const BOSS_DATA = [
     location: 'Halle der Sühne (Trockensteppe)',
     mats: '5x Lebendiger Stahl',
     matKeys: { 'Lebendiger Stahl': 5 },
-    drops: ['Flackernder Schritt', 'Zwillingsschläge', 'Ramaladnis Meisterwerk', 'Axial-Leitung', 'Erdenbrecher', 'Treue-Mantel', 'Umarmung des Grausamen', 'Stab von Lam Esen', 'Adlerhorn', 'Zorn von Harrogath']
+    drops: ['Flackernder Schritt', 'Zwillingsschläge', 'Ramaladnis Meisterwerk', 'Axial-Leitung', 'Erdenbrecher', 'Treue-Mantel (Loyaltys Mantle)', 'Umarmung des Grausamen', 'Stab von Lam Esen', 'Adlerhorn', 'Zorn von Harrogath', 'Ungebrochene Kette', 'Rasiermessertritt (Razorplate)']
   },
   {
     name: 'Echo von Varshan',
@@ -1089,23 +1253,23 @@ const BOSS_DATA = [
     location: 'Bösartiger Bau (Hawezar)',
     mats: '5x Bösartiges Herz',
     matKeys: { 'Bösartige Herzen': 5 },
-    drops: ['Tal Rashas schillernder Reif', 'Gewand des Unendlichen', 'Verdammung (Condemnation)', 'Ring der gottlosen Seele', 'Gohrs Verheerende Greifer', "Vasily's Gebet", 'Ring der Mittagsjagd', 'Stab des Endlosen Zorns', 'Seelenbrand']
+    drops: ['Tal Rashas schillernder Reif', 'Gewand des Unendlichen', 'Verdammung (Condemnation)', 'Ring der gottlosen Seele', 'Gohrs Verheerende Greifer', 'Vasily\'s Gebet', 'Ring der Mittagsjagd', 'Stab des Endlosen Zorns', 'Seelenbrand', 'Todloses Antlitz', 'Kuss des Gauners', 'Großstab der Alten (Greatstaff of Crone)']
   },
   {
-    name: 'Mephisto, Herr des Hasses',
-    type: 'DLC Prime Boss',
-    location: 'Becken der Schöpfung (Skovos)',
-    mats: '3x Splitter des Hasses, 1x Essenz der Verdammnis',
-    matKeys: { 'Splitter des Hasses': 3, 'Essenz der Verdammnis': 1 },
-    drops: ['Schleier des falschen Todes', 'Zerbrochener Schwur', 'Herold von Zakarum', 'Auge von Baal', 'Griswolds Meisterwerk', 'Seelengefäß von Kurast']
+    name: 'Echo von Lilith',
+    type: 'Gipfel-Herausforderung',
+    location: 'Scheite des Hasses (Kehjistan)',
+    mats: 'Freier Zugang (Qual IV empfohlen)',
+    matKeys: {},
+    drops: ['1x Garantiertes Prächtiges Funkeln (Spark pro Saison)', 'Exklusives Reittier: Blutrotes Ross', 'Titel: Bezwinger der Urmutter']
   },
   {
     name: 'Kurast-Unterstadt (Undercity)',
     type: 'Endgame Aktivität',
     location: 'Kurast (Nahantu)',
-    mats: 'Tribute (z. B. Tribut der Titanen)',
+    mats: 'Tribute (z. B. Tribut der Titanen / der Harmonie)',
     matKeys: {},
-    drops: ['Gezielte Runen-Drops (Ritual & Anrufung)', 'Garantiertes Großes Affix (1-4 GA)', 'Meisterwerkungs-Caches']
+    drops: ['Gezielte Runen-Drops (Ritual & Anrufung)', 'Garantiertes Großes Affix (1-4 GA)', 'Meisterwerkungs-Caches (Obduzit)']
   },
   {
     name: 'Dunkle Zitadelle (Dark Citadel)',
@@ -1113,28 +1277,25 @@ const BOSS_DATA = [
     location: 'Nahantu Hochland',
     mats: 'Wöchentlicher Raid-Zugang',
     matKeys: {},
-    drops: ['Zitadellen-Münzen für Transmogs', 'Schriftrollen der Wiederherstellung', 'Wöchentliche Kiste mit 800+ Macht-Items']
+    drops: ['Zitadellen-Münzen für Transmogs', 'Schriftrollen der Wiederherstellung (Tempering Reset)', 'Wöchentliche Kiste mit 800er Ancestral-Items']
   },
   {
     name: 'Die Grube der Artifizienten (The Pit)',
     type: 'Rift Aktivität',
     location: 'Cerrigar Obelisk (Scosglen)',
-    mats: 'Runenscherben (aus Alptraum-Dungeons)',
+    mats: 'Freier Zugang (Stufen 1 bis 150)',
     matKeys: {},
-    drops: ['Obduzit (Meisterwerkung Rang 1-12)', 'Massive Glyphen-EP', 'Prächtige Funken']
+    drops: ['Obduzit (Meisterwerkung Rang 1-12)', 'Massive Glyphen-EP (Aufwertung bis Stufe 100)']
+  },
+  {
+    name: 'Weltbosse (Ashava, Knorrenschrecken, Tod)',
+    type: 'Welt-Event',
+    location: 'Sanktuario Spawn-Arenen',
+    mats: 'Timer alle 3,5 Stunden',
+    matKeys: {},
+    drops: ['Zerstreute Prismen (Sockel für Schmuck, Rüstung & Waffen)', 'Große Beutetruhe mit garantierten Ancestrals', 'Hohe Chance auf Runen-Drops']
   }
 ];
-
-// ================= SAFE JSON HELPER =================
-function safeJsonParse(val, fallback) {
-  if (!val || val === 'undefined' || val === 'null') return fallback;
-  try {
-    return JSON.parse(val);
-  } catch (e) {
-    console.warn('Fehler beim Parsen:', e);
-    return fallback;
-  }
-}
 
 // ================= ANWENDUNGS-STATE =================
 let currentClass = 'Barbar';
@@ -1150,11 +1311,95 @@ let mercenaryData = {
   trigger: 'control_loss',
   triggerAction: 'Verwandelt sich und stößt Schockwelle aus'
 };
-let inventoryMats = {};
+let inventoryMats = {
+  'Scherben der Qual': 4,
+  'Schleimgeschwärzte Eier': 4,
+  'Sandverschlungene Fesseln': 2,
+  'Zitternde Zehen': 2,
+  'Exquisites Blut': 24,
+  'Destillierte Furcht': 24,
+  'Lebendiger Stahl': 15,
+  'Bösartige Herzen': 10
+};
 let trackerItems = [];
 let currentFilter = 'all';
 let currentEditingSlotId = null;
 let activeRuneFilter = 'all';
+
+// Meisterwerkungs-Labor State
+let masterworkState = {
+  slotId: 'helm',
+  rank: 0,
+  crits: [],
+  affixes: [
+    '+% Kritischer Trefferschaden',
+    '+ Maximales Leben',
+    '+ Ränge auf Kern-Fertigkeiten',
+    'Chance auf doppelten Schaden'
+  ],
+  totalObducite: 0
+};
+
+// Obduzit-Kosten pro Rang (Post-VoH Patch 2.0+ Anpassung)
+const OBDUCITE_COSTS = [0, 10, 20, 30, 50, 75, 100, 150, 200, 250, 350, 450, 600];
+
+// Dialog Callback
+let pendingConfirmCallback = null;
+
+// ================= TOASTS & CONFIRM MODAL =================
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  const toast = document.createElement('div');
+  
+  let borderCol = 'border-amber-700/60 bg-[#16141c] text-amber-300';
+  let icon = 'fa-info-circle';
+  if (type === 'success') {
+    borderCol = 'border-green-700/60 bg-[#121c15] text-green-300';
+    icon = 'fa-circle-check';
+  } else if (type === 'error') {
+    borderCol = 'border-red-700/60 bg-[#211114] text-red-300';
+    icon = 'fa-triangle-exclamation';
+  }
+
+  toast.className = `toast-anim p-3 rounded-xl border ${borderCol} shadow-xl flex items-center gap-2.5 text-xs pointer-events-auto transition`;
+  toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(10px)';
+    setTimeout(() => toast.remove(), 300);
+  }, 3200);
+}
+
+function openConfirmModal(title, msg, onConfirm) {
+  document.getElementById('confirm-title').innerText = title;
+  document.getElementById('confirm-message').innerText = msg;
+  pendingConfirmCallback = onConfirm;
+  const modal = document.getElementById('confirm-modal');
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+function closeConfirmModal(confirmed) {
+  const modal = document.getElementById('confirm-modal');
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+  if (confirmed && typeof pendingConfirmCallback === 'function') {
+    pendingConfirmCallback();
+  }
+  pendingConfirmCallback = null;
+}
+
+function safeJsonParse(val, fallback) {
+  if (!val || val === 'undefined' || val === 'null') return fallback;
+  try {
+    return JSON.parse(val);
+  } catch (e) {
+    return fallback;
+  }
+}
 
 // ================= INITIALISIERUNG =================
 function initApp() {
@@ -1169,8 +1414,10 @@ function initApp() {
   calculateBreakpoints();
   renderTrackerList();
   renderBossGuide();
+  renderBossCapacity();
   renderRunesAndTempering();
   updateMaterialsCalculator();
+  initMasterworkForge();
   checkUrlHashForBuild();
 }
 
@@ -1251,7 +1498,7 @@ function renderClassSelector() {
     `;
   }).join('');
   const indicator = document.getElementById('current-class-indicator');
-  if (indicator) indicator.innerText = `Ausgewählt: ${currentClass}`;
+  if (indicator) indicator.innerText = `Aktuell: ${currentClass}`;
 }
 
 function selectClass(clsId) {
@@ -1266,7 +1513,9 @@ function selectClass(clsId) {
   renderSkillBar();
   renderGearSlots();
   renderParagonGlyphs();
+  initMasterworkForge();
   saveToStorage();
+  showToast(`Klasse auf ${clsId} umgestellt`, 'success');
 }
 
 // ================= KLASSENSPEZIFISCHE MECHANIKEN =================
@@ -1386,12 +1635,12 @@ function renderClassMechanic() {
       </div>
     `;
   } else {
-    titleEl.innerText = currentClass === 'Barbar' ? 'Arsenal-Expertise & Technik-Slot' : 'Klassen-Ermächtigung';
+    titleEl.innerText = 'Arsenal-Expertise & Technik-Slot';
     const m = currentClassMechanic;
     container.innerHTML = `
       <div class="p-2.5 rounded bg-[#0b0b0f] border border-red-900/40 text-xs">
-        <span class="font-bold text-amber-300 block mb-1">${currentClass === 'Barbar' ? 'Technik-Waffenauswahl' : 'Aktive Aura / Pakt'}</span>
-        <input type="text" value="${m.tech || (currentClass==='Barbar' ? 'Zweihandaxt-Expertise (+15% Schaden gegen Verwundete)' : 'Göttliche Aura des Schutzes / Blutpakt')}" onchange="window.saveClassMechanic('tech', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1.5 text-xs text-gray-200">
+        <span class="font-bold text-amber-300 block mb-1">Technik-Waffenauswahl</span>
+        <input type="text" value="${m.tech || 'Zweihandaxt-Expertise (+15% Schaden gegen Verwundete)'}" onchange="window.saveClassMechanic('tech', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1.5 text-xs text-gray-200">
       </div>
     `;
   }
@@ -1440,7 +1689,6 @@ function updateKeyPassive(val) {
   saveToStorage();
 }
 
-// ================= PARAGON-GLYPHEN =================
 function renderParagonGlyphs() {
   const container = document.getElementById('paragon-glyphs-grid');
   if (!container) return;
@@ -1454,7 +1702,7 @@ function renderParagonGlyphs() {
         <i class="fa-solid fa-gem text-[10px]"></i>
       </div>
       <input type="text" value="${glyph}" onchange="window.updateGlyph(${idx}, this.value)" class="w-full bg-transparent border-b border-[#2d273a] focus:border-purple-400 text-xs font-semibold text-gray-200 py-0.5 focus:outline-none truncate">
-      <span class="text-[9px] text-gray-500 block mt-1">Radius: Stufe 15+</span>
+      <span class="text-[9px] text-gray-500 block mt-1">Radius: Stufe 46+ (Pit 100)</span>
     </div>
   `).join('');
 }
@@ -1462,103 +1710,6 @@ function renderParagonGlyphs() {
 function updateGlyph(idx, val) {
   currentGlyphs[idx] = val;
   saveToStorage();
-}
-
-// ================= SÖLDNER LOGIK =================
-function renderMercenaryUI() {
-  const hiredSel = document.getElementById('merc-hired-select');
-  const hiredSkill = document.getElementById('merc-hired-skill');
-  const reinforceSel = document.getElementById('merc-reinforce-select');
-  const triggerSel = document.getElementById('merc-trigger-select');
-  const triggerAction = document.getElementById('merc-trigger-action');
-  const hiredInfo = document.getElementById('merc-hired-info');
-
-  if (hiredSel) hiredSel.value = mercenaryData.hired || 'Raheir';
-  if (hiredSkill) hiredSkill.value = mercenaryData.hiredSkill || '';
-  if (reinforceSel) reinforceSel.value = mercenaryData.reinforce || 'Aldkin';
-  if (triggerSel) triggerSel.value = mercenaryData.trigger || 'control_loss';
-  if (triggerAction) triggerAction.value = mercenaryData.triggerAction || '';
-  if (hiredInfo) hiredInfo.innerText = MERCENARIES_INFO[mercenaryData.hired] || '';
-}
-
-function updateMercenaryData() {
-  mercenaryData.hired = document.getElementById('merc-hired-select').value;
-  mercenaryData.hiredSkill = document.getElementById('merc-hired-skill').value;
-  mercenaryData.reinforce = document.getElementById('merc-reinforce-select').value;
-  mercenaryData.trigger = document.getElementById('merc-trigger-select').value;
-  mercenaryData.triggerAction = document.getElementById('merc-trigger-action').value;
-  const hiredInfo = document.getElementById('merc-hired-info');
-  if (hiredInfo) hiredInfo.innerText = MERCENARIES_INFO[mercenaryData.hired] || '';
-  saveToStorage();
-}
-
-// ================= STAT-CAPS & QUAL-RECHNER =================
-function calculateBreakpoints() {
-  const tormentEl = document.getElementById('calc-torment');
-  if (!tormentEl) return;
-  const torment = parseInt(tormentEl.value) || 0;
-  const rawArmor = parseInt(document.getElementById('calc-raw-armor').value) || 0;
-  const rawRes = parseInt(document.getElementById('calc-raw-res').value) || 0;
-  const maxResCap = parseInt(document.getElementById('calc-max-res-cap').value) || 70;
-
-  const armorPenalties = [0, 250, 500, 750, 1000];
-  const resPenalties = [0, 25, 50, 75, 100];
-
-  const curArmorPen = armorPenalties[torment];
-  const curResPen = resPenalties[torment];
-
-  const effArmor = rawArmor - curArmorPen;
-  const effRes = rawRes - curResPen;
-
-  document.getElementById('res-raw-armor').innerText = rawArmor;
-  document.getElementById('res-armor-penalty').innerText = `-${curArmorPen}`;
-  document.getElementById('res-effective-armor').innerText = effArmor;
-
-  document.getElementById('res-raw-res').innerText = rawRes + '%';
-  document.getElementById('res-res-penalty').innerText = `-${curResPen}%`;
-  document.getElementById('res-effective-res').innerText = effRes + '%';
-  document.getElementById('target-cap-display').innerText = maxResCap;
-
-  const armorBadge = document.getElementById('armor-status-badge');
-  const armorProgress = document.getElementById('armor-progress-bar');
-  const armorFeedback = document.getElementById('armor-feedback-text');
-
-  const armorPercent = Math.min(100, Math.max(0, (effArmor / 1000) * 100));
-  armorProgress.style.width = armorPercent + '%';
-
-  if (effArmor >= 1000) {
-    armorBadge.className = 'px-2 py-0.5 text-[10px] font-bold rounded bg-green-950 text-green-300 border border-green-700';
-    armorBadge.innerText = 'Armor-Cap erreicht! (1000/1000)';
-    armorProgress.className = 'h-full transition-all duration-300 bg-green-500';
-    const surplus = effArmor - 1000;
-    armorFeedback.innerText = surplus > 0 ? `Hervorragend! Du hast ${surplus} Rüstung über dem Cap. Dieser Überschuss bringt keinen weiteren Schutz.` : 'Perfekt am 1000er Rüstungs-Cap!';
-  } else {
-    const missing = 1000 - effArmor;
-    armorBadge.className = 'px-2 py-0.5 text-[10px] font-bold rounded bg-red-950 text-red-300 border border-red-700';
-    armorBadge.innerText = `Zu wenig Rüstung (-${missing})`;
-    armorProgress.className = 'h-full transition-all duration-300 bg-red-500';
-    armorFeedback.innerText = `Achtung: Dir fehlen noch ${missing} Rüstung auf dieser Qual-Stufe, um den maximalen 85% physischen Schutz zu erhalten.`;
-  }
-
-  const resBadge = document.getElementById('res-status-badge');
-  const resProgress = document.getElementById('res-progress-bar');
-  const resFeedback = document.getElementById('res-feedback-text');
-
-  const resPercent = Math.min(100, Math.max(0, (effRes / maxResCap) * 100));
-  resProgress.style.width = resPercent + '%';
-
-  if (effRes >= maxResCap) {
-    resBadge.className = 'px-2 py-0.5 text-[10px] font-bold rounded bg-green-950 text-green-300 border border-green-700';
-    resBadge.innerText = `Widerstands-Cap erreicht (${maxResCap}%)`;
-    resProgress.className = 'h-full transition-all duration-300 bg-emerald-500';
-    resFeedback.innerText = `Alle Elementarschäden werden maximal um ${maxResCap}% gemindert. Du nimmst minimalen Elementarschaden!`;
-  } else {
-    const missing = maxResCap - effRes;
-    resBadge.className = 'px-2 py-0.5 text-[10px] font-bold rounded bg-red-950 text-red-300 border border-red-700';
-    resBadge.innerText = `Resistenz-Lücke (-${missing}%)`;
-    resProgress.className = 'h-full transition-all duration-300 bg-orange-500';
-    resFeedback.innerText = `Vorsicht: Dir fehlen ${missing}% Widerstand auf dieser Qual-Stufe. Nutze Edelsteine (Diamanten) in Schmuck-Sockeln!`;
-  }
 }
 
 // ================= AUSRÜSTUNGS-SLOTS =================
@@ -1628,7 +1779,6 @@ function renderGearSlots() {
   }).join('');
 }
 
-// ================= MODAL DIALOGE =================
 function openSlotModal(slotId) {
   currentEditingSlotId = slotId;
   const slots = getActiveSlotsForClass();
@@ -1639,8 +1789,10 @@ function openSlotModal(slotId) {
 
   const presetSelect = document.getElementById('modal-preset-select');
   presetSelect.innerHTML = '<option value="">-- Eigenes Item oder leer --</option>';
+  
+  // Sortierte und nach Relevanz aufbereitete Items
   ITEMS_DB.forEach((it, idx) => {
-    presetSelect.innerHTML += `<option value="${idx}">${it.name} (${it.rarity}) - [${it.source}]</option>`;
+    presetSelect.innerHTML += `<option value="${idx}">[${it.rarity}] ${it.name} - (${it.source})</option>`;
   });
 
   document.getElementById('modal-item-name').value = currentItem.name || '';
@@ -1695,6 +1847,7 @@ function saveSlotModal() {
   const itemName = document.getElementById('modal-item-name').value.trim();
   if (!itemName) {
     delete currentBuild[currentEditingSlotId];
+    showToast('Slot geleert', 'info');
   } else {
     currentBuild[currentEditingSlotId] = {
       name: itemName,
@@ -1707,16 +1860,18 @@ function saveSlotModal() {
       rune2: document.getElementById('modal-rune-2').value.trim(),
       source: document.getElementById('modal-source').value
     };
+    showToast(`${itemName} gespeichert!`, 'success');
   }
   saveToStorage();
   renderGearSlots();
+  initMasterworkForge();
   closeSlotModal();
 }
 
 function addModalItemToTracker() {
   const name = document.getElementById('modal-item-name').value.trim();
   if (!name) {
-    alert('Bitte gib zuerst einen Item-Namen ein!');
+    showToast('Bitte gib zuerst einen Item-Namen ein!', 'error');
     return;
   }
   addItemToTracker({
@@ -1749,11 +1904,269 @@ function addAllSlotsToTracker() {
     }
   });
   if (added > 0) {
-    alert(`${added} Items wurden zur Farming-To-Do-Liste hinzugefügt!`);
+    showToast(`${added} Items zur To-Do-Liste hinzugefügt!`, 'success');
     switchTab('tracker');
   } else {
-    alert('Deine Slots sind leer. Statte erst deinen Charakter aus!');
+    showToast('Deine Slots sind noch leer!', 'info');
   }
+}
+
+// ================= MEISTERWERKUNGS-LABOR =================
+function initMasterworkForge() {
+  const select = document.getElementById('mw-slot-select');
+  if (!select) return;
+  const slots = getActiveSlotsForClass();
+  select.innerHTML = slots.map(s => {
+    const it = currentBuild[s.id];
+    return `<option value="${s.id}">${s.name}: ${it ? it.name : '(Leer)'}</option>`;
+  }).join('');
+
+  if (slots.length > 0) {
+    loadSlotIntoMasterwork(slots[0].id);
+  }
+}
+
+function loadSlotIntoMasterwork(slotId) {
+  masterworkState.slotId = slotId;
+  const it = currentBuild[slotId];
+  if (it) {
+    document.getElementById('mw-affix-0').value = it.aspect ? it.aspect.slice(0, 40) : '+% Kritischer Schaden';
+    document.getElementById('mw-affix-1').value = it.temper1 || '+% Maximales Leben';
+    document.getElementById('mw-affix-2').value = it.temper2 || '+ Ränge auf Haupt-Skill';
+    document.getElementById('mw-affix-3').value = '+% Angriffsgeschwindigkeit';
+  }
+  syncMasterworkAffixesFromInputs();
+  renderMasterworkUI();
+}
+
+function syncMasterworkAffixesFromInputs() {
+  masterworkState.affixes = [
+    document.getElementById('mw-affix-0').value || 'Affix 1',
+    document.getElementById('mw-affix-1').value || 'Affix 2',
+    document.getElementById('mw-affix-2').value || 'Affix 3',
+    document.getElementById('mw-affix-3').value || 'Affix 4'
+  ];
+}
+
+function advanceMasterwork(stepCount) {
+  syncMasterworkAffixesFromInputs();
+  if (masterworkState.rank >= 12) {
+    showToast('Gegenstand ist bereits auf Maximalstufe 12/12!', 'info');
+    return;
+  }
+
+  let stepsDone = 0;
+  while (stepsDone < stepCount && masterworkState.rank < 12) {
+    masterworkState.rank++;
+    masterworkState.totalObducite += OBDUCITE_COSTS[masterworkState.rank];
+
+    // Auf Rang 4, 8 und 12 landet ein 25%-Krit auf einem zufälligen Affix (0 bis 3)
+    if (masterworkState.rank === 4 || masterworkState.rank === 8 || masterworkState.rank === 12) {
+      const critAffixIdx = Math.floor(Math.random() * 4);
+      masterworkState.crits.push(critAffixIdx);
+      showToast(`⭐ Krit-Treffer auf Rang ${masterworkState.rank}: ${masterworkState.affixes[critAffixIdx]}!`, 'success');
+    }
+    stepsDone++;
+  }
+
+  renderMasterworkUI();
+}
+
+function resetMasterworkProgress() {
+  openConfirmModal(
+    'Vollendung zurücksetzen?',
+    'Alle Meisterwerkungsränge (1-12) und Krit-Hits werden auf 0 zurückgesetzt. Obduzit muss erneut investiert werden.',
+    () => {
+      masterworkState.rank = 0;
+      masterworkState.crits = [];
+      masterworkState.totalObducite = 0;
+      renderMasterworkUI();
+      showToast('Gegenstand auf Rang 0 zurückgesetzt', 'info');
+    }
+  );
+}
+
+function renderMasterworkUI() {
+  const currentRankEl = document.getElementById('mw-current-rank');
+  const totalObduciteEl = document.getElementById('mw-total-obducite');
+  const dotsContainer = document.getElementById('mw-rank-dots');
+  const cardsContainer = document.getElementById('mw-affix-cards');
+
+  if (currentRankEl) currentRankEl.innerText = masterworkState.rank;
+  if (totalObduciteEl) totalObduciteEl.innerText = `${masterworkState.totalObducite.toLocaleString('de-DE')} Obduzit`;
+
+  if (dotsContainer) {
+    let dotsHtml = '';
+    for (let i = 1; i <= 12; i++) {
+      const isAchieved = i <= masterworkState.rank;
+      const isCritRank = (i === 4 || i === 8 || i === 12);
+      let col = 'bg-[#181820] text-gray-600 border-[#262330]';
+      if (isAchieved) {
+        col = isCritRank ? 'bg-amber-500 text-black border-amber-300 font-bold' : 'bg-blue-600 text-white border-blue-400';
+      }
+      dotsHtml += `
+        <div class="h-8 rounded flex flex-col items-center justify-center text-[9px] border ${col}">
+          <span>${i}</span>
+          ${isCritRank ? '<i class="fa-solid fa-star text-[7px]"></i>' : ''}
+        </div>
+      `;
+    }
+    dotsContainer.innerHTML = dotsHtml;
+  }
+
+  if (cardsContainer) {
+    cardsContainer.innerHTML = masterworkState.affixes.map((affixName, idx) => {
+      const critHits = masterworkState.crits.filter(c => c === idx).length;
+      const baseBonus = masterworkState.rank * 5;
+      const critBonus = critHits * 25;
+      const totalBonus = baseBonus + critBonus;
+
+      let borderClass = 'border-[#262330] bg-[#0e0e13]';
+      if (critHits === 3) borderClass = 'border-amber-400 bg-amber-950/25 ring-1 ring-amber-400 shadow-lg shadow-amber-950/40';
+      else if (critHits === 2) borderClass = 'border-amber-500/80 bg-amber-950/15';
+      else if (critHits === 1) borderClass = 'border-blue-500/70 bg-blue-950/15';
+
+      return `
+        <div class="p-3 rounded-xl border ${borderClass} flex flex-col justify-between min-h-[90px] transition">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[10px] text-gray-400 truncate">${affixName}</span>
+              <div class="flex items-center gap-1">
+                ${critHits > 0 ? `<span class="px-1.5 py-0.2 rounded text-[10px] bg-amber-900/80 text-amber-200 font-bold">${'★'.repeat(critHits)}</span>` : ''}
+              </div>
+            </div>
+            <div class="flex items-baseline gap-2 mt-1">
+              <span class="text-base font-bold font-mono ${totalBonus > 0 ? 'text-amber-300' : 'text-gray-500'}">
+                +${totalBonus}%
+              </span>
+              <span class="text-[10px] text-gray-500">
+                (${baseBonus}% Rang + ${critBonus}% Krit)
+              </span>
+            </div>
+          </div>
+          <div class="mt-2 text-[9px] text-gray-400 flex items-center justify-between border-t border-[#1a1824] pt-1">
+            <span>Krit-Treffer: <strong class="text-amber-400">${critHits} / 3</strong></span>
+            ${critHits === 3 ? '<span class="text-amber-300 font-bold">TRIPLE CRIT! 🔥</span>' : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
+// ================= SÖLDNER LOGIK =================
+function renderMercenaryUI() {
+  const hiredSel = document.getElementById('merc-hired-select');
+  const hiredSkill = document.getElementById('merc-hired-skill');
+  const reinforceSel = document.getElementById('merc-reinforce-select');
+  const triggerSel = document.getElementById('merc-trigger-select');
+  const triggerAction = document.getElementById('merc-trigger-action');
+  const hiredInfo = document.getElementById('merc-hired-info');
+
+  if (hiredSel) hiredSel.value = mercenaryData.hired || 'Raheir';
+  if (hiredSkill) hiredSkill.value = mercenaryData.hiredSkill || '';
+  if (reinforceSel) reinforceSel.value = mercenaryData.reinforce || 'Aldkin';
+  if (triggerSel) triggerSel.value = mercenaryData.trigger || 'control_loss';
+  if (triggerAction) triggerAction.value = mercenaryData.triggerAction || '';
+  if (hiredInfo) hiredInfo.innerText = MERCENARIES_INFO[mercenaryData.hired] || '';
+}
+
+function updateMercenaryData() {
+  mercenaryData.hired = document.getElementById('merc-hired-select').value;
+  mercenaryData.hiredSkill = document.getElementById('merc-hired-skill').value;
+  mercenaryData.reinforce = document.getElementById('merc-reinforce-select').value;
+  mercenaryData.trigger = document.getElementById('merc-trigger-select').value;
+  mercenaryData.triggerAction = document.getElementById('merc-trigger-action').value;
+  const hiredInfo = document.getElementById('merc-hired-info');
+  if (hiredInfo) hiredInfo.innerText = MERCENARIES_INFO[mercenaryData.hired] || '';
+  saveToStorage();
+}
+
+// ================= STAT-CAPS, QUAL-RECHNER & EHP =================
+function calculateBreakpoints() {
+  const tormentEl = document.getElementById('calc-torment');
+  if (!tormentEl) return;
+  const torment = parseInt(tormentEl.value) || 0;
+  const rawArmor = parseInt(document.getElementById('calc-raw-armor').value) || 0;
+  const rawRes = parseInt(document.getElementById('calc-raw-res').value) || 0;
+  const maxResCap = parseInt(document.getElementById('calc-max-res-cap').value) || 70;
+  const rawLife = parseInt(document.getElementById('calc-raw-life').value) || 45000;
+  const flatDr = (parseFloat(document.getElementById('calc-flat-dr').value) || 0) / 100;
+
+  const armorPenalties = [0, 250, 500, 750, 1000];
+  const resPenalties = [0, 25, 50, 75, 100];
+
+  const curArmorPen = armorPenalties[torment];
+  const curResPen = resPenalties[torment];
+
+  const effArmor = Math.max(0, rawArmor - curArmorPen);
+  const effRes = Math.max(0, rawRes - curResPen);
+
+  const physDrPercent = Math.min(85, (effArmor / 1000) * 85);
+  const elemDrPercent = Math.min(maxResCap, effRes);
+
+  document.getElementById('res-raw-armor').innerText = rawArmor;
+  document.getElementById('res-armor-penalty').innerText = `-${curArmorPen}`;
+  document.getElementById('res-effective-armor').innerText = `${effArmor} (${physDrPercent.toFixed(1)}% DR)`;
+
+  document.getElementById('res-raw-res').innerText = rawRes + '%';
+  document.getElementById('res-res-penalty').innerText = `-${curResPen}%`;
+  document.getElementById('res-effective-res').innerText = `${effRes}% (Cap: ${maxResCap}%)`;
+  document.getElementById('target-cap-display').innerText = maxResCap;
+
+  // Armor Bar & Status
+  const armorBadge = document.getElementById('armor-status-badge');
+  const armorProgress = document.getElementById('armor-progress-bar');
+  const armorFeedback = document.getElementById('armor-feedback-text');
+
+  const armorBarWidth = Math.min(100, Math.max(0, (effArmor / 1000) * 100));
+  armorProgress.style.width = armorBarWidth + '%';
+
+  if (effArmor >= 1000) {
+    armorBadge.className = 'px-2 py-0.5 text-[10px] font-bold rounded bg-green-950 text-green-300 border border-green-700';
+    armorBadge.innerText = 'Armor-Cap erreicht! (85% DR)';
+    armorProgress.className = 'h-full transition-all duration-300 bg-green-500';
+    const surplus = effArmor - 1000;
+    armorFeedback.innerText = surplus > 0 ? `Hervorragend! Du hast ${surplus} Rüstung über dem Cap. Dieser Überschuss bringt keine weitere Schadensreduktion.` : 'Perfekt am 1000er Rüstungs-Cap!';
+  } else {
+    const missing = 1000 - effArmor;
+    armorBadge.className = 'px-2 py-0.5 text-[10px] font-bold rounded bg-red-950 text-red-300 border border-red-700';
+    armorBadge.innerText = `Zu wenig Rüstung (-${missing})`;
+    armorProgress.className = 'h-full transition-all duration-300 bg-red-500';
+    armorFeedback.innerText = `Achtung: Dir fehlen noch ${missing} Rüstung auf dieser Qual-Stufe für den maximalen 85%-Schutz vor Schlägen.`;
+  }
+
+  // Res Bar & Status
+  const resBadge = document.getElementById('res-status-badge');
+  const resProgress = document.getElementById('res-progress-bar');
+  const resFeedback = document.getElementById('res-feedback-text');
+
+  const resBarWidth = Math.min(100, Math.max(0, (effRes / maxResCap) * 100));
+  resProgress.style.width = resBarWidth + '%';
+
+  if (effRes >= maxResCap) {
+    resBadge.className = 'px-2 py-0.5 text-[10px] font-bold rounded bg-green-950 text-green-300 border border-green-700';
+    resBadge.innerText = `Widerstands-Cap erreicht (${maxResCap}%)`;
+    resProgress.className = 'h-full transition-all duration-300 bg-emerald-500';
+    resFeedback.innerText = `Alle Elementarschäden werden maximal um ${maxResCap}% gemindert. Perfekter Magieschutz!`;
+  } else {
+    const missing = maxResCap - effRes;
+    resBadge.className = 'px-2 py-0.5 text-[10px] font-bold rounded bg-red-950 text-red-300 border border-red-700';
+    resBadge.innerText = `Resistenz-Lücke (-${missing}%)`;
+    resProgress.className = 'h-full transition-all duration-300 bg-orange-500';
+    resFeedback.innerText = `Dir fehlen ${missing}% Widerstand auf dieser Qual-Stufe. Sockle Diamanten in deinen Schmuck!`;
+  }
+
+  // EHP-Berechnung: Leben / ((1 - PhysDR) * (1 - ElemDR) * (1 - FlatDR))
+  const physFactor = Math.max(0.01, 1 - (physDrPercent / 100));
+  const elemFactor = Math.max(0.01, 1 - (elemDrPercent / 100));
+  const flatFactor = Math.max(0.01, 1 - flatDr);
+
+  const physEHP = Math.round(rawLife / (physFactor * flatFactor));
+  const elemEHP = Math.round(rawLife / (elemFactor * flatFactor));
+
+  document.getElementById('ehp-phys').innerText = physEHP.toLocaleString('de-DE');
+  document.getElementById('ehp-elem').innerText = elemEHP.toLocaleString('de-DE');
 }
 
 // ================= TO-DO & TRACKER LOGIK =================
@@ -1772,6 +2185,7 @@ function addItemToTracker(itemData) {
   saveToStorage();
   renderTrackerList();
   updateMaterialsCalculator();
+  renderBossCapacity();
 }
 
 function toggleTrackerFound(id) {
@@ -1781,6 +2195,7 @@ function toggleTrackerFound(id) {
     saveToStorage();
     renderTrackerList();
     updateMaterialsCalculator();
+    renderBossCapacity();
   }
 }
 
@@ -1811,6 +2226,8 @@ function removeTrackerItem(id) {
   saveToStorage();
   renderTrackerList();
   updateMaterialsCalculator();
+  renderBossCapacity();
+  showToast('Item aus To-Do entfernt', 'info');
 }
 
 function filterTracker(filterType) {
@@ -1902,7 +2319,7 @@ function renderTrackerList() {
   }).join('');
 }
 
-// ================= MATERIAL-KALKULATOR MIT INVENTAR =================
+// ================= MATERIALIEN & BOSS RUN CAPACITY =================
 function updateMaterialsCalculator() {
   const summaryContainer = document.getElementById('materials-summary');
   if (!summaryContainer) return;
@@ -1922,7 +2339,7 @@ function updateMaterialsCalculator() {
 
   const matEntries = Object.entries(neededMats);
   if (matEntries.length === 0) {
-    summaryContainer.innerHTML = `<div class="col-span-full text-center py-2 text-xs text-gray-400 italic">Keine offenen Beschwörungsmaterialien erforderlich.</div>`;
+    summaryContainer.innerHTML = `<div class="col-span-full text-center py-2 text-xs text-gray-400 italic">Keine offenen Beschwörungsmaterialien für deine Wunsch-Items erforderlich.</div>`;
     return;
   }
 
@@ -1959,6 +2376,35 @@ function updateInventoryMat(matName, val) {
   inventoryMats[matName] = Math.max(0, parseInt(val) || 0);
   saveToStorage();
   updateMaterialsCalculator();
+  renderBossCapacity();
+}
+
+function renderBossCapacity() {
+  const container = document.getElementById('boss-runs-capacity');
+  if (!container) return;
+
+  const bossesWithMats = BOSS_DATA.filter(b => b.matKeys && Object.keys(b.matKeys).length > 0);
+
+  container.innerHTML = bossesWithMats.map(boss => {
+    let maxRuns = 999;
+    for (const [mat, cost] of Object.entries(boss.matKeys)) {
+      const available = inventoryMats[mat] || 0;
+      const runs = Math.floor(available / cost);
+      if (runs < maxRuns) maxRuns = runs;
+    }
+    if (maxRuns === 999) maxRuns = 0;
+
+    const shortName = boss.name.split(',')[0];
+    const canRun = maxRuns > 0;
+
+    return `
+      <div class="p-2 rounded-lg border ${canRun ? 'border-amber-600/50 bg-amber-950/20' : 'border-[#221f2b] bg-[#0c0c10]'} text-center flex flex-col justify-between">
+        <span class="text-[10px] font-semibold text-gray-300 truncate">${shortName}</span>
+        <span class="text-sm font-bold font-mono ${canRun ? 'text-amber-300' : 'text-gray-500'} my-1">${maxRuns} Runs</span>
+        <span class="text-[9px] text-gray-500 truncate">${boss.mats.split(',')[0]}</span>
+      </div>
+    `;
+  }).join('');
 }
 
 // ================= BOSS- & AKTIVITÄTEN-GUIDE =================
@@ -1966,13 +2412,16 @@ function addBossDropByIndex(bossIdx, dropIdx) {
   const boss = BOSS_DATA[bossIdx];
   if (!boss || !boss.drops || !boss.drops[dropIdx]) return;
   const itemName = boss.drops[dropIdx];
+  const isMythic = ['Harlekinskrone', 'Großvater', 'Tyrael', 'Andariel', 'Doombringer', 'Sternenlosen', 'Selig', 'Schleier', 'Erbe', 'Nesekem', 'Zerbrochener', 'Ahavarion'].some(m => itemName.includes(m));
+  
   addItemToTracker({
     name: itemName,
-    rarity: 'Unique',
+    rarity: isMythic ? 'Mythisch' : 'Unique',
     source: boss.name.split(',')[0],
     slotName: 'Boss Loot',
     priority: 'Hoch'
   });
+  showToast(`${itemName} zur Farming-Liste hinzugefügt!`, 'success');
 }
 
 function renderBossGuide(filterQuery = '') {
@@ -2138,7 +2587,7 @@ function fillQuickAddFromDb(idx) {
 function submitQuickAddItem() {
   const name = document.getElementById('quick-name').value.trim();
   if (!name) {
-    alert('Bitte gib einen Item-Namen ein!');
+    showToast('Bitte gib einen Item-Namen ein!', 'error');
     return;
   }
   addItemToTracker({
@@ -2148,10 +2597,11 @@ function submitQuickAddItem() {
     source: document.getElementById('quick-source').value || 'Allgemein',
     slotName: 'Wunschliste'
   });
+  showToast(`${name} hinzugefügt!`, 'success');
   closeTrackerQuickAddModal();
 }
 
-// ================= DISCORD & URL EXPORT =================
+// ================= DISCORD, URL & BACKUP EXPORT =================
 function copyDiscordBuild() {
   let text = `🔥 **D4 Sanktuario Planer: ${currentClass}-Build** 🔥\n`;
   text += `⚔️ **Skills:** ${currentSkills.join(', ')} | **Key:** ${currentKeyPassive}\n`;
@@ -2166,11 +2616,18 @@ function copyDiscordBuild() {
       text += `• ${item.name} (${item.rarity}) - Quelle: ${item.source} [Prio: ${item.priority}]\n`;
     });
   }
-  navigator.clipboard.writeText(text).then(() => {
-    alert('Build & Farming-Checkliste erfolgreich für Discord formatiert und kopiert!');
-  }).catch(() => {
-    prompt('Manuell kopieren:', text);
-  });
+
+  try {
+    const tempInput = document.createElement('textarea');
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    tempInput.remove();
+    showToast('Build für Discord in die Zwischenablage kopiert!', 'success');
+  } catch (err) {
+    showToast('Kopieren fehlgeschlagen.', 'error');
+  }
 }
 
 function shareBuildLink() {
@@ -2185,11 +2642,18 @@ function shareBuildLink() {
   };
   const hash = btoa(encodeURIComponent(JSON.stringify(payload)));
   const shareUrl = window.location.origin + window.location.pathname + '#build=' + hash;
-  navigator.clipboard.writeText(shareUrl).then(() => {
-    alert('Build-Link wurde in die Zwischenablage kopiert!');
-  }).catch(() => {
-    prompt('Link manuell kopieren:', shareUrl);
-  });
+
+  try {
+    const tempInput = document.createElement('textarea');
+    tempInput.value = shareUrl;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    tempInput.remove();
+    showToast('Teilbarer Build-Link kopiert!', 'success');
+  } catch (e) {
+    showToast('Link konnte nicht kopiert werden.', 'error');
+  }
 }
 
 function exportJsonFile() {
@@ -2212,6 +2676,7 @@ function exportJsonFile() {
   document.body.appendChild(downloadAnchor);
   downloadAnchor.click();
   downloadAnchor.remove();
+  showToast('Backup-Datei heruntergeladen!', 'success');
 }
 
 function importJsonFile(event) {
@@ -2239,10 +2704,12 @@ function importJsonFile(event) {
       renderMercenaryUI();
       renderTrackerList();
       updateMaterialsCalculator();
+      renderBossCapacity();
       calculateBreakpoints();
-      alert('Backup erfolgreich geladen!');
+      initMasterworkForge();
+      showToast('Backup erfolgreich geladen!', 'success');
     } catch (err) {
-      alert('Fehler beim Lesen der JSON-Datei: Ungültiges Format.');
+      showToast('Fehler beim Lesen der Datei: Ungültiges Format.', 'error');
     }
   };
   reader.readAsText(file);
@@ -2266,6 +2733,7 @@ function checkUrlHashForBuild() {
       renderGearSlots();
       renderParagonGlyphs();
       renderMercenaryUI();
+      showToast('Geteilter Build wurde geladen!', 'info');
     } catch(e) {
       console.error('Ungültiger Build-Hash.');
     }
@@ -2299,7 +2767,7 @@ function loadFromStorage() {
     currentGlyphs = safeJsonParse(localStorage.getItem('sanktuario_glyphs'), [...preset.glyphs]);
     currentClassMechanic = safeJsonParse(localStorage.getItem('sanktuario_mechanic'), {});
     mercenaryData = safeJsonParse(localStorage.getItem('sanktuario_mercenary'), mercenaryData);
-    inventoryMats = safeJsonParse(localStorage.getItem('sanktuario_inventory'), {});
+    inventoryMats = safeJsonParse(localStorage.getItem('sanktuario_inventory'), inventoryMats);
     currentBuild = safeJsonParse(localStorage.getItem('sanktuario_build'), {});
     trackerItems = safeJsonParse(localStorage.getItem('sanktuario_tracker'), []);
   } catch (e) {
@@ -2307,27 +2775,42 @@ function loadFromStorage() {
   }
 }
 
-function resetAllData() {
-  if (confirm('Möchtest du wirklich alle eingetragenen Daten und Builds zurücksetzen?')) {
-    try { localStorage.clear(); } catch(e) {}
-    currentBuild = {};
-    trackerItems = [];
-    inventoryMats = {};
-    currentClassMechanic = {};
-    const preset = CLASS_SKILLS_PRESETS[currentClass] || CLASS_SKILLS_PRESETS['Barbar'];
-    currentSkills = [...preset.skills];
-    currentKeyPassive = preset.keyPassive;
-    currentGlyphs = [...preset.glyphs];
-    renderGearSlots();
-    renderClassMechanic();
-    renderSkillBar();
-    renderParagonGlyphs();
-    renderMercenaryUI();
-    renderTrackerList();
-    updateMaterialsCalculator();
-    calculateBreakpoints();
-    alert('Alle Daten wurden auf Werkseinstellungen zurückgesetzt.');
-  }
+function requestResetAllData() {
+  openConfirmModal(
+    'Alle Daten zurücksetzen?',
+    'Möchtest du wirklich alle eingetragenen Builds, Inventarstände und To-Do-Einträge auf Werkseinstellungen zurücksetzen?',
+    () => {
+      try { localStorage.clear(); } catch(e) {}
+      currentBuild = {};
+      trackerItems = [];
+      inventoryMats = {
+        'Scherben der Qual': 4,
+        'Schleimgeschwärzte Eier': 4,
+        'Sandverschlungene Fesseln': 2,
+        'Zitternde Zehen': 2,
+        'Exquisites Blut': 24,
+        'Destillierte Furcht': 24,
+        'Lebendiger Stahl': 15,
+        'Bösartige Herzen': 10
+      };
+      currentClassMechanic = {};
+      const preset = CLASS_SKILLS_PRESETS[currentClass] || CLASS_SKILLS_PRESETS['Barbar'];
+      currentSkills = [...preset.skills];
+      currentKeyPassive = preset.keyPassive;
+      currentGlyphs = [...preset.glyphs];
+      renderGearSlots();
+      renderClassMechanic();
+      renderSkillBar();
+      renderParagonGlyphs();
+      renderMercenaryUI();
+      renderTrackerList();
+      updateMaterialsCalculator();
+      renderBossCapacity();
+      calculateBreakpoints();
+      initMasterworkForge();
+      showToast('Alle Daten wurden zurückgesetzt.', 'info');
+    }
+  );
 }
 
 // ================= GLOBALE BINDUNGEN =================
@@ -2366,7 +2849,11 @@ window.copyDiscordBuild = copyDiscordBuild;
 window.shareBuildLink = shareBuildLink;
 window.exportJsonFile = exportJsonFile;
 window.importJsonFile = importJsonFile;
-window.resetAllData = resetAllData;
+window.requestResetAllData = requestResetAllData;
+window.closeConfirmModal = closeConfirmModal;
+window.loadSlotIntoMasterwork = loadSlotIntoMasterwork;
+window.advanceMasterwork = advanceMasterwork;
+window.resetMasterworkProgress = resetMasterworkProgress;
 </script>
 </body>
 </html>
