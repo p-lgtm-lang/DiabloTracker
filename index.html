@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Sanktuario Planer - Diablo 4 Build & Farming Tracker</title>
+  <title>Sanktuario Planer - Diablo 4 & VoH Tracker</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -67,7 +67,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col font-sans pb-24 md:pb-12 text-gray-200">
+<body class="min-h-screen flex flex-col font-sans pb-24 md:pb-12 text-gray-200 selection:bg-red-900 selection:text-white">
 
   <!-- ================= TOP HEADER ================= -->
   <header class="sticky top-0 z-40 bg-[#0c0c10]/95 backdrop-blur-md border-b border-[#242129]">
@@ -85,20 +85,20 @@
       </div>
 
       <!-- Header Aktionen -->
-      <div class="flex items-center gap-2">
-        <button onclick="window.copyDiscordBuild()" class="px-3 py-1.5 text-xs font-semibold rounded bg-[#1c1924] hover:bg-[#282433] border border-[#3c364c] text-indigo-300 flex items-center gap-1.5 transition" title="Build für Discord formatieren & kopieren">
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <button onclick="window.copyDiscordBuild()" class="px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded bg-[#1c1924] hover:bg-[#282433] border border-[#3c364c] text-indigo-300 flex items-center gap-1.5 transition" title="Build für Discord kopieren">
           <i class="fa-brands fa-discord"></i>
           <span class="hidden md:inline">Discord</span>
         </button>
-        <button onclick="window.shareBuildLink()" class="px-3 py-1.5 text-xs font-semibold rounded bg-[#201726] hover:bg-[#2e1d3b] border border-purple-800/50 text-purple-300 flex items-center gap-1.5 transition" title="Build-Link teilen">
+        <button onclick="window.shareBuildLink()" class="px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded bg-[#201726] hover:bg-[#2e1d3b] border border-purple-800/50 text-purple-300 flex items-center gap-1.5 transition" title="Build-Link teilen">
           <i class="fa-solid fa-share-nodes"></i>
           <span class="hidden md:inline">Teilen</span>
         </button>
-        <button onclick="window.exportJsonFile()" class="px-3 py-1.5 text-xs font-semibold rounded bg-[#161d19] hover:bg-[#1f2d24] border border-[#2d4734] text-emerald-300 flex items-center gap-1.5 transition" title="JSON-Backup herunterladen">
+        <button onclick="window.exportJsonFile()" class="px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded bg-[#161d19] hover:bg-[#1f2d24] border border-[#2d4734] text-emerald-300 flex items-center gap-1.5 transition" title="JSON-Backup sichern">
           <i class="fa-solid fa-download"></i>
           <span class="hidden md:inline">Backup</span>
         </button>
-        <label class="px-3 py-1.5 text-xs font-semibold rounded bg-[#191924] hover:bg-[#242436] border border-[#33334d] text-blue-300 flex items-center gap-1.5 cursor-pointer transition" title="JSON-Backup wiederherstellen">
+        <label class="px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded bg-[#191924] hover:bg-[#242436] border border-[#33334d] text-blue-300 flex items-center gap-1.5 cursor-pointer transition" title="JSON-Backup importieren">
           <i class="fa-solid fa-upload"></i>
           <span class="hidden md:inline">Import</span>
           <input type="file" id="json-file-input" accept=".json" class="hidden" onchange="window.importJsonFile(event)">
@@ -165,7 +165,7 @@
           <span class="text-[10px] text-gray-400 uppercase tracking-wider font-mono">Exklusive Klassenmechanik</span>
         </div>
         <div id="class-mechanic-container">
-          <!-- Dynamisch -->
+          <!-- Dynamisch befüllt für jede der 6 Klassen -->
         </div>
       </div>
 
@@ -274,7 +274,7 @@
             <div class="p-3 rounded-lg bg-[#0a0a0d] border border-[#201e28] flex items-center justify-between">
               <div>
                 <span class="text-xs font-semibold text-amber-300 block">Obduzit (Die Grube)</span>
-                <span class="text-[10px] text-gray-500">Einziges MW-Material in Patch 2.0</span>
+                <span class="text-[10px] text-gray-500">Exklusives MW-Material in Patch 2.0</span>
               </div>
               <span class="text-sm font-bold font-mono text-amber-400" id="mw-spent-obducite">0</span>
             </div>
@@ -287,7 +287,7 @@
             </div>
           </div>
           <div class="p-3 rounded-lg bg-purple-950/20 border border-purple-800/40 text-[11px] text-gray-300 leading-relaxed">
-            <span class="font-bold text-purple-300 block mb-1"><i class="fa-solid fa-circle-info mr-1"></i>Vollendungs-Tipp</span>
+            <span class="font-bold text-purple-300 block mb-1"><i class="fa-solid fa-circle-info mr-1"></i>Vollendungs-Mechanik</span>
             Ränge 1-3, 5-7 und 9-11 steigern alle Affixe um jeweils +5%. Ränge 4, 8 und 12 gewähren einem zufälligen Affix einen gigantischen +25% Multiplikator.
           </div>
         </div>
@@ -394,13 +394,13 @@
 
           <div>
             <label class="block text-xs text-gray-400 mb-1">Gesamtrüstung (Item-Rohwert)</label>
-            <input type="number" id="calc-raw-armor" value="1850" oninput="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200 font-mono">
+            <input type="number" id="calc-raw-armor" value="2000" oninput="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200 font-mono">
             <span class="text-[10px] text-gray-500">Wert vor Abzug der Qual-Strafe</span>
           </div>
 
           <div>
             <label class="block text-xs text-gray-400 mb-1">Durchschnittlicher Elementar-Widerstand (%)</label>
-            <input type="number" id="calc-raw-res" value="165" oninput="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200 font-mono">
+            <input type="number" id="calc-raw-res" value="170" oninput="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200 font-mono">
           </div>
 
           <div>
@@ -420,7 +420,7 @@
             </div>
             <div>
               <label class="block text-xs text-gray-400 mb-1">DR % (Shako etc.)</label>
-              <input type="number" id="calc-generic-dr" value="20" oninput="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200 font-mono">
+              <input type="number" id="calc-generic-dr" value="20" min="0" max="90" oninput="window.calculateBreakpoints()" class="w-full bg-[#0b0b0e] border border-[#2d283b] rounded-lg p-2 text-xs text-gray-200 font-mono">
             </div>
           </div>
 
@@ -711,7 +711,7 @@
             <i class="fa-solid fa-shield text-red-500"></i> Das 1.000er Rüstungs-Cap
           </h4>
           <p class="text-gray-300 leading-relaxed">
-            In Patch 2.0 skaliert Rüstung nicht mehr unbegrenzt: Bei exakt <strong>1.000 effektiver Rüstung</strong> wird das Maximum von <strong>85% physischer Schadensminderung</strong> erreicht. Jeder Punkt darüber hinaus ist nutzlos.
+            In Patch 2.0 skaliert Rüstung nicht mehr endlos: Bei exakt <strong>1.000 effektiver Rüstung</strong> wird das Maximum von <strong>85% physischer Schadensminderung</strong> erreicht. Überschüssige Punkte oberhalb der Qual-Mali bringen keinen weiteren Schutz.
           </p>
         </div>
         <div class="p-4 rounded-xl bg-[#121217] border border-[#24212b] space-y-2">
@@ -719,7 +719,7 @@
             <i class="fa-solid fa-gem text-purple-400"></i> Runenwörter Funktionsweise
           </h4>
           <p class="text-gray-300 leading-relaxed">
-            Ein Runenwort besteht stets aus genau einer <strong>Ritual-Rune</strong> (erzeugt Opfergabe durch Aktionen) und einer <strong>Anrufungs-Rune</strong> (verbraucht die Opfergabe, um eine mächtige Kraft oder Klassenfertigkeit auszulösen).
+            Ein Runenwort besteht stets aus genau einer <strong>Ritual-Rune</strong> (erzeugt Opfergabe durch Aktionen) und einer <strong>Anrufungs-Rune</strong> (verbraucht die Opfergabe, um eine Fertigkeit oder einen Buff auszulösen).
           </p>
         </div>
       </div>
@@ -912,7 +912,7 @@
     </div>
   </div>
 
-  <!-- Bestätigungs-Modal (Statt confirm()) -->
+  <!-- Bestätigungs-Modal (Statt window.confirm) -->
   <div id="confirm-modal" class="fixed inset-0 z-50 items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden">
     <div class="relative w-full max-w-sm bg-[#15151c] border border-red-900/60 rounded-xl p-5 shadow-2xl text-center space-y-4">
       <div class="w-12 h-12 rounded-full bg-red-950/80 border border-red-700/60 flex items-center justify-center mx-auto text-red-400 text-xl">
@@ -941,6 +941,40 @@
   <datalist id="tempering-datalist"></datalist>
 
   <script>
+    // ================= HELPER & SANITIZER =================
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    async function copyToClipboard(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch (e) {
+        // Fallback
+      }
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      let ok = false;
+      try {
+        ok = document.execCommand('copy');
+      } catch (err) {}
+      document.body.removeChild(ta);
+      return ok;
+    }
+
     // ================= DATENBANKEN =================
     const CLASSES = [
       { id: 'Barbar', name: 'Barbar', icon: 'fa-hand-fist' },
@@ -948,7 +982,9 @@
       { id: 'Druide', name: 'Druide', icon: 'fa-paw' },
       { id: 'Jäger', name: 'Jäger', icon: 'fa-crosshairs' },
       { id: 'Totenbeschwörer', name: 'Totenbeschwörer', icon: 'fa-skull' },
-      { id: 'Geistgeborener', name: 'Geistgeborener', icon: 'fa-feather-pointed' }
+      { id: 'Geistgeborener', name: 'Geistgeborener', icon: 'fa-feather-pointed' },
+      { id: 'Paladin', name: 'Paladin', icon: 'fa-shield-halved' },
+      { id: 'Hexenmeister', name: 'Hexenmeister', icon: 'fa-fire-flame-curved' }
     ];
 
     const CLASS_SKILLS_PRESETS = {
@@ -981,6 +1017,16 @@
         skills: ['Felsspalter', 'Stachelsalve', 'Wirbelwind', 'Rüstung der Erde', 'Giftrausch', 'Der Verschlinger'],
         keyPassive: 'Vitalität des Kolosses',
         glyphs: ['Jagd', 'Raubtier', 'Gleichgewicht', 'Geisterbande', 'Uralter']
+      },
+      'Paladin': {
+        skills: ['Eifer', 'Gesegneter Hammer', 'Heiliger Schild', 'Himmelsfaust', 'Aura des Trotzes', 'Himmelszorn'],
+        keyPassive: 'Überzeugung',
+        glyphs: ['Hingabe', 'Gerechtigkeit', 'Vergeltung', 'Sanktum', 'Kreuzritter']
+      },
+      'Hexenmeister': {
+        skills: ['Seelenbrand', 'Höllenfraktur', 'Dämonentor', 'Blutpakt', 'Verdammnis', 'Kabraxis\' Entfesselung'],
+        keyPassive: 'Höllische Dominanz',
+        glyphs: ['Dämonologe', 'Abgrund', 'Seelenernter', 'Höllenfeuer', 'Korrumpierung']
       }
     };
 
@@ -1007,6 +1053,14 @@
         { id: 'dual_1h_1', name: 'Dolch / Schwert 1', icon: 'fa-shield-halved' },
         { id: 'dual_1h_2', name: 'Dolch / Schwert 2', icon: 'fa-shield-halved' }
       ],
+      'Paladin': [
+        { id: 'main_hand', name: '1H-Waffe (Schwert / Flegel)', icon: 'fa-gavel' },
+        { id: 'off_hand', name: 'Paladin-Schild (Heiliges Artefakt)', icon: 'fa-shield-halved' }
+      ],
+      'Hexenmeister': [
+        { id: 'main_hand', name: 'Hauptwaffe (Dolch / Sense / Stab)', icon: 'fa-wand-magic' },
+        { id: 'off_hand', name: 'Fokus / Grimoire / Dämonenkelch', icon: 'fa-book-skull' }
+      ],
       'default': [
         { id: 'main_hand', name: 'Hauptwaffe', icon: 'fa-wand-magic' },
         { id: 'off_hand', name: 'Nebenhand / Fokus / Schild', icon: 'fa-shield' }
@@ -1020,7 +1074,6 @@
       'Aldkin': 'Ein Junge mit einem uralten Dämonenfluch. Bei Bedrängnis verwandelt er sich und betäubt ganze Gruppen mit Feuer- und Schattenschaden.'
     };
 
-    // Mythische Alchemisten-Rezepte (Patch 2.0 / VoH)
     const MYTHIC_RECIPES = [
       { name: 'Harlekinskrone (Shako)', runes: ['Eom', 'Lac', 'Ton'], desc: '+4 auf alle Skills, 20% Schadensreduktion, CDR' },
       { name: 'Tyraels Macht', runes: ['Val', 'Ceh', 'Ono'], desc: 'Göttliche Fluten, +Max-Widerstände, keine Haltbarkeit' },
@@ -1037,9 +1090,10 @@
     ];
 
     const ITEMS_DB = [
+      // === MYTHISCHE UNIQUES (ALLE EXPANSIONS) ===
       { name: 'Harlekinskrone (Shako)', slot: 'helm', rarity: 'Mythisch', source: 'Duriel', aspect: '+4 auf alle Skills, 20% Schadensreduktion, CDR' },
       { name: 'Tyraels Macht', slot: 'chest', rarity: 'Mythisch', source: 'Andariel', aspect: 'Göttliche Fluten bei vollem Leben, +Max-Widerstände' },
-      { name: 'Der Großvater', slot: 'main_2h_slash', rarity: 'Mythisch', source: 'Duriel', aspect: '+100% Kritischer Trefferschaden, keine Haltbarkeitseinbuße' },
+      { name: 'Der Großvater', slot: 'main_2h_slash', rarity: 'Mythisch', source: 'Duriel', aspect: '+100% Kritischer Trefferschaden, unzerstörbar' },
       { name: 'Verdammnis (Doombringer)', slot: 'dual_1h_1', rarity: 'Mythisch', source: 'Duriel', aspect: 'Schattennova senkt gegnerischen Schaden um 20%' },
       { name: 'Geschmolzenes Herz von Selig', slot: 'amulet', rarity: 'Mythisch', source: 'Duriel', aspect: 'Schaden entzieht Primärressource statt Leben' },
       { name: 'Ring der Sternenlosen Himmel', slot: 'ring1', rarity: 'Mythisch', source: 'Duriel', aspect: 'Ressourcenkosten -50%, Schaden +50%' },
@@ -1049,6 +1103,8 @@
       { name: 'Zerbrochener Schwur', slot: 'main_2h_blunt', rarity: 'Mythisch', source: 'Andariel', aspect: 'Richtet Feinde bei 120% Vergiftung hin' },
       { name: 'Ahavarion, Speer von Lycander', slot: 'main_hand', rarity: 'Mythisch', source: 'Duriel', aspect: 'Zufällige Schrein-Effekte beim Elite-Kill' },
       { name: 'Andariels Antlitz', slot: 'helm', rarity: 'Mythisch', source: 'Andariel', aspect: 'Giftnova verursacht extremen Giftschaden' },
+
+      // === GENERISCHE UNIQUES (GRUNDGESTALTE & ALLE KLASSEN) ===
       { name: 'Tibaults Wille', slot: 'pants', rarity: 'Unique', source: 'Duriel', aspect: 'Bis zu 50% mehr Schaden bei Unaufhaltsamkeit' },
       { name: 'Fäuste des Schicksals', slot: 'gloves', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Treffer teilen 1% bis 300% Schaden aus' },
       { name: 'Schmerzschlinger-Panzerhandschuhe', slot: 'gloves', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Basis-Fertigkeiten treffen markierte Feinde' },
@@ -1060,27 +1116,147 @@
       { name: 'Seelenbrand', slot: 'chest', rarity: 'Unique', source: 'Varshan', aspect: 'Heilung erzeugt Barriere bis zu 100% des Lebens' },
       { name: 'X\'Fals korrodierter Siegelring', slot: 'ring1', rarity: 'Unique', source: 'Duriel', aspect: 'DoT-Effekte lösen verheerende Explosionen aus' },
       { name: 'Godslayer-Krone', slot: 'helm', rarity: 'Unique', source: 'Duriel', aspect: 'Zieht Feinde nach Stun heran und gibt +60% Schaden' },
-      { name: 'Stab von Kepeleke', slot: 'main_hand', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Basis-Skills werden zu Kern-Skills und critten voll' },
-      { name: 'Harmonie von Ebewaka', slot: 'helm', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Skills erhalten alle Geistertiere-Tags' },
-      { name: 'Hyazinthenpanzer', slot: 'chest', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Reduziert CDs basierend auf Lebensregeneration' },
-      { name: 'Sepazontec', slot: 'main_hand', rarity: 'Unique', source: 'Duriel', aspect: 'Jeder 3. Treffer teilt dreifachen Schaden aus' },
-      { name: 'Ring der Mittagsjagd', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Erhöht maximale Wildheit und Angriffstempo' },
+      { name: 'Talisman des verbannten Fürsten', slot: 'amulet', rarity: 'Unique', source: 'Duriel', aspect: 'Verbrauch von 275 Ressource überwältigt garantiert' },
+      { name: 'Frostbrand', slot: 'gloves', rarity: 'Unique', source: 'Grigoire', aspect: 'Glückstreffer friert Feinde für bis zu 3 Sekunden ein' },
+      { name: 'Reuige Beinschienen', slot: 'boots', rarity: 'Unique', source: 'Grigoire', aspect: 'Hinterlässt Frostspur, die Gegner unterkühlt' },
+      { name: 'Dornenpanzer (Razorplate)', slot: 'chest', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Gewährt gigantische Mengen an reinem Dornenschaden' },
+      { name: 'Temerität (Mut)', slot: 'pants', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Überheilung verleiht eine Barriere von bis zu 80% Leben' },
+      { name: 'Dämmerungspanzer (Tassets)', slot: 'pants', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Schadensreduktion gegen nicht-physischen Schaden' },
+      { name: 'Standhafter Glaube (Endurant Faith)', slot: 'gloves', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Verteilt tödlichen Burst-Schaden über 3 Sekunden' },
+      { name: 'Schlächter-Beil', slot: 'main_hand', rarity: 'Unique', source: 'Grigoire', aspect: 'Kritische Treffer verängstigen und verlangsamen Feinde' },
+      { name: 'Frostgram (Azurewrath)', slot: 'dual_1h_1', rarity: 'Unique', source: 'Duriel', aspect: 'Glückstreffer entfesselt Kälteschaden und friert ein' },
+
+      // === BARBAR (BASE, VOH & LORD OF HATRED) ===
+      { name: 'Helm des hässlichen Bastards', slot: 'helm', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Zorn des Berserkers explodiert in Feuerschaden (VoH)' },
+      { name: 'Felder des Blutes', slot: 'main_2h_slash', rarity: 'Unique', source: 'Varshan', aspect: 'Zerreißen hinterlässt Blutlachen mit DoT' },
+      { name: '100.000 Schritte', slot: 'boots', rarity: 'Unique', source: 'Varshan', aspect: 'Waffenwechsel löst automatisches Aufstampfen aus' },
+      { name: 'Gohrs Verheerende Greifer', slot: 'gloves', rarity: 'Unique', source: 'Varshan', aspect: 'Wirbelwind explodiert am Ende in einer Feuerwelle' },
+      { name: 'Höllenhammer', slot: 'main_2h_blunt', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Emporkommen entzündet den Boden für Verbrennungsschaden' },
+      { name: 'Zorn des Urahnen', slot: 'main_2h_slash', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Stahlergreifen zieht Feinde heran und wirft Felsen' },
+      { name: 'Zerstörer (Overkill)', slot: 'main_2h_blunt', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Todesstoß erzeugt eine Stoßwelle nach vorne' },
+      { name: 'Ring des Rabenschwarzen', slot: 'ring1', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Kriegsschrei aktiviert automatisch alle Raufbold-Skills' },
+      { name: 'Ring des roten Furors', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Verbraucht 100 Wut für einen garantierten Crit-Überwältigen' },
+      { name: 'Arreats Haltung', slot: 'pants', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Urahnen beschwören Staubteufel beim Erscheinen' },
+      { name: 'Hauerkappe von Joritz', slot: 'helm', rarity: 'Unique', source: 'Duriel', aspect: 'Berserker-Zustand gewährt Schaden und Wut-Regeneration' },
       { name: 'Zwillingsschläge', slot: 'gloves', rarity: 'Unique', source: 'Grigoire', aspect: 'Doppelschwung erzeugt kreisende Sicheln' },
-      { name: 'Ramaladnis Meisterwerk', slot: 'dual_1h_1', rarity: 'Unique', source: 'Grigoire', aspect: 'Erhöht Schaden pro verfügbarem Wutpunkt' },
-      { name: 'Gohrs Verheerende Greifer', slot: 'gloves', rarity: 'Unique', source: 'Varshan', aspect: 'Wirbelwind explodiert in einer Feuerwelle' },
+      { name: 'Ramaladnis Meisterwerk', slot: 'dual_1h_1', rarity: 'Unique', source: 'Grigoire', aspect: 'Erhöht Schaden drastisch pro verfügbarem Wutpunkt' },
+      { name: 'Emblem von Staalbreak', slot: 'amulet', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Unter 80% Leben wird Berserkermodus kostenlos gezündet (LoH)' },
+      { name: 'Das unbarmherzige Herz', slot: 'chest', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Hammer der Urahnen stapelt exponentiellen Schaden gegen Bosse (LoH)' },
+      { name: 'Band von Ahjadden', slot: 'ring1', rarity: 'Unique', source: 'Kabraxis (LoH)', aspect: 'Waffenschwünge lösen Kältenovas mit hohem Leben aus (LoH)' },
+
+      // === DRUIDE (BASE, VOH & LORD OF HATRED) ===
+      { name: 'Sturmgebrüll (Tempest Roar)', slot: 'helm', rarity: 'Unique', source: 'Duriel', aspect: 'Basis-Sturm-Skills werden zu Werwolf-Fertigkeiten' },
+      { name: 'Vasily\'s Gebet', slot: 'helm', rarity: 'Unique', source: 'Varshan', aspect: 'Erd-Skills verwandeln dich dauerhaft in einen Bären' },
+      { name: 'Wahnsinn des Schlächters (Mad Wolf)', slot: 'chest', rarity: 'Unique', source: 'Grigoire', aspect: 'Erhöht Werwolf-Skills dauerhaft um +3 Ränge' },
+      { name: 'Unstillbare Wut (Insatiable Fury)', slot: 'chest', rarity: 'Unique', source: 'Grigoire', aspect: 'Erhöht Bärengestalt-Skills dauerhaft um +3 Ränge' },
+      { name: 'Sturmgefährte', slot: 'pants', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Wölfe erhalten Sturmstärke und teleportieren sich' },
+      { name: 'Erdenbrecher', slot: 'ring1', rarity: 'Unique', source: 'Grigoire', aspect: 'Erdrutsch lässt tektonische Stacheln emporschnellen' },
+      { name: 'Dolmenstein', slot: 'amulet', rarity: 'Unique', source: 'Grigoire', aspect: 'Felsbrocken kreisen dauerhaft im Hurrikan-Radius' },
+      { name: 'Mjölnic-Ring', slot: 'ring1', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Katastrophe gewährt unbegrenzte Geistkraft und Blitzschaden' },
+      { name: 'Wildherz-Hunger', slot: 'boots', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Gestaltwandeln stapelt Angriffsgeschwindigkeit und Schaden' },
+      { name: 'Fleischreißer', slot: 'dual_1h_1', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Defensive Skills teilen Giftschaden im Umkreis aus' },
+      { name: 'Stein von Vehemen', slot: 'amulet', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Gewittersturm entlädt konzentrierte Blitzentladungen (VoH)' },
+      { name: 'Wickel des unbesungenen Asketen', slot: 'gloves', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Gewittersturm schlägt doppelt ein bei Kanalisierung' },
+      { name: 'Zenit des Jägers', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Gestaltwandler-Kills gewähren freie Folgefertigkeiten' },
+      { name: 'Airidahs unerbittlicher Wille', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Ultimative Fertigkeiten saugen Feinde mit Blitzen an' },
+      { name: 'Wachsende Mondsichel', slot: 'dual_1h_1', rarity: 'Unique', source: 'Varshan', aspect: 'Kills gewähren Verstohlenheit und garantierte Crits' },
+      { name: 'Eintracht der Wildnis (Accord)', slot: 'amulet', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Alle Gefährten-Passiven sind permanent simultan aktiv (LoH)' },
+      { name: 'Ifehs Schreckens-Totem', slot: 'off_hand', rarity: 'Unique', source: 'Kabraxis (LoH)', aspect: 'Irdene Wut verwandelt in Schreckenswolf mit Giftraub (LoH)' },
+      { name: 'Wut der Wildnis (Fury of the Wilds)', slot: 'ring1', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Formwandel löst Berserkerrausch und Wildheitsstapel aus (LoH)' },
+
+      // === JÄGER (BASE, VOH & LORD OF HATRED) ===
+      { name: 'Windmacht (Windforce)', slot: 'ranged_2h', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Pfeilsalve stößt Feinde zurück und taumelt Bosse' },
+      { name: 'Adlerhorn (Eaglehorn)', slot: 'ranged_2h', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Querschläger-Pfeile durchschlagen Wände und Feinde' },
+      { name: 'Verdammung (Condemnation)', slot: 'dual_1h_1', rarity: 'Unique', source: 'Varshan', aspect: 'Mit 3 Kombopunkten teilt der Kern-Skill +40% Schaden aus' },
+      { name: 'Ashearas Khandschar', slot: 'dual_1h_1', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Treffer erhöhen die Angriffsgeschwindigkeit um bis zu 30%' },
+      { name: 'Kappe des Gauners (Scoundrel)', slot: 'helm', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Blendgranaten füllen Energie auf' },
+      { name: 'Kuss des Gauners (Scoundrel Ring)', slot: 'ring1', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Schnellfeuer schießt explosive Brandpfeile im Bogen' },
+      { name: 'Leder des Schurken', slot: 'chest', rarity: 'Unique', source: 'Varshan', aspect: 'Innere Sicht gewährt unbegrenzte Energie und Schaden' },
+      { name: 'Kappe des Namenlosen', slot: 'helm', rarity: 'Unique', source: 'Duriel', aspect: 'Glückstrefferchance gegen CC-Ziele massiv erhöht' },
+      { name: 'Die Umbracrux', slot: 'dual_1h_1', rarity: 'Unique', source: 'Höllenhorden', aspect: 'Erzeugt ein Schatten-Totem, das erlittenen Schaden reflektiert' },
+      { name: 'Möwe des Grubenfechters (Pitfighter)', slot: 'ring1', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Rauchgranate erhöht Schattenschaden gegen Feinde (VoH)' },
+      { name: 'Augen im Dunkeln', slot: 'pants', rarity: 'Unique', source: 'Varshan', aspect: 'Todesfalle setzt sich bei Kills sofort zurück' },
+      { name: 'Himmelsjäger (Skyhunter)', slot: 'ranged_2h', rarity: 'Unique', source: 'Grigoire', aspect: 'Erster Treffer auf Feinde ist ein garantierter Krit' },
+      { name: 'Etnas verlorener Dolch', slot: 'dual_1h_1', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Basis-Skills können verzaubert/imprägniert werden (LoH)' },
+      { name: 'Triumph des Gladiators', slot: 'gloves', rarity: 'Unique', source: 'Kabraxis (LoH)', aspect: 'Erster Scharfschützen-Treffer crittet und überwältigt (LoH)' },
+      { name: 'Verschleierte Gabe (Shrouded Gift)', slot: 'chest', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Tarnung gewährt 30% Schadensminderung nach Aufheben (LoH)' },
+
+      // === TOTENBESCHWÖRER (BASE, VOH & LORD OF HATRED) ===
+      { name: 'Schwarzer Fluss (Black River)', slot: 'main_hand', rarity: 'Unique', source: 'Duriel', aspect: 'Leichenexplosion verzehrt bis zu 4 Leichen auf einmal' },
+      { name: 'Ring der gottlosen Seele', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Löst automatisch Leichenfertigkeiten in deiner Nähe aus' },
+      { name: 'Ring von Mendeln', slot: 'ring1', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Diener lösen explosive physische Minion-Attacken aus' },
+      { name: 'Gebrüll aus den Tiefen', slot: 'gloves', rarity: 'Unique', source: 'Grigoire', aspect: 'Leichenexplosion lässt Skelette auf Feinde zustürmen' },
+      { name: 'Blutloser Schrei', slot: 'main_hand', rarity: 'Unique', source: 'Varshan', aspect: 'Dunkelheitsfertigkeiten unterkühlen und frieren ein' },
+      { name: 'Todloses Antlitz', slot: 'helm', rarity: 'Unique', source: 'Varshan', aspect: 'Knochenspeer hinterlässt explodierende Knochenspitzen' },
+      { name: 'Anhänger des Todessprechers', slot: 'amulet', rarity: 'Unique', source: 'Varshan', aspect: 'Blutwoge lässt alle Diener Mini-Blutwogen entfesseln' },
+      { name: 'Kürass des Bluthandwerkers', slot: 'chest', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Aufnehmen von Blutkugeln beschwört einen Knochengeist' },
+      { name: 'Beinschienen des leeren Grabes', slot: 'boots', rarity: 'Unique', source: 'Grigoire', aspect: 'Schnitter hinterlässt entweihten Boden mit Schattenschaden' },
+      { name: 'Deckellose Wand (Lidless Wall)', slot: 'off_hand', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Knochensturm erzeugt an entfernten Feinden neue Stürme' },
+      { name: 'Blutmond-Beinschutz', slot: 'pants', rarity: 'Unique', source: 'Duriel', aspect: 'Verfluchte Feinde erleiden Minion-Überwältigungsschaden' },
+      { name: 'Cruors Umarmung', slot: 'gloves', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Blutwoge zehrt Leichen auf und explodiert nach außen' },
+      { name: 'Der Schänder (The Unmaker)', slot: 'helm', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Seelenernte entfesselt Wogen aus reinem Schattenschaden (VoH)' },
+      { name: 'Die Mortacrux', slot: 'dual_1h_1', rarity: 'Unique', source: 'Höllenhorden', aspect: 'Verzehrte Leichen beschwören explosive Skelett-Schergen' },
+      { name: 'Verstümmelungs-Platte (Mutilator)', slot: 'chest', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Blutlanze kostet Leben und überwältigt Bosse' },
+      { name: 'Knochen-Medaillon von Rathma', slot: 'amulet', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Geopferte Diener gewähren doppelten Bonus und Überwältigen (LoH)' },
+      { name: 'Krone des Knochen-Tyrannen', slot: 'helm', rarity: 'Unique', source: 'Kabraxis (LoH)', aspect: 'Golem-Schläge spalten den Boden in Knochenkäfige (LoH)' },
+
+      // === ZAUBERER (BASE, VOH & LORD OF HATRED) ===
       { name: 'Zerbrochenes Winterglas', slot: 'amulet', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Frostsphäre beschwört zufällige Konjunktionen' },
       { name: 'Axial-Leitung', slot: 'pants', rarity: 'Unique', source: 'Grigoire', aspect: 'Kettenblitz umkreist dich und entlädt Schocknova' },
-      { name: 'Gewand des Unendlichen', slot: 'chest', rarity: 'Unique', source: 'Varshan', aspect: 'Teleport zieht Gegner heran und betäubt sie' },
+      { name: 'Gewand des Unendlichen', slot: 'chest', rarity: 'Unique', source: 'Varshan', aspect: 'Teleport zieht Gegner heran und betäubt sie für 3s' },
       { name: 'Tal Rashas schillernder Reif', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: '+60% Schaden für 4 verschiedene Elemente' },
-      { name: 'Sturmgebrüll (Tempest Roar)', slot: 'helm', rarity: 'Unique', source: 'Duriel', aspect: 'Sturm-Skills werden zu Werwolf-Fertigkeiten' },
-      { name: 'Erdenbrecher', slot: 'ring1', rarity: 'Unique', source: 'Grigoire', aspect: 'Erdrutsch lässt tektonische Stacheln emporschnellen' },
-      { name: 'Vasily\'s Gebet', slot: 'helm', rarity: 'Unique', source: 'Varshan', aspect: 'Erd-Skills verwandeln in einen Bären' },
-      { name: 'Dolmenstein', slot: 'amulet', rarity: 'Unique', source: 'Grigoire', aspect: 'Felsbrocken kreisen dauerhaft um Hurrikan' },
-      { name: 'Windmacht', slot: 'ranged_2h', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Pfeilsalve stößt Feinde zurück und taumelt' },
-      { name: 'Verdammung (Condemnation)', slot: 'dual_1h_1', rarity: 'Unique', source: 'Varshan', aspect: 'Mit 3 Kombopunkten +40% Kern-Schaden' },
-      { name: 'Kappe des Gauners', slot: 'helm', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Blendgranaten füllen Energie auf' },
-      { name: 'Schwarzer Fluss', slot: 'main_hand', rarity: 'Unique', source: 'Duriel', aspect: 'Leichenexplosion verzehrt bis zu 4 Leichen' },
-      { name: 'Ring der gottlosen Seele', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Löst automatisch Leichen-Skills aus' }
+      { name: 'Handschuhe des Erleuchters', slot: 'gloves', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Feuerbälle hüpfen wie Kieselsteine über den Boden' },
+      { name: 'Stab der endlosen Wut', slot: 'main_hand', rarity: 'Unique', source: 'Varshan', aspect: 'Jeder 3. Feuerball schießt 2 zusätzliche Projektile' },
+      { name: 'Esus Erbstück', slot: 'boots', rarity: 'Unique', source: 'Varshan', aspect: 'Erhöht Krit-Chance basierend auf deiner Bewegungsgeschwindigkeit' },
+      { name: 'Eisklammer (Iceheart Brais)', slot: 'pants', rarity: 'Unique', source: 'Grigoire', aspect: 'Gefrorene Feinde erzeugen beim Tod Frostnovas' },
+      { name: 'Das Okulus', slot: 'main_hand', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Gewährt den Verzauberungseffekt von Teleportieren gratis' },
+      { name: 'Blaue Rose', slot: 'ring1', rarity: 'Unique', source: 'Duriel', aspect: 'Eisstacheln explodieren und durchdringen Kältewiderstand' },
+      { name: 'Sternenfall-Krone', slot: 'helm', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Meteor erhält 2 Ladungen und fällt als Schauer' },
+      { name: 'Flammennarbe', slot: 'main_hand', rarity: 'Unique', source: 'Duriel', aspect: 'Verbrennen schießt glühende Glutgeschosse auf Feinde' },
+      { name: 'Flammenweber', slot: 'gloves', rarity: 'Unique', source: 'Grigoire', aspect: 'Feuerblitz fliegt durch Flammenwände und teilt dreifachen Schaden aus' },
+      { name: 'Sidhe-Bänder', slot: 'gloves', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Beschwört alle 3 Vertrauten gleichzeitig (VoH)' },
+      { name: 'Esadoras überquellendes Gemme', slot: 'amulet', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Knisternde Energie entlädt Blitznovas im Umkreis' },
+      { name: 'Onyx-Seele (Onyx Soul)', slot: 'main_hand', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Pyromantie verbrennt Eigenleben für +220% Brandschaden (LoH)' },
+      { name: 'Flammenkranz von Skovos', slot: 'helm', rarity: 'Unique', source: 'Kabraxis (LoH)', aspect: 'Hydra beschwört Frost- und Blitzschlangen zugleich (LoH)' },
+
+      // === GEISTGEBORENER (VESSEL OF HATRED & LORD OF HATRED) ===
+      { name: 'Stab von Kepeleke', slot: 'main_hand', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Basis-Skills werden zu Kern-Skills und critten voll (VoH)' },
+      { name: 'Harmonie von Ebewaka', slot: 'helm', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Skills erhalten alle Geistertiere-Tags (VoH)' },
+      { name: 'Hyazinthenpanzer (Jacinth)', slot: 'chest', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Reduziert CDs basierend auf Lebensregeneration (VoH)' },
+      { name: 'Sepazontec', slot: 'main_hand', rarity: 'Unique', source: 'Duriel', aspect: 'Jeder 3. Treffer teilt dreifachen Schaden aus (VoH)' },
+      { name: 'Ring der Mittagsjagd', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Erhöht maximale Wildheit und Angriffstempo (VoH)' },
+      { name: 'Ring der Mitternachtssonne', slot: 'ring1', rarity: 'Unique', source: 'Grigoire', aspect: 'Kritische Treffer erstatten bis zu 50% Elan zurück (VoH)' },
+      { name: 'Wushe Nak Pa', slot: 'main_2h_blunt', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Ultimative Fertigkeiten rufen zwei Geisterwächter herbei (VoH)' },
+      { name: 'Wahn des toten Gottes', slot: 'gloves', rarity: 'Unique', source: 'Grigoire', aspect: 'Gift-DoTs erzeugen tödliche Chitin-Insekten (VoH)' },
+      { name: 'Band des ersten Atems', slot: 'ring1', rarity: 'Unique', source: 'Fürst Zir', aspect: 'Ausweichen entfesselt Sturmfedern und Entschlossenheit (VoH)' },
+      { name: 'Friedensstifter-Siegel', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Entschlossenheitsschichten erhöhen den Schaden um 60% (VoH)' },
+      { name: 'Schutz des Ersten', slot: 'chest', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Gorilla-Fähigkeiten verleihen unüberwindbare Barrieren (VoH)' },
+      { name: 'Ring des sich windenden Mondes', slot: 'ring1', rarity: 'Unique', source: 'Varshan', aspect: 'Adler-Skills rufen wirbelnde Sturmböen herbei (VoH)' },
+      { name: 'Hohn der Erde (Scorn of Earth)', slot: 'boots', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Erdrutschartige Tritte betäuben alle nahen Feinde (VoH)' },
+      { name: 'Wundtrinker (Wound Drinker)', slot: 'ring1', rarity: 'Unique', source: 'Biest im Eis', aspect: 'Tausendfüßler saugt Leben aus allen vergifteten Zielen (VoH)' },
+      { name: 'Loyalitätsmantel', slot: 'helm', rarity: 'Unique', source: 'Grigoire', aspect: 'Geisterbande-Boni werden um 100% verstärkt (VoH)' },
+      { name: 'Wandelndes Herz (Protean Heart)', slot: 'amulet', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Wächterwechsel verdoppelt Kern-Attribute für 7 Sekunden (LoH)' },
+      { name: 'Gürtel der Bestie von Kurast', slot: 'pants', rarity: 'Unique', source: 'Kabraxis (LoH)', aspect: 'Jaguar-Sprüge hinterlassen brennende Wildheitskrater (LoH)' },
+
+      // === PALADIN (LORD OF HATRED EXPANSION) ===
+      { name: 'Schild des Zakarum (Aegis)', slot: 'off_hand', rarity: 'Unique', source: 'Kabraxis (LoH)', aspect: 'Blocken reflektiert 150% Heiligschaden und heilt Verbündete (LoH)' },
+      { name: 'Herold von Zakarum', slot: 'off_hand', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: '+4 auf alle Paladin-Auren und +30% Blockchance (LoH)' },
+      { name: 'Griff der Erlösung', slot: 'gloves', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Eifer schlägt 2x zusätzlich mit himmlischen Lichtstrahlen zu (LoH)' },
+      { name: 'Geheiligter Brustharnisch', slot: 'chest', rarity: 'Unique', source: 'Kabraxis (LoH)', aspect: 'Auren verleihen Gruppenmitgliedern 15% Schadensminderung (LoH)' },
+      { name: 'Lichtbringer-Streitkolben', slot: 'main_hand', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Gesegneter Hammer kreist unendlich und zieht Dämonen an (LoH)' },
+      { name: 'Schwur des Inquisitors', slot: 'dual_1h_1', rarity: 'Unique', source: 'Kabraxis (LoH)', aspect: 'Himmelsfaust trifft 3 zusätzliche Elite-Ziele im Umkreis (LoH)' },
+      { name: 'Siegel des Märtyrers', slot: 'ring1', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Erlittener Schaden lädt die nächste Himmelsaura massiv auf (LoH)' },
+      { name: 'Strahlende Krone der Hoffnung', slot: 'helm', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Heiliger Schild bleibt dauerhaft aktiv bei vollem Leben (LoH)' },
+
+      // === HEXENMEISTER / WARLOCK (LORD OF HATRED EXPANSION) ===
+      { name: 'Wirbelsäule von Taphamet', slot: 'main_hand', rarity: 'Unique', source: 'Kabraxis (LoH)', aspect: 'Höllenfraktur teilt +120% Schaden aus und spaltet dreifach (LoH)' },
+      { name: 'Kabraxis\' Wall', slot: 'chest', rarity: 'Unique', source: 'Kabraxis (LoH)', aspect: 'Erhöht Rüstung massiv und errichtet eine Wand der Pein (LoH)' },
+      { name: 'Die Unterkrone (The Undercrown)', slot: 'helm', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Senkt Ressourcenkosten und skaliert Schattenschaden (LoH)' },
+      { name: 'Pakt des Abgrunds', slot: 'amulet', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Dämonenbindung beschwört 2 zusätzliche Höllenwichtel (LoH)' },
+      { name: 'Seelenernter-Klinge', slot: 'dual_1h_1', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Opfern von Seelenfragmenten heilt und erzeugt Chaosnova (LoH)' },
+      { name: 'Band der Höllenbrut', slot: 'ring1', rarity: 'Unique', source: 'Kabraxis (LoH)', aspect: 'Höllenfeuer verbrennt Gegner für 200% Schaden über Zeit (LoH)' },
+      { name: 'Grimoire des gefallenen Engels', slot: 'off_hand', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Dämonentor saugt Gegner an und verhängt Verwundbarkeit (LoH)' },
+      { name: 'Aschegewand von Skovos', slot: 'chest', rarity: 'Unique', source: 'Skovos-Vault (LoH)', aspect: 'Feuerresistenzen erhöhen den Höllenfeuer-Schaden (LoH)' }
     ];
 
     const RUNES_DATA = [
@@ -1133,7 +1309,7 @@
         location: 'Klaffender Schlund (Kehjistan)',
         mats: '2x Scherbe der Qual, 2x Schleimgeschwärztes Ei',
         matKeys: { 'Scherben der Qual': 2, 'Schleimgeschwärzte Eier': 2 },
-        drops: ['Harlekinskrone (Shako)', 'Der Großvater', 'Verdammnis (Doombringer)', 'Ring der Sternenlosen Himmel', 'Geschmolzenes Herz von Selig', 'Tibaults Wille', 'Schwarzer Fluss', 'Sturmgebrüll', 'Sepazontec', 'Godslayer-Krone', 'X\'Fals korrodierter Siegelring']
+        drops: ['Harlekinskrone (Shako)', 'Der Großvater', 'Verdammnis (Doombringer)', 'Ring der Sternenlosen Himmel', 'Geschmolzenes Herz von Selig', 'Tibaults Wille', 'Schwarzer Fluss', 'Sturmgebrüll', 'Sepazontec', 'Godslayer-Krone', "X'Fals korrodierter Siegelring"]
       },
       {
         name: 'Andariel, Herrin der Qual',
@@ -1173,7 +1349,7 @@
         location: 'Bösartiger Bau (Hawezar)',
         mats: '5x Bösartiges Herz',
         matKeys: { 'Bösartige Herzen': 5 },
-        drops: ['Tal Rashas schillernder Reif', 'Gewand des Unendlichen', 'Verdammung (Condemnation)', 'Ring der gottlosen Seele', 'Gohrs Verheerende Greifer', 'Vasily\'s Gebet']
+        drops: ['Tal Rashas schillernder Reif', 'Gewand des Unendlichen', 'Verdammung (Condemnation)', 'Ring der gottlosen Seele', 'Gohrs Verheerende Greifer', "Vasily's Gebet"]
       }
     ];
 
@@ -1230,9 +1406,8 @@
     let currentEditingSlotId = null;
     let activeRuneFilter = 'all';
 
-    // Masterworking State
     let activeMwSlotId = 'helm';
-    let masterworkingData = {}; // { [slotId]: { rank: 0, crits: [], affixes: [] } }
+    let masterworkingData = {};
 
     // ================= STORAGE =================
     function safeJsonParse(val, fallback) {
@@ -1259,6 +1434,27 @@
 
     function loadFromStorage() {
       try {
+        // Hash Check für geteilten Build
+        if (window.location.hash && window.location.hash.startsWith('#build=')) {
+          const rawHash = window.location.hash.replace('#build=', '');
+          try {
+            const decoded = JSON.parse(decodeURIComponent(atob(rawHash)));
+            if (decoded && decoded.c) {
+              currentClass = decoded.c;
+              currentBuild = decoded.b || {};
+              currentSkills = decoded.s || [];
+              currentKeyPassive = decoded.k || '';
+              currentGlyphs = decoded.g || [];
+              currentClassMechanic = decoded.m || {};
+              if (decoded.merc) mercenaryData = decoded.merc;
+              showToast('Geteilter Build geladen!');
+              return;
+            }
+          } catch (err) {
+            console.warn('Fehlerhafter Build-Hash:', err);
+          }
+        }
+
         const savedClass = localStorage.getItem('d4_planer_class');
         if (savedClass) currentClass = savedClass;
         const preset = CLASS_SKILLS_PRESETS[currentClass] || CLASS_SKILLS_PRESETS['Barbar'];
@@ -1295,6 +1491,15 @@
       updateMaterialsCalculator();
       updateBossRunCapacity();
       initMasterworkingUI();
+
+      // Keyboard Esc Listener für Modals
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeSlotModal();
+          closeTrackerQuickAddModal();
+          closeConfirmModal(false);
+        }
+      });
     }
 
     window.addEventListener('DOMContentLoaded', initApp);
@@ -1417,20 +1622,115 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
             <div class="p-2.5 rounded bg-[#0b0b0f] border border-blue-900/40">
               <span class="font-bold text-amber-300 block mb-1">Slot 1</span>
-              <input type="text" value="${m.enc_1 || 'Feuerblitz (Direkter Schaden verbrennt Feinde)'}" onchange="window.saveClassMechanic('enc_1', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs">
+              <input type="text" value="${escapeHtml(m.enc_1 || 'Feuerblitz (Direkter Schaden verbrennt Feinde)')}" onchange="window.saveClassMechanic('enc_1', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs">
             </div>
             <div class="p-2.5 rounded bg-[#0b0b0f] border border-blue-900/40">
               <span class="font-bold text-amber-300 block mb-1">Slot 2</span>
-              <input type="text" value="${m.enc_2 || 'Teleportation (Entrinnen wird zum Teleport)'}" onchange="window.saveClassMechanic('enc_2', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs">
+              <input type="text" value="${escapeHtml(m.enc_2 || 'Teleportation (Entrinnen wird zum Teleport)')}" onchange="window.saveClassMechanic('enc_2', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs">
+            </div>
+          </div>
+        `;
+      } else if (currentClass === 'Geistgeborener') {
+        titleEl.innerText = 'Geisterhalle (Nahantu-Einklang)';
+        container.innerHTML = `
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="p-2.5 rounded bg-[#0b0b0f] border border-emerald-900/40">
+              <span class="font-bold text-amber-300 block mb-1">Primärer Wächter</span>
+              <select onchange="window.saveClassMechanic('sb_prim', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs">
+                <option value="Jaguar" ${m.sb_prim==='Jaguar'?'selected':''}>Jaguar (Wildheit, Tempo & Angriffsserie)</option>
+                <option value="Adler" ${m.sb_prim==='Adler'?'selected':''}>Adler (Sturmfedern, Krit-Chance & Mobilität)</option>
+                <option value="Gorilla" ${m.sb_prim==='Gorilla'?'selected':''}>Gorilla (Entschlossenheit, Barriere & Vergeltung)</option>
+                <option value="Tausendfüßler" ${m.sb_prim==='Tausendfüßler'?'selected':''}>Tausendfüßler (Gift, Verlangsamung & Lebensraub)</option>
+              </select>
+            </div>
+            <div class="p-2.5 rounded bg-[#0b0b0f] border border-emerald-900/40">
+              <span class="font-bold text-amber-300 block mb-1">Sekundärer Wächter</span>
+              <select onchange="window.saveClassMechanic('sb_sec', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs">
+                <option value="Jaguar" ${m.sb_sec==='Jaguar'?'selected':''}>Jaguar (Erzeugt Wildheitsstapel)</option>
+                <option value="Adler" ${m.sb_sec==='Adler'?'selected':''}>Adler (Ausweichen schießt Federn)</option>
+                <option value="Gorilla" ${m.sb_sec==='Gorilla'?'selected':''}>Gorilla (Gewährt Dornen & Zähigkeit)</option>
+                <option value="Tausendfüßler" ${m.sb_sec==='Tausendfüßler'?'selected':''}>Tausendfüßler (DoT schwächt Gegner)</option>
+              </select>
+            </div>
+          </div>
+        `;
+      } else if (currentClass === 'Paladin') {
+        titleEl.innerText = 'Eid-System & Heilige Auren (Lord of Hatred)';
+        container.innerHTML = `
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="p-2.5 rounded bg-[#0b0b0f] border border-amber-900/40">
+              <span class="font-bold text-amber-300 block mb-1">Paladin-Eid (Pfad)</span>
+              <select onchange="window.saveClassMechanic('pala_oath', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs">
+                <option value="vergelter" ${m.pala_oath==='vergelter'?'selected':''}>Eid der Vergeltung (+Heiligschaden & Crits)</option>
+                <option value="schutz" ${m.pala_oath==='schutz'?'selected':''}>Eid des Schutzes (Blockchance & Barrieren)</option>
+                <option value="gnade" ${m.pala_oath==='gnade'?'selected':''}>Eid der Erlösung (Aurenradius & Heilung)</option>
+              </select>
+            </div>
+            <div class="p-2.5 rounded bg-[#0b0b0f] border border-amber-900/40">
+              <span class="font-bold text-amber-300 block mb-1">Aktive Aura</span>
+              <select onchange="window.saveClassMechanic('pala_aura', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs">
+                <option value="fanatismus" ${m.pala_aura==='fanatismus'?'selected':''}>Aura des Fanatismus (+Angriffstempo & Physischer Schaden)</option>
+                <option value="trotz" ${m.pala_aura==='trotz'?'selected':''}>Aura des Trotzes (+Rüstung & Resistenzen)</option>
+                <option value="heiligesfeuer" ${m.pala_aura==='heiligesfeuer'?'selected':''}>Aura des Heiligen Feuers (Flächenschaden an nahen Feinden)</option>
+                <option value="macht" ${m.pala_aura==='macht'?'selected':''}>Aura der Macht (Chance auf Überwältigen)</option>
+              </select>
+            </div>
+          </div>
+        `;
+      } else if (currentClass === 'Hexenmeister') {
+        titleEl.innerText = 'Dämonenbindung & Seelenopfer (Lord of Hatred)';
+        container.innerHTML = `
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="p-2.5 rounded bg-[#0b0b0f] border border-red-950/60">
+              <span class="font-bold text-red-300 block mb-1">Gebundener Höllendämon</span>
+              <select onchange="window.saveClassMechanic('warlock_demon', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs">
+                <option value="bluthund" ${m.warlock_demon==='bluthund'?'selected':''}>Höllenbluthund (Schnelle Angriffe & Blutung)</option>
+                <option value="wichtel" ${m.warlock_demon==='wichtel'?'selected':''}>Flammenwichtel-Schwarm (Feuergeschosse & Verbrennung)</option>
+                <option value="peiniger" ${m.warlock_demon==='peiniger'?'selected':''}>Kräftiger Peiniger (Tank, Spott & Schattenschlag)</option>
+              </select>
+            </div>
+            <div class="p-2.5 rounded bg-[#0b0b0f] border border-red-950/60">
+              <span class="font-bold text-red-300 block mb-1">Seelen-Verzehr Mechanik</span>
+              <select onchange="window.saveClassMechanic('warlock_soul', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs">
+                <option value="opferung" ${m.warlock_soul==='opferung'?'selected':''}>Dämonenopferung (+Schadens-Buff auf Kosten des Dämons)</option>
+                <option value="ernte" ${m.warlock_soul==='ernte'?'selected':''}>Seelenernte (Kills erzeugen Seelenfragmente)</option>
+                <option value="blutpakt" ${m.warlock_soul==='blutpakt'?'selected':''}>Blutpakt (Lebenskosten erhöhen Schaden um bis zu 80%)</option>
+              </select>
+            </div>
+          </div>
+        `;
+      } else if (currentClass === 'Jäger') {
+        titleEl.innerText = 'Jäger-Spezialisierung';
+        container.innerHTML = `
+          <div class="p-2.5 rounded bg-[#0b0b0f] border border-red-900/40 text-xs">
+            <span class="font-bold text-amber-300 block mb-1">Aktiver Fokus</span>
+            <select onchange="window.saveClassMechanic('rogue_spec', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs">
+              <option value="kombopunkte" ${m.rogue_spec==='kombopunkte'?'selected':''}>Kombopunkte (Basis-Skills laden Kern-Fertigkeiten auf)</option>
+              <option value="inneresicht" ${m.rogue_spec==='inneresicht'?'selected':''}>Innere Sicht (Markierte Gegner füllen 4s endlose Energie)</option>
+              <option value="vorbereitung" ${m.rogue_spec==='vorbereitung'?'selected':''}>Vorbereitung (Energieverbrauch setzt Ulti-CD zurück)</option>
+            </select>
+          </div>
+        `;
+      } else if (currentClass === 'Druide') {
+        titleEl.innerText = 'Geistersegen (Túr Dúlra)';
+        container.innerHTML = `
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <div class="p-2 rounded bg-[#0b0b0f] border border-amber-900/40">
+              <span class="font-bold text-amber-300 block mb-1">Hirsch / Rabe</span>
+              <input type="text" value="${escapeHtml(m.druid_1 || 'Geschenk des Hirsches (+Max-Geistkraft)')}" onchange="window.saveClassMechanic('druid_1', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs">
+            </div>
+            <div class="p-2 rounded bg-[#0b0b0f] border border-amber-900/40">
+              <span class="font-bold text-amber-300 block mb-1">Wolf / Schlange</span>
+              <input type="text" value="${escapeHtml(m.druid_2 || 'Ruhm des Wolfes (+Kritischer Schaden / Überwältigen)')}" onchange="window.saveClassMechanic('druid_2', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1 text-gray-200 text-xs">
             </div>
           </div>
         `;
       } else {
-        titleEl.innerText = currentClass === 'Barbar' ? 'Arsenal-Expertise' : 'Klassen-Ermächtigung';
+        titleEl.innerText = 'Arsenal-Expertise';
         container.innerHTML = `
           <div class="p-2.5 rounded bg-[#0b0b0f] border border-red-900/40 text-xs">
-            <span class="font-bold text-amber-300 block mb-1">${currentClass === 'Barbar' ? 'Technik-Slot' : 'Aktive Spezialisierung'}</span>
-            <input type="text" value="${m.tech || (currentClass==='Barbar' ? 'Zweihandaxt-Expertise (+15% Schaden gegen Verwundete)' : 'Klassen-Segen')}" onchange="window.saveClassMechanic('tech', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1.5 text-xs text-gray-200">
+            <span class="font-bold text-amber-300 block mb-1">Technik-Slot</span>
+            <input type="text" value="${escapeHtml(m.tech || 'Zweihandaxt-Expertise (+15% Schaden gegen Verwundete)')}" onchange="window.saveClassMechanic('tech', this.value)" class="w-full bg-[#121217] border border-[#2b2638] rounded p-1.5 text-xs text-gray-200">
           </div>
         `;
       }
@@ -1453,7 +1753,7 @@
         html += `
           <div class="p-2.5 rounded-lg bg-[#0e0e13] border border-[#24212c] flex flex-col justify-between">
             <span class="text-[9px] uppercase tracking-wider text-gray-500 font-bold">Slot ${i+1}</span>
-            <input type="text" value="${currentSkills[i] || ''}" onchange="window.updateSkill(${i}, this.value)" class="bg-transparent border-b border-gray-700 focus:border-red-500 text-xs font-bold text-gray-200 py-1 truncate" placeholder="Skill wählen...">
+            <input type="text" value="${escapeHtml(currentSkills[i] || '')}" onchange="window.updateSkill(${i}, this.value)" class="bg-transparent border-b border-gray-700 focus:border-red-500 text-xs font-bold text-gray-200 py-1 truncate" placeholder="Skill wählen...">
           </div>
         `;
       }
@@ -1462,7 +1762,7 @@
           <span class="text-[9px] uppercase tracking-wider text-amber-400 font-bold flex items-center gap-1">
             <i class="fa-solid fa-star text-[8px]"></i> Schlüsselpassiv
           </span>
-          <input type="text" value="${currentKeyPassive}" onchange="window.updateKeyPassive(this.value)" class="bg-transparent border-b border-red-700/60 focus:border-amber-500 text-xs font-bold text-amber-200 py-1 truncate">
+          <input type="text" value="${escapeHtml(currentKeyPassive)}" onchange="window.updateKeyPassive(this.value)" class="bg-transparent border-b border-red-700/60 focus:border-amber-500 text-xs font-bold text-amber-200 py-1 truncate">
         </div>
       `;
       container.innerHTML = html;
@@ -1486,7 +1786,7 @@
       container.innerHTML = currentGlyphs.map((g, idx) => `
         <div class="p-2.5 rounded-lg bg-[#0d0d12] border border-purple-950/60">
           <span class="text-[9px] text-purple-400 uppercase font-bold block mb-1">Glyphe #${idx+1}</span>
-          <input type="text" value="${g}" onchange="window.updateGlyph(${idx}, this.value)" class="w-full bg-transparent border-b border-[#2d273a] focus:border-purple-400 text-xs font-semibold text-gray-200 py-0.5 truncate">
+          <input type="text" value="${escapeHtml(g)}" onchange="window.updateGlyph(${idx}, this.value)" class="w-full bg-transparent border-b border-[#2d273a] focus:border-purple-400 text-xs font-semibold text-gray-200 py-0.5 truncate">
         </div>
       `).join('');
     }
@@ -1541,15 +1841,15 @@
                 </div>
               </div>
               <h4 class="text-xs font-bold ${item ? 'text-gray-100' : 'text-gray-500 italic'} truncate">
-                ${item ? item.name : 'Slot frei (Tippen)'}
+                ${item ? escapeHtml(item.name) : 'Slot frei (Tippen)'}
               </h4>
-              ${item && item.aspect ? `<p class="text-[11px] text-amber-200/80 line-clamp-1 mt-0.5"><i class="fa-solid fa-sparkles text-[9px] text-amber-400 mr-1"></i>${item.aspect}</p>` : ''}
-              ${item && (item.temper1 || item.temper2) ? `<p class="text-[10px] text-gray-400 truncate mt-0.5"><i class="fa-solid fa-hammer text-[9px] text-amber-500 mr-1"></i>${[item.temper1, item.temper2].filter(Boolean).join(' | ')}</p>` : ''}
-              ${item && (item.rune1 || item.rune2) ? `<p class="text-[10px] text-purple-300 truncate mt-0.5"><i class="fa-solid fa-gem text-[9px] text-purple-400 mr-1"></i>${[item.rune1, item.rune2].filter(Boolean).join(' + ')}</p>` : ''}
+              ${item && item.aspect ? `<p class="text-[11px] text-amber-200/80 line-clamp-1 mt-0.5"><i class="fa-solid fa-sparkles text-[9px] text-amber-400 mr-1"></i>${escapeHtml(item.aspect)}</p>` : ''}
+              ${item && (item.temper1 || item.temper2) ? `<p class="text-[10px] text-gray-400 truncate mt-0.5"><i class="fa-solid fa-hammer text-[9px] text-amber-500 mr-1"></i>${escapeHtml([item.temper1, item.temper2].filter(Boolean).join(' | '))}</p>` : ''}
+              ${item && (item.rune1 || item.rune2) ? `<p class="text-[10px] text-purple-300 truncate mt-0.5"><i class="fa-solid fa-gem text-[9px] text-purple-400 mr-1"></i>${escapeHtml([item.rune1, item.rune2].filter(Boolean).join(' + '))}</p>` : ''}
             </div>
             <div class="mt-2 pt-2 border-t border-[#1f1c24] flex items-center justify-between text-[10px] text-gray-400">
               <span class="truncate max-w-[170px]">
-                ${item && item.source ? `<i class="fa-solid fa-location-dot text-red-400 mr-1"></i>${item.source}` : 'Keine Quelle'}
+                ${item && item.source ? `<i class="fa-solid fa-location-dot text-red-400 mr-1"></i>${escapeHtml(item.source)}` : 'Keine Quelle'}
               </span>
               <span class="text-gray-500 group-hover:text-amber-400 transition">
                 <i class="fa-solid fa-pen text-[10px]"></i> Bearbeiten
@@ -1574,8 +1874,12 @@
       const slots = getActiveSlotsForClass();
       select.innerHTML = slots.map(s => {
         const item = currentBuild[s.id];
-        return `<option value="${s.id}">${s.name} ${item ? `(${item.name})` : ''}</option>`;
+        return `<option value="${s.id}">${s.name} ${item ? `(${escapeHtml(item.name)})` : ''}</option>`;
       }).join('');
+      if (!slots.some(s => s.id === activeMwSlotId)) {
+        activeMwSlotId = slots[0]?.id || 'helm';
+      }
+      select.value = activeMwSlotId;
       loadSlotForMasterworking(activeMwSlotId);
     }
 
@@ -1604,8 +1908,8 @@
       if (!data) return;
 
       document.getElementById('mw-current-rank').innerText = `${data.rank} / 12`;
-      document.getElementById('mw-spent-obducite').innerText = data.spentObducite.toLocaleString('de-DE');
-      document.getElementById('mw-spent-gold').innerText = data.spentGold.toLocaleString('de-DE');
+      document.getElementById('mw-spent-obducite').innerText = (data.spentObducite || 0).toLocaleString('de-DE');
+      document.getElementById('mw-spent-gold').innerText = (data.spentGold || 0).toLocaleString('de-DE');
 
       const nextCrit = data.rank < 4 ? 'Rang 4' : data.rank < 8 ? 'Rang 8' : data.rank < 12 ? 'Rang 12' : 'Maximaler Rang!';
       document.getElementById('mw-next-crit-indicator').innerText = `Nächster Krit-Bonus bei: ${nextCrit}`;
@@ -1623,11 +1927,11 @@
 
         return `
           <div class="p-3 rounded-lg bg-[#0c0c10] border ${critCount > 0 ? 'border-amber-500/70 bg-amber-950/15' : 'border-[#221f2d]'} flex items-center justify-between">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 flex-1 mr-2">
               ${critCount > 0 ? `<span class="text-amber-400 font-bold text-xs">${'★'.repeat(critCount)}</span>` : ''}
-              <input type="text" value="${affix}" onchange="window.updateMwAffixName(${idx}, this.value)" class="bg-transparent text-xs font-semibold text-gray-200 border-b border-transparent focus:border-amber-400 focus:outline-none">
+              <input type="text" value="${escapeHtml(affix)}" onchange="window.updateMwAffixName(${idx}, this.value)" class="bg-transparent text-xs font-semibold text-gray-200 border-b border-transparent focus:border-amber-400 focus:outline-none w-full">
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 shrink-0">
               <span class="text-xs font-bold font-mono ${totalBonus > 0 ? 'text-amber-400' : 'text-gray-500'}">+${totalBonus}%</span>
               ${critCount > 0 ? `<span class="px-1.5 py-0.5 rounded text-[9px] bg-amber-900/80 text-amber-200 font-bold">${critCount}x Krit</span>` : ''}
             </div>
@@ -1651,8 +1955,8 @@
       const costObducite = [0, 10, 15, 20, 30, 40, 50, 70, 90, 120, 160, 220, 300][data.rank] || 50;
       const costGold = [0, 100000, 150000, 200000, 400000, 600000, 800000, 1200000, 1600000, 2500000, 3500000, 5000000, 7500000][data.rank] || 200000;
 
-      data.spentObducite += costObducite;
-      data.spentGold += costGold;
+      data.spentObducite = (data.spentObducite || 0) + costObducite;
+      data.spentGold = (data.spentGold || 0) + costGold;
 
       if (data.rank === 4 || data.rank === 8 || data.rank === 12) {
         const randomAffixIdx = Math.floor(Math.random() * data.affixes.length);
@@ -1784,8 +2088,8 @@
       }
 
       const genDrMult = 1 - Math.min(0.9, genericDr / 100);
-      const physicalEhp = Math.round(baseLife / ((1 - physicalDr) * genDrMult));
-      const elementalEhp = Math.round(baseLife / ((1 - cappedRes) * genDrMult));
+      const physicalEhp = Math.round(baseLife / (Math.max(0.01, 1 - physicalDr) * Math.max(0.01, genDrMult)));
+      const elementalEhp = Math.round(baseLife / (Math.max(0.01, 1 - cappedRes) * Math.max(0.01, genDrMult)));
 
       document.getElementById('ehp-physical').innerText = physicalEhp.toLocaleString('de-DE');
       document.getElementById('ehp-elemental').innerText = elementalEhp.toLocaleString('de-DE');
@@ -1900,11 +2204,11 @@
               </button>
               <div class="truncate">
                 <div class="flex items-center gap-1.5">
-                  <h4 class="text-xs font-bold ${rarityColor} ${item.found ? 'line-through text-gray-400' : ''} truncate">${item.name}</h4>
+                  <h4 class="text-xs font-bold ${rarityColor} ${item.found ? 'line-through text-gray-400' : ''} truncate">${escapeHtml(item.name)}</h4>
                   ${item.ga > 0 ? `<span class="text-amber-400 text-xs font-bold">${'★'.repeat(item.ga)}</span>` : ''}
                   <button onclick="window.cyclePriority('${item.id}')" class="px-1.5 py-0.2 rounded text-[9px] font-bold border ${prioBadge}">${item.priority}</button>
                 </div>
-                <span class="text-[10px] text-gray-500">${item.slotName} • <span class="text-red-400/90">${item.source}</span></span>
+                <span class="text-[10px] text-gray-500">${escapeHtml(item.slotName)} • <span class="text-red-400/90">${escapeHtml(item.source)}</span></span>
               </div>
             </div>
             <div class="flex items-center gap-2 shrink-0">
@@ -1954,7 +2258,7 @@
         return `
           <div class="p-2.5 rounded-lg bg-[#0f0e13] border ${ok ? 'border-green-900/50 bg-green-950/10' : 'border-amber-950/60'} flex flex-col justify-between">
             <div class="flex items-center justify-between gap-1 mb-1">
-              <span class="text-[10px] font-bold text-gray-300 truncate">${mat}</span>
+              <span class="text-[10px] font-bold text-gray-300 truncate">${escapeHtml(mat)}</span>
               ${ok ? '<i class="fa-solid fa-circle-check text-green-400 text-xs"></i>' : ''}
             </div>
             <div class="flex items-center justify-between text-xs my-1">
@@ -1963,7 +2267,7 @@
             </div>
             <div class="mt-1 pt-1.5 border-t border-[#1e1c25] flex items-center justify-between gap-1">
               <span class="text-[9px] text-gray-400">Im Beutel:</span>
-              <input type="number" min="0" value="${inv}" onchange="window.updateInventoryMat('${mat}', this.value)" class="w-16 bg-[#181820] border border-[#2b2738] rounded px-1 py-0.5 text-right text-xs font-mono text-gray-200">
+              <input type="number" min="0" value="${inv}" onchange="window.updateInventoryMat('${escapeHtml(mat)}', this.value)" class="w-16 bg-[#181820] border border-[#2b2738] rounded px-1 py-0.5 text-right text-xs font-mono text-gray-200">
             </div>
           </div>
         `;
@@ -1993,7 +2297,7 @@
 
         return `
           <div class="p-2 rounded bg-[#0b0a10] border border-[#211e2b]">
-            <span class="text-[10px] text-gray-400 block truncate">${b.name.split(',')[0]}</span>
+            <span class="text-[10px] text-gray-400 block truncate">${escapeHtml(b.name.split(',')[0])}</span>
             <span class="text-sm font-bold font-mono ${possibleRuns > 0 ? 'text-green-400' : 'text-gray-600'}">${possibleRuns} Runs</span>
           </div>
         `;
@@ -2012,28 +2316,28 @@
           (b.drops && b.drops.some(d => d.toLowerCase().includes(q)));
       });
 
-      container.innerHTML = filtered.map(b => `
+      container.innerHTML = filtered.map((b, bIdx) => `
         <div class="p-4 rounded-xl bg-[#0f0f14] border border-[#262330] flex flex-col justify-between">
           <div>
             <div class="flex items-start justify-between gap-2 mb-2">
               <div>
-                <h3 class="text-sm font-bold font-cinzel text-amber-200">${b.name}</h3>
+                <h3 class="text-sm font-bold font-cinzel text-amber-200">${escapeHtml(b.name)}</h3>
                 <p class="text-[11px] text-gray-400 flex items-center gap-1 mt-0.5">
-                  <i class="fa-solid fa-map-pin text-red-500"></i> ${b.location}
+                  <i class="fa-solid fa-map-pin text-red-500"></i> ${escapeHtml(b.location)}
                 </p>
               </div>
-              <span class="px-2 py-0.5 rounded text-[10px] bg-red-950/80 border border-red-800/40 text-red-300 font-semibold">${b.type}</span>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-red-950/80 border border-red-800/40 text-red-300 font-semibold">${escapeHtml(b.type)}</span>
             </div>
             <div class="my-2 p-2 rounded bg-[#09090c] border border-[#1e1c24] text-[11px]">
               <span class="text-gray-400 block font-semibold mb-0.5">Materialien:</span>
-              <span class="text-amber-300 font-mono">${b.mats}</span>
+              <span class="text-amber-300 font-mono">${escapeHtml(b.mats)}</span>
             </div>
             <div class="mt-3">
               <span class="text-[10px] uppercase font-bold text-gray-400 block mb-1">Target-Loot:</span>
               <div class="flex flex-wrap gap-1.5">
-                ${b.drops.map(item => `
-                  <button onclick="window.quickAddBossDrop('${item}', '${b.name.split(',')[0]}')" class="px-2 py-1 rounded bg-[#16151c] hover:bg-amber-950/60 border border-[#2b2738] hover:border-amber-600/50 text-[11px] text-gray-200 hover:text-amber-300 flex items-center gap-1 transition">
-                    <span>${item}</span>
+                ${b.drops.map((item, iIdx) => `
+                  <button onclick="window.quickAddBossDropByIndex(${bIdx}, ${iIdx})" class="px-2 py-1 rounded bg-[#16151c] hover:bg-amber-950/60 border border-[#2b2738] hover:border-amber-600/50 text-[11px] text-gray-200 hover:text-amber-300 flex items-center gap-1 transition">
+                    <span>${escapeHtml(item)}</span>
                     <i class="fa-solid fa-plus text-[8px] text-gray-500"></i>
                   </button>
                 `).join('')}
@@ -2044,12 +2348,11 @@
       `).join('');
     }
 
-    function filterBossGuide() {
-      const input = document.getElementById('boss-search');
-      renderBossGuide(input ? input.value : '');
-    }
-
-    function quickAddBossDrop(itemName, sourceName) {
+    function quickAddBossDropByIndex(bossIndex, dropIndex) {
+      const boss = BOSS_DATA[bossIndex];
+      if (!boss || !boss.drops[dropIndex]) return;
+      const itemName = boss.drops[dropIndex];
+      const sourceName = boss.name.split(',')[0];
       addItemToTracker({
         name: itemName,
         rarity: 'Unique',
@@ -2057,7 +2360,12 @@
         slotName: 'Boss Loot',
         priority: 'Hoch'
       });
-      showToast(`${itemName} wurde zur Wunschliste hinzugefügt!`);
+      showToast(`${itemName} zur Wunschliste hinzugefügt!`);
+    }
+
+    function filterBossGuide() {
+      const input = document.getElementById('boss-search');
+      renderBossGuide(input ? input.value : '');
     }
 
     // ================= RUNEN & HÄRTUNG =================
@@ -2092,10 +2400,10 @@
         <div class="p-3 rounded-lg bg-[#0e0e13] border border-[#25222e] flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:border-purple-800/50 transition">
           <div>
             <div class="flex items-center gap-2 mb-1">
-              <h4 class="text-xs font-bold text-purple-200 font-mono">${r.name}</h4>
+              <h4 class="text-xs font-bold text-purple-200 font-mono">${escapeHtml(r.name)}</h4>
               <span class="text-[9px] px-1.5 py-0.2 rounded border ${r.type === 'Ritual' ? 'bg-red-950/60 border-red-800/40 text-red-300' : 'bg-emerald-950/60 border-emerald-800/40 text-emerald-300'}">${r.type}</span>
             </div>
-            <p class="text-[11px] text-gray-300">${r.desc}</p>
+            <p class="text-[11px] text-gray-300">${escapeHtml(r.desc)}</p>
           </div>
           <span class="text-[10px] font-mono font-semibold ${r.type === 'Ritual' ? 'text-green-400' : 'text-amber-400'} shrink-0">${r.offering} Opfergabe</span>
         </div>
@@ -2113,13 +2421,13 @@
         <div class="p-3.5 rounded-xl bg-[#0e0e13] border border-[#25222e]">
           <div class="flex items-center gap-2 mb-2 pb-1.5 border-b border-[#1c1a24]">
             <i class="fa-solid ${c.icon} ${c.color} text-xs"></i>
-            <h4 class="text-xs font-bold text-gray-200">${c.cat}</h4>
+            <h4 class="text-xs font-bold text-gray-200">${escapeHtml(c.cat)}</h4>
           </div>
           <div class="space-y-1.5">
             ${c.recipes.map(r => `
               <div class="flex items-center justify-between text-[11px] p-1.5 rounded bg-[#14141c] border border-[#221f2c]">
-                <span class="font-medium text-amber-300/90">${r.name}</span>
-                <span class="text-gray-400 font-mono text-[10px]">${r.affixes}</span>
+                <span class="font-medium text-amber-300/90">${escapeHtml(r.name)}</span>
+                <span class="text-gray-400 font-mono text-[10px]">${escapeHtml(r.affixes)}</span>
               </div>
             `).join('')}
           </div>
@@ -2131,7 +2439,7 @@
     function initMythicCrafting() {
       const select = document.getElementById('mythic-craft-select');
       if (!select) return;
-      select.innerHTML = MYTHIC_RECIPES.map((m, idx) => `<option value="${idx}">${m.name}</option>`).join('');
+      select.innerHTML = MYTHIC_RECIPES.map((m, idx) => `<option value="${idx}">${escapeHtml(m.name)}</option>`).join('');
       renderMythicCraftRecipe();
     }
 
@@ -2139,40 +2447,43 @@
       const select = document.getElementById('mythic-craft-select');
       const container = document.getElementById('mythic-craft-details');
       if (!select || !container) return;
-      const recipe = MYTHIC_RECIPES[parseInt(select.value) || 0];
+      const idx = parseInt(select.value) || 0;
+      const recipe = MYTHIC_RECIPES[idx];
       if (!recipe) return;
 
       container.innerHTML = `
         <div class="flex items-center justify-between mb-2">
-          <span class="text-xs font-bold text-purple-300 font-cinzel">${recipe.name}</span>
+          <span class="text-xs font-bold text-purple-300 font-cinzel">${escapeHtml(recipe.name)}</span>
           <span class="text-[10px] text-amber-300 font-bold"><i class="fa-solid fa-sparkles mr-1"></i>2x Prächtige Funken</span>
         </div>
-        <p class="text-[11px] text-gray-400 mb-3">${recipe.desc}</p>
+        <p class="text-[11px] text-gray-400 mb-3">${escapeHtml(recipe.desc)}</p>
         <div class="grid grid-cols-3 gap-2 text-center text-xs">
           ${recipe.runes.map(r => `
             <div class="p-2 rounded bg-[#13121c] border border-purple-900/60">
               <span class="text-[9px] text-gray-400 block">Benötigt</span>
-              <span class="font-bold text-purple-200 font-mono">6x ${r}</span>
+              <span class="font-bold text-purple-200 font-mono">6x ${escapeHtml(r)}</span>
             </div>
           `).join('')}
         </div>
         <div class="mt-3 pt-2 border-t border-[#1e1c27] flex justify-end">
-          <button onclick="window.addMythicToTracker('${recipe.name}')" class="px-3 py-1.5 rounded bg-purple-950 hover:bg-purple-900 border border-purple-700/60 text-purple-200 text-xs font-semibold flex items-center gap-1.5 transition">
+          <button onclick="window.addMythicRecipeToTracker(${idx})" class="px-3 py-1.5 rounded bg-purple-950 hover:bg-purple-900 border border-purple-700/60 text-purple-200 text-xs font-semibold flex items-center gap-1.5 transition">
             <i class="fa-solid fa-plus text-[10px]"></i> Zur Wunschliste
           </button>
         </div>
       `;
     }
 
-    function addMythicToTracker(name) {
+    function addMythicRecipeToTracker(recipeIndex) {
+      const recipe = MYTHIC_RECIPES[recipeIndex];
+      if (!recipe) return;
       addItemToTracker({
-        name: name,
+        name: recipe.name,
         rarity: 'Mythisch',
         source: 'Alchemist / Schmied (2 Funken + 18 Runen)',
         slotName: 'Mythisches Crafting',
         priority: 'Hoch'
       });
-      showToast(`${name} zur Wunschliste hinzugefügt!`);
+      showToast(`${recipe.name} zur Wunschliste hinzugefügt!`);
     }
 
     function calcGlyphChance() {
@@ -2195,19 +2506,19 @@
     function initDatalists() {
       const runeDl = document.getElementById('runes-datalist');
       if (runeDl) {
-        runeDl.innerHTML = RUNES_DATA.map(r => `<option value="${r.name} (${r.type})">${r.desc}</option>`).join('');
+        runeDl.innerHTML = RUNES_DATA.map(r => `<option value="${escapeHtml(r.name)} (${escapeHtml(r.type)})">${escapeHtml(r.desc)}</option>`).join('');
       }
       const tempDl = document.getElementById('tempering-datalist');
       if (tempDl) {
         const affixes = [];
         TEMPERING_DATA.forEach(c => c.recipes.forEach(r => affixes.push(`${r.affixes} [${r.name}]`)));
-        tempDl.innerHTML = affixes.map(a => `<option value="${a}">`).join('');
+        tempDl.innerHTML = affixes.map(a => `<option value="${escapeHtml(a)}">`).join('');
       }
       const quickSelect = document.getElementById('quick-db-select');
       if (quickSelect) {
         quickSelect.innerHTML = '<option value="">-- Manuelle Eingabe oder Item wählen --</option>';
         ITEMS_DB.forEach((it, idx) => {
-          quickSelect.innerHTML += `<option value="${idx}">${it.name} (${it.rarity}) - [${it.source}]</option>`;
+          quickSelect.innerHTML += `<option value="${idx}">${escapeHtml(it.name)} (${escapeHtml(it.rarity)}) - [${escapeHtml(it.source)}]</option>`;
         });
       }
     }
@@ -2219,7 +2530,7 @@
       const filtered = ITEMS_DB.filter(it => it.name.toLowerCase().includes(q) || (it.aspect && it.aspect.toLowerCase().includes(q)));
       select.innerHTML = '<option value="">-- Eigenes Item oder leer --</option>';
       filtered.forEach(it => {
-        select.innerHTML += `<option value="${ITEMS_DB.indexOf(it)}">${it.name} (${it.rarity})</option>`;
+        select.innerHTML += `<option value="${ITEMS_DB.indexOf(it)}">${escapeHtml(it.name)} (${escapeHtml(it.rarity)})</option>`;
       });
     }
 
@@ -2249,8 +2560,10 @@
 
     function closeSlotModal() {
       const modal = document.getElementById('item-modal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
       currentEditingSlotId = null;
     }
 
@@ -2384,7 +2697,7 @@
     }
 
     // ================= EXPORT & IMPORT =================
-    function copyDiscordBuild() {
+    async function copyDiscordBuild() {
       let txt = `🔥 **D4 Sanktuario Planer: ${currentClass}-Build** 🔥\n`;
       txt += `⚔️ **Skills:** ${currentSkills.join(', ')} | **Key:** ${currentKeyPassive}\n`;
       txt += `💎 **Glyphen:** ${currentGlyphs.join(', ')}\n`;
@@ -2399,16 +2712,11 @@
         });
       }
 
-      const ta = document.createElement('textarea');
-      ta.value = txt;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
+      await copyToClipboard(txt);
       showToast('Build für Discord in die Zwischenablage kopiert!');
     }
 
-    function shareBuildLink() {
+    async function shareBuildLink() {
       const payload = {
         c: currentClass,
         b: currentBuild,
@@ -2421,12 +2729,7 @@
       const hash = btoa(encodeURIComponent(JSON.stringify(payload)));
       const shareUrl = window.location.origin + window.location.pathname + '#build=' + hash;
 
-      const ta = document.createElement('textarea');
-      ta.value = shareUrl;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
+      await copyToClipboard(shareUrl);
       showToast('Build-Link in die Zwischenablage kopiert!');
     }
 
@@ -2535,11 +2838,11 @@
     window.filterTracker = filterTracker;
     window.updateInventoryMat = updateInventoryMat;
     window.filterBossGuide = filterBossGuide;
-    window.quickAddBossDrop = quickAddBossDrop;
+    window.quickAddBossDropByIndex = quickAddBossDropByIndex;
     window.setRuneFilter = setRuneFilter;
     window.renderRunesAndTempering = renderRunesAndTempering;
     window.renderMythicCraftRecipe = renderMythicCraftRecipe;
-    window.addMythicToTracker = addMythicToTracker;
+    window.addMythicRecipeToTracker = addMythicRecipeToTracker;
     window.calcGlyphChance = calcGlyphChance;
     window.filterModalPresets = filterModalPresets;
     window.loadSlotForMasterworking = loadSlotForMasterworking;
